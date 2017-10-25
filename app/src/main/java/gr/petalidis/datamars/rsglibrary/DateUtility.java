@@ -1,4 +1,4 @@
-package gr.petalidis.datamars;
+package gr.petalidis.datamars.rsglibrary;
 
 import java.util.Calendar;
 

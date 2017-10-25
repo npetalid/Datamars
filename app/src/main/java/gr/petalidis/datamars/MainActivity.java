@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        recurseIntoFilePath("/");
+        recurseIntoFilePath("/sdcard");
 
 
     }
