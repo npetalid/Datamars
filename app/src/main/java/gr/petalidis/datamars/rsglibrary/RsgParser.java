@@ -10,7 +10,7 @@ import java.util.List;
 
 public class RsgParser {
 
-    public List<Rsg> parseRsgStrings(List<String> rsgStrings) throws ParseException {
+    public static List<Rsg> parseRsgStrings(List<String> rsgStrings) throws ParseException {
         List<Rsg> rsgs = new ArrayList<>();
         for (String rsgString: rsgStrings) {
             rsgs.add(parseRsgString(rsgString));
@@ -18,7 +18,7 @@ public class RsgParser {
         return rsgs;
     }
 
-    private Rsg parseRsgString(String rsgString) throws ParseException {
+    public static Rsg parseRsgString(String rsgString) throws ParseException {
 
         
         String []parts = rsgString.split("\\|");

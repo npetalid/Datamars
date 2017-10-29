@@ -6,9 +6,13 @@ import java.util.Calendar;
  * Created by npetalid on 14/10/17.
  */
 
-public class DateUtility {
+public class RsgFileUtility {
 
     private final static int MINIMUM_YEAR = 2000;
+
+    private static final String VALID_SUFFIX = ".rsg";
+    private static final String VALID_PREFIX = "session_";
+
 
     public static boolean isValidYear(String year)
     {
@@ -43,5 +47,19 @@ public class DateUtility {
         } catch (NumberFormatException e) {
             return false;
         }
+    }
+
+    public static boolean isValidFilename(String rsgFilename)
+    {
+        return rsgFilename.endsWith(VALID_SUFFIX);
+    }
+
+    public static String getDate(String rsgFilename) {
+        String dateSuffix = "MMYYYY";
+
+        String date = rsgFilename.replaceFirst(VALID_PREFIX, "").replaceFirst(VALID_SUFFIX, "");
+
+        return date.substring(0, date.length() - dateSuffix.length());
+
     }
 }

@@ -13,9 +13,9 @@ import java.util.List;
 
 public class RsgExporter {
 
-    public void export(List<Rsg> rsgList, String filepath) throws IOException {
+    public static String export(List<Rsg> rsgList, String filepath) throws IOException {
         if (rsgList.isEmpty()) {
-            return;
+            return "";
         }
 
         //get list's date. Assume it is the first one
@@ -24,6 +24,9 @@ public class RsgExporter {
          File file = new File(filepath,firstRsg.getName()+".csv");
 
 
+        if (file.exists()) {
+            file.delete();
+        }
         if (file.createNewFile()) {
             try(
                 FileOutputStream fOut = new FileOutputStream(file);
@@ -33,7 +36,11 @@ public class RsgExporter {
                     writer.append(rsg.toString());
                     writer.append("\n");
                 }
-            } 
+            }
+            return file.getAbsolutePath();
+
         }
+
+        throw new IOException("Could not write file " + file.getAbsolutePath());
     }
 }

@@ -38,98 +38,98 @@ public class DateUtilityTest {
     }
 
     /**
-     * Test of isValidYear method, of class DateUtility.
+     * Test of isValidYear method, of class RsgFileUtility.
      */
     @Test
     public void testIsValidYear() {
         System.out.println("isValidYear2009");
         String year = "2009";
         boolean expResult = true;
-        boolean result = DateUtility.isValidYear(year);
+        boolean result = RsgFileUtility.isValidYear(year);
         assertEquals(expResult, result);
        
     }
 
      /**
-     * Test of isValidYear method, of class DateUtility.
+     * Test of isValidYear method, of class RsgFileUtility.
      */
     @Test
     public void testIsInvalidYear() {
         System.out.println("testIsInvalidYear20a09");
         String year = "20a09";
         boolean expResult = false;
-        boolean result = DateUtility.isValidYear(year);
+        boolean result = RsgFileUtility.isValidYear(year);
         assertEquals(expResult, result);
        
     }
     /**
-     * Test of isValidMonth method, of class DateUtility.
+     * Test of isValidMonth method, of class RsgFileUtility.
      */
     @Test
     public void testIsValidMonth() {
         System.out.println("isValidMonth");
         String month = "09";
         boolean expResult = true;
-        boolean result = DateUtility.isValidMonth(month);
+        boolean result = RsgFileUtility.isValidMonth(month);
         assertEquals(expResult, result);
     }
 
     /**
-     * Test of isInvalidMonth method, of class DateUtility.
+     * Test of isInvalidMonth method, of class RsgFileUtility.
      */
     @Test
     public void testIsinvalidMonth() {
         System.out.println("testIsinvalidMontha09");
         String month = "a09";
         boolean expResult = false;
-        boolean result = DateUtility.isValidMonth(month);
+        boolean result = RsgFileUtility.isValidMonth(month);
         assertEquals(expResult, result);
     }
 
      /**
-     * Test of isInvalidMonth method, of class DateUtility.
+     * Test of isInvalidMonth method, of class RsgFileUtility.
      */
     @Test
     public void testIsinvalidMonthLargerThan12() {
         System.out.println("testIsinvalidMonthLargerThan12");
         String month = "13";
         boolean expResult = false;
-        boolean result = DateUtility.isValidMonth(month);
+        boolean result = RsgFileUtility.isValidMonth(month);
         assertEquals(expResult, result);
     }
     /**
-     * Test of isValidDay method, of class DateUtility.
+     * Test of isValidDay method, of class RsgFileUtility.
      */
     @Test
     public void testIsValidDay() {
         System.out.println("isValidDay");
         String day = "09";
         boolean expResult = true;
-        boolean result = DateUtility.isValidDay(day);
+        boolean result = RsgFileUtility.isValidDay(day);
         assertEquals(expResult, result);
     }
     
      /**
-     * Test of isValidDay method, of class DateUtility.
+     * Test of isValidDay method, of class RsgFileUtility.
      */
     @Test
     public void testIsinvalidDay() {
         System.out.println("isInvalidDay-v09");
         String day = "v09";
         boolean expResult = false;
-        boolean result = DateUtility.isValidDay(day);
+        boolean result = RsgFileUtility.isValidDay(day);
         assertEquals(expResult, result);
     }
     
      /**
-     * Test of isValidDay method, of class DateUtility.
+     * Test of isValidDay method, of class RsgFileUtility.
      */
     @Test
     public void testIsinvalidDayGreaterThan31() {
         System.out.println("isInvalidDay-v09");
         String day = "32";
         boolean expResult = false;
-        boolean result = DateUtility.isValidDay(day);
+        boolean result = RsgFileUtility.isValidDay(day);
         assertEquals(expResult, result);
     }
 }
