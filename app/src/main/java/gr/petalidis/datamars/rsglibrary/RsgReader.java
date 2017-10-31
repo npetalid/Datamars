@@ -20,7 +20,7 @@ import java.util.List;
 public class RsgReader {
 
 
-    public static List<Rsg> readRsg(String filepath) throws FileNotFoundException, IOException, ParseException {
+    public static List<Rsg> readRsgFromScanner(String filepath) throws FileNotFoundException, IOException, ParseException {
 
         File file = new File(filepath);
         List<Rsg> rsgs = new ArrayList<>();
@@ -29,6 +29,22 @@ public class RsgReader {
                 String line;
                 while ((line = br.readLine()) != null) {
                     Rsg rsg = RsgParser.parseRsgString(line);
+                    rsgs.add(rsg);
+                }
+            }
+        }
+        return rsgs;
+    }
+
+    public static ArrayList<Rsg> readRsgFromTablet(String filepath) throws FileNotFoundException, IOException, ParseException {
+
+        File file = new File(filepath);
+        ArrayList<Rsg> rsgs = new ArrayList<>();
+        if (file!=null) {
+            try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    Rsg rsg = RsgParser.parseCsvString(line);
                     rsgs.add(rsg);
                 }
             }

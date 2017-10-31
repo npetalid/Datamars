@@ -8,19 +8,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.squareup.timessquare.CalendarPickerView;
-
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 import gr.petalidis.datamars.rsglibrary.DateScanner;
 import gr.petalidis.datamars.rsglibrary.Rsg;
@@ -28,8 +21,6 @@ import gr.petalidis.datamars.rsglibrary.RsgExporter;
 import gr.petalidis.datamars.rsglibrary.RsgReader;
 import gr.petalidis.datamars.rsglibrary.RsgRootDirectory;
 import gr.petalidis.datamars.rsglibrary.RsgSessionFiles;
-
-import static java.util.Calendar.MONTH;
 
 /**
  * Created by npetalid on 29/10/17.
@@ -43,6 +34,8 @@ public class RsgCopier extends AsyncTask<Object, String, String> {
     WeakReference<Context> context;
 
     HashMap<String, String> sessions = new HashMap<>();
+    HashMap<String, String> validSessions = new HashMap<>();
+
       /* Checks if external storage is available to at least read */
 
     private boolean isExternalStorageReadable() {
@@ -93,11 +86,12 @@ public class RsgCopier extends AsyncTask<Object, String, String> {
             publishProgress(numberOfSessionsLocated + " sessions located");
             for (String date: sessions.keySet()) {
                     try {
-                        List<Rsg> rsgs = RsgReader.readRsg(sessions.get(date));
+                        List<Rsg> rsgs = RsgReader.readRsgFromScanner(sessions.get(date));
                         String filename = RsgExporter.export(rsgs, m_str);
                         if (!filename.equals("")) {
                             publishProgress("Wrote file "+ filename);
                             numberOfFilesWritter ++;
+                            validSessions.put(date,filename);
                         }
 
                     } catch (IOException e) {
@@ -142,7 +136,7 @@ public class RsgCopier extends AsyncTask<Object, String, String> {
                     if (actualContext!=null && sessions!=null) {
 
                         try {
-                            RsgSessionFiles files = new RsgSessionFiles(sessions);
+                            RsgSessionFiles files = new RsgSessionFiles(validSessions);
 
                             Intent intent = new Intent(actualContext, CalendarActivity.class);
                             intent.putExtra("dates", files);

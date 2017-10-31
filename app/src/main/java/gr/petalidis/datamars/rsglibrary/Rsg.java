@@ -39,6 +39,13 @@ public class Rsg {
         }
     }
 
+    public Rsg(String countryCode, String identificationCode, Date date)
+    {
+        this.countryCode = countryCode;
+        this.identificationCode = identificationCode;
+        this.date = date;
+    }
+
     public String getIdentificationCode() {
         return identificationCode;
     }

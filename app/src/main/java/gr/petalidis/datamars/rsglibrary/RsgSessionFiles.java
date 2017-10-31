@@ -16,14 +16,16 @@ import java.util.Set;
 
 public class RsgSessionFiles implements Serializable {
 
-    final SimpleDateFormat format = new SimpleDateFormat("YYYY-mm-dd");
+    final private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
     private HashMap<String,String> sessions = new HashMap<>();
+
     private List<Date> dates = new ArrayList<>();
 
     public RsgSessionFiles(HashMap<String, String> sessions) throws ParseException {
         this.sessions = sessions;
         for (String date: sessions.keySet()) {
-            dates.add(format.parse(date));
+            dates.add(formatter.parse(date));
         }
         Collections.sort(dates);
     }
@@ -34,5 +36,11 @@ public class RsgSessionFiles implements Serializable {
 
     public List<Date> getDates() {
         return dates;
+    }
+
+    public String getFilename(Date date) throws ParseException
+    {
+        String dateString = formatter.format(date);
+        return sessions.get(dateString);
     }
 }
