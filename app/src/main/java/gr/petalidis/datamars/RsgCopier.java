@@ -1,7 +1,11 @@
 package gr.petalidis.datamars;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.squareup.timessquare.CalendarPickerView;
@@ -23,6 +27,7 @@ import gr.petalidis.datamars.rsglibrary.Rsg;
 import gr.petalidis.datamars.rsglibrary.RsgExporter;
 import gr.petalidis.datamars.rsglibrary.RsgReader;
 import gr.petalidis.datamars.rsglibrary.RsgRootDirectory;
+import gr.petalidis.datamars.rsglibrary.RsgSessionFiles;
 
 import static java.util.Calendar.MONTH;
 
@@ -33,7 +38,9 @@ import static java.util.Calendar.MONTH;
 public class RsgCopier extends AsyncTask<Object, String, String> {
 
     WeakReference<TextView> textView;
-    WeakReference<CalendarPickerView> calendarView;
+    WeakReference<Button> button;
+
+    WeakReference<Context> context;
 
     HashMap<String, String> sessions = new HashMap<>();
       /* Checks if external storage is available to at least read */
@@ -55,9 +62,10 @@ public class RsgCopier extends AsyncTask<Object, String, String> {
         return false;
     }
 
-    public RsgCopier(TextView textView, CalendarPickerView calendarView) {
+    public RsgCopier(Context context, TextView textView, Button button ) {
         this.textView = new WeakReference<TextView>(textView);
-        this.calendarView = new WeakReference<CalendarPickerView>(calendarView);
+        this.button = new WeakReference<Button>(button);
+        this.context = new WeakReference<Context>(context);
 
     }
 
@@ -115,6 +123,8 @@ public class RsgCopier extends AsyncTask<Object, String, String> {
 
     @Override
     protected void onPostExecute(String s) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
         super.onPostExecute(s);
         TextView actualView = textView.get();
         if (actualView!=null) {
@@ -122,21 +132,28 @@ public class RsgCopier extends AsyncTask<Object, String, String> {
 
         }
 
-        CalendarPickerView actualCalendarView = calendarView.get();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        if (actualCalendarView!=null && !sessions.isEmpty()) {
-            List<Date> dates = new ArrayList<>();
-            for (String date: sessions.keySet()) {
-                try {
-                    dates.add(format.parse(date));
-                } catch (ParseException e) {
-                    //Do nothing
-                }
-            }
-            Collections.sort(dates);
-            actualCalendarView.init(dates.get(0),dates.get(dates.size()-1));
+        Button actualButton = button.get();
+        if (actualButton!=null) {
+            actualButton.setText("Click to see results");
+            actualButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Context actualContext = context.get();
+                    if (actualContext!=null && sessions!=null) {
 
-            actualCalendarView.highlightDates(dates);
+                        try {
+                            RsgSessionFiles files = new RsgSessionFiles(sessions);
+
+                            Intent intent = new Intent(actualContext, CalendarActivity.class);
+                            intent.putExtra("dates", files);
+                            actualContext.startActivity(intent);
+                        } catch (ParseException e) {
+                            //
+                        }
+                    }
+                }
+            });
         }
+
     }
 }

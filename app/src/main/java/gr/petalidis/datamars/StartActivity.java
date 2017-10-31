@@ -15,14 +15,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-public class StartActivity extends AppCompatActivity implements AppStatus.OnFragmentInteractionListener {
+public class StartActivity extends AppCompatActivity implements AppStatusFragment.OnFragmentInteractionListener {
     private static final int PERMISSION_REQUEST_CODE=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-
 
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
@@ -49,7 +48,7 @@ public class StartActivity extends AppCompatActivity implements AppStatus.OnFrag
 
         fragmentTransaction = fragmentManager.beginTransaction();
 
-        fragment = new AppStatus();
+        fragment = new AppStatusFragment();
         fragmentTransaction.add(R.id.linear_layout_fragment, fragment);
 
         fragmentTransaction.commit();

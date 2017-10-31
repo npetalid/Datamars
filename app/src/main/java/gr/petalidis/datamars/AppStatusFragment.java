@@ -4,25 +4,21 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
-import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
-
-import com.squareup.timessquare.CalendarPickerView;
-
-import java.io.File;
 
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link AppStatus.OnFragmentInteractionListener} interface
+ * {@link AppStatusFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link AppStatus#newInstance} factory method to
+ * Use the {@link AppStatusFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AppStatus extends Fragment {
+public class AppStatusFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -35,7 +31,7 @@ public class AppStatus extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private RsgCopier status;
-    public AppStatus() {
+    public AppStatusFragment() {
         // Required empty public constructor
     }
 
@@ -45,11 +41,11 @@ public class AppStatus extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment AppStatus.
+     * @return A new instance of fragment AppStatusFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AppStatus newInstance(String param1, String param2) {
-        AppStatus fragment = new AppStatus();
+    public static AppStatusFragment newInstance(String param1, String param2) {
+        AppStatusFragment fragment = new AppStatusFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -101,9 +97,8 @@ public class AppStatus extends Fragment {
     public void onStart() {
         super.onStart();
         TextView textView = (TextView)getView().findViewById(R.id.status_text_view);
-        CalendarPickerView calendarView = (CalendarPickerView) getView().findViewById(R.id.calendar_view);
-
-        status = new RsgCopier(textView, calendarView);
+        Button button = (Button)getActivity().findViewById(R.id.button);
+        status = new RsgCopier(getContext(),textView, button);
         status.execute();
     }
 
