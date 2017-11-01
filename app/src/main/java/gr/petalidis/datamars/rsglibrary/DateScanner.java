@@ -37,19 +37,19 @@ public class DateScanner {
 
         if (files != null) {
             for (File inFile : files) {
-                if (inFile.isDirectory() && inFile.canRead() && RsgFileUtility.isValidYear(inFile.getName())) {
+                if (inFile.isDirectory() && inFile.canRead() && RsgFileUtility.isValidYear(inFile.getName().trim())) {
                     String currentYear = inFile.getName();
                     File yearRoot = new File(root + File.separator + currentYear);
                     File[] monthFiles = yearRoot.listFiles();
                     if (monthFiles != null) {
                         for (File monthFile : monthFiles) {
-                            if (monthFile.isDirectory() && monthFile.canRead() && RsgFileUtility.isValidMonth(monthFile.getName()) && containsRsgFiles(monthFile)) {
+                            if (monthFile.isDirectory() && monthFile.canRead() && RsgFileUtility.isValidMonth(monthFile.getName().trim()) && containsRsgFiles(monthFile)) {
                                 String currentMonth = monthFile.getName();
                                 File monthRoot = new File(root + File.separator + currentYear + File.separator + currentMonth);
                                 File[] dayFiles = monthRoot.listFiles();
                                 if (dayFiles != null) {
                                     for (File dayFile : dayFiles) {
-                                        String day = RsgFileUtility.getDate(dayFile.getName());
+                                        String day = RsgFileUtility.getDate(dayFile.getName().trim());
                                         if (dayFile.canRead() && RsgFileUtility.isValidDay(day) && RsgFileUtility.isValidFilename(dayFile.getName())) {
                                             dates.put(currentYear + "-" + currentMonth + "-" + day, dayFile.getAbsolutePath());
                                         }

@@ -28,22 +28,18 @@ public class RsgFileUtility {
 
     public static boolean isValidMonth(String month)
     {
-        Calendar calendar = Calendar.getInstance();
-        int currentMonth = calendar.get(Calendar.MONTH);
         try {
             int monthInt = Integer.parseInt(month);
-            return 0 <= monthInt && monthInt<=currentMonth;
+            return 0 <= monthInt && monthInt<=12;
         } catch (NumberFormatException e) {
             return false;
         }
     }
 
     public static boolean isValidDay(String day) {
-        Calendar calendar = Calendar.getInstance();
-        int currentDay = calendar.get(Calendar.DAY_OF_MONTH);
         try {
             int dayInt = Integer.parseInt(day);
-            return 1 <= dayInt && dayInt <= currentDay;
+            return 1 <= dayInt && dayInt <= 31;
         } catch (NumberFormatException e) {
             return false;
         }

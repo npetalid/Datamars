@@ -22,6 +22,10 @@ public class RsgSessionFiles implements Serializable {
 
     private List<Date> dates = new ArrayList<>();
 
+    public RsgSessionFiles() {
+            //do nothing
+
+    }
     public RsgSessionFiles(HashMap<String, String> sessions) throws ParseException {
         this.sessions = sessions;
         for (String date: sessions.keySet()) {
