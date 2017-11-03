@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.text.ParseException;
@@ -67,9 +68,20 @@ public class RsgCopier extends AsyncTask<Object, String, String> {
     protected String doInBackground(Object... params) {
         RsgRootDirectory rootDirectories = new RsgRootDirectory();
         String m_str = Environment.getExternalStorageDirectory()
-                .getAbsolutePath();
+                .getAbsolutePath()+ File.separator+"GS232";
+
         if (!isExternalStorageReadable() || !isExternalStorageWritable()) {
             return "Could not write to external storage";
+        }
+
+        File topDirectory = new File(m_str);
+
+        if (!topDirectory.exists()) {
+                topDirectory.mkdir();
+        }
+        File datamarsDir = new File(m_str+File.separator+rootDirectories.getUsbName());
+        if (!datamarsDir.exists()) {
+                datamarsDir.mkdir();
         }
 
         if (rootDirectories.rsgRoots().isEmpty() || rootDirectories.rsgRoots().size()>1) {
@@ -87,7 +99,7 @@ public class RsgCopier extends AsyncTask<Object, String, String> {
             for (String date: sessions.keySet()) {
                     try {
                         List<Rsg> rsgs = RsgReader.readRsgFromScanner(sessions.get(date));
-                        String filename = RsgExporter.export(rsgs, m_str);
+                        String filename = RsgExporter.export(rsgs, datamarsDir.getAbsolutePath());
                         if (!filename.equals("")) {
                             publishProgress("Wrote file "+ filename);
                             numberOfFilesWritter ++;

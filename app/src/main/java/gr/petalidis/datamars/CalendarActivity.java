@@ -58,7 +58,6 @@ public class CalendarActivity extends AppCompatActivity {
 
         calendarView.highlightDates(files.getDates());
 
-
         calendarView.setCellClickInterceptor(new CalendarPickerView.CellClickInterceptor() {
             @Override
             public boolean onCellClicked(Date date) {
@@ -74,6 +73,11 @@ public class CalendarActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 
     @Override
