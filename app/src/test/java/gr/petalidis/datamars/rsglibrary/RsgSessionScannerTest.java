@@ -23,12 +23,12 @@ import static org.junit.Assert.assertEquals;
  *
  * @author npetalid
  */
-public class DateScannerTest {
+public class RsgSessionScannerTest {
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
-    public DateScannerTest() {
+    public RsgSessionScannerTest() {
     }
 
     @BeforeClass
@@ -72,13 +72,13 @@ public class DateScannerTest {
     }
 
     /**
-     * Test of scanDirectory method, of class DateScanner.
+     * Test of scanDirectory method, of class RsgSessionScanner.
      */
     @Test
     public void testScanDirectory() {
         System.out.println("scanDirectory");
         String root = folder.getRoot().getAbsolutePath();
-        DateScanner instance = new DateScanner();
+        RsgSessionScanner instance = new RsgSessionScanner();
         HashMap<String, String> expResult = new HashMap<>();
         expResult.put("2010-09-04", root+"2010"+File.separator+"09"+File.separator+"session_04092010.rsg");
         HashMap<String, String> result = instance.scanDirectory(root);

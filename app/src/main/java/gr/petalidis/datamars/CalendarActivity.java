@@ -95,11 +95,7 @@ public class CalendarActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             files = (RsgSessionFiles) savedInstanceState.getSerializable("dates");
             if (files == null) {
-                try {
-                    files = new RsgSessionFiles(new HashMap<String, String>());
-                } catch (ParseException e) {
-                    //Do nothing
-                }
+                    files = new RsgSessionFiles();
             }
         }
     }

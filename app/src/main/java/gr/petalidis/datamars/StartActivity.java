@@ -15,7 +15,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-public class StartActivity extends AppCompatActivity implements AppStatusFragment.OnFragmentInteractionListener {
+import gr.petalidis.datamars.fragments.AppStatusFragment;
+import gr.petalidis.datamars.fragments.ChooseDirectoryFragment;
+import gr.petalidis.datamars.rsglibrary.RsgRootDirectory;
+
+public class StartActivity extends AppCompatActivity implements AppStatusFragment.OnFragmentInteractionListener,  ChooseDirectoryFragment.OnFragmentInteractionListener {
     private static final int PERMISSION_REQUEST_CODE=1;
 
     @Override
@@ -33,6 +37,20 @@ public class StartActivity extends AppCompatActivity implements AppStatusFragmen
 
     }
 
+    public void showDialog(View view)
+    {
+        FragmentManager fragmentManager = getFragmentManager();
+        RsgRootDirectory rsgRootDirectory = new RsgRootDirectory();
+
+
+
+        ChooseDirectoryFragment fragment = new ChooseDirectoryFragment();
+        Bundle args = new Bundle();
+        args.putSerializable("usbList",rsgRootDirectory.getProbableUsbs());
+        fragment.setArguments(args);
+        fragment.show(fragmentManager,"Some tag");
+
+    }
 
     public void showExternalStorage(View view)
     {

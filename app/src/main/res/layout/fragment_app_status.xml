@@ -3,7 +3,7 @@
     android:id="@+id/statusFragmentId"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="gr.petalidis.datamars.AppStatusFragment">
+    tools:context="gr.petalidis.datamars.fragments.AppStatusFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <ScrollView

@@ -13,15 +13,12 @@ import java.util.List;
 
 public class RsgExporter {
 
-    public static String export(List<Rsg> rsgList, String filepath) throws IOException {
+    public static String export(List<Rsg> rsgList, String filepath, String name) throws IOException {
         if (rsgList.isEmpty()) {
             return "";
         }
 
-        //get list's date. Assume it is the first one
-
-        Rsg firstRsg = rsgList.get(0);
-         File file = new File(filepath,firstRsg.getName()+".csv");
+         File file = new File(filepath,name);
 
 
         if (file.exists()) {

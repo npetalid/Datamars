@@ -17,7 +17,7 @@ import org.junit.runners.Suite;
  * @author npetalid
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({gr.petalidis.datamars.rsglibrary.RsgExporterTest.class, gr.petalidis.datamars.rsglibrary.DateUtilityTest.class, gr.petalidis.datamars.rsglibrary.RsgTest.class, gr.petalidis.datamars.rsglibrary.DateScannerTest.class, gr.petalidis.datamars.rsglibrary.RsgParserTest.class})
+@Suite.SuiteClasses({gr.petalidis.datamars.rsglibrary.RsgExporterTest.class, gr.petalidis.datamars.rsglibrary.DateUtilityTest.class, gr.petalidis.datamars.rsglibrary.RsgTest.class, RsgSessionScannerTest.class, gr.petalidis.datamars.rsglibrary.RsgParserTest.class})
 public class RsglibrarySuite {
 
     @BeforeClass

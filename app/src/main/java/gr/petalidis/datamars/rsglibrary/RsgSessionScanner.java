@@ -2,12 +2,15 @@ package gr.petalidis.datamars.rsglibrary;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by npetalid on 14/10/17.
  */
-public class DateScanner {
+public class RsgSessionScanner {
 
     private static final String VALID_SUFFIX = ".rsg";
     private static final String VALID_PREFIX = "session_";
@@ -30,11 +33,11 @@ public class DateScanner {
     //@param root A root directory under which to search
     //@returns a map of dates to files objects 
 
-    public static HashMap<String, String> scanDirectory(String root) {
+    public static RsgSessionFiles scanDirectory(String root) throws ParseException {
         File f = new File(root);
         File[] files = f.listFiles();
-        HashMap<String, String> dates = new HashMap<>();
 
+        RsgSessionFiles sessionFiles = new RsgSessionFiles();
         if (files != null) {
             for (File inFile : files) {
                 if (inFile.isDirectory() && inFile.canRead() && RsgFileUtility.isValidYear(inFile.getName().trim())) {
@@ -51,7 +54,7 @@ public class DateScanner {
                                     for (File dayFile : dayFiles) {
                                         String day = RsgFileUtility.getDate(dayFile.getName().trim());
                                         if (dayFile.canRead() && RsgFileUtility.isValidDay(day) && RsgFileUtility.isValidFilename(dayFile.getName())) {
-                                            dates.put(currentYear + "-" + currentMonth + "-" + day, dayFile.getAbsolutePath());
+                                            sessionFiles.getSessions().add(new RsgSession(currentYear + "-" + currentMonth + "-" + day, dayFile.getAbsolutePath()));
                                         }
                                     }
                                 }
@@ -62,7 +65,22 @@ public class DateScanner {
             }
 
         }
-        return dates;
+        return sessionFiles;
+    }
+
+    public static RsgSessionFiles scanUsbDirectory(String root) throws ParseException {
+        RsgSessionFiles sessionFiles = new RsgSessionFiles();
+        File f = new File(root);
+        File[] files = f.listFiles();
+
+        if (files != null) {
+            for (File inFile : files) {
+                if (inFile.canRead() && RsgSession.isValidRsgCsvSessionFile(inFile.getName())) {
+                    sessionFiles.getSessions().add(new RsgSession(inFile.getName(), inFile.getAbsolutePath()));
+                }
+            }
+        }
+        return sessionFiles;
     }
 
 }

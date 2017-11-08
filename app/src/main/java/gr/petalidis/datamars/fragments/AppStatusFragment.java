@@ -1,4 +1,4 @@
-package gr.petalidis.datamars;
+package gr.petalidis.datamars.fragments;
 
 import android.content.Context;
 import android.net.Uri;
@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import gr.petalidis.datamars.R;
+import gr.petalidis.datamars.RsgCopier;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -97,7 +100,7 @@ public class AppStatusFragment extends Fragment {
     public void onStart() {
         super.onStart();
         TextView textView = (TextView)getView().findViewById(R.id.status_text_view);
-        Button button = (Button)getActivity().findViewById(R.id.button);
+        Button button = (Button)getActivity().findViewById(R.id.synchronizeDatamarsButton);
         status = new RsgCopier(getContext(),textView, button);
         status.execute();
     }

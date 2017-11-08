@@ -29,11 +29,19 @@
                 android:text="Πατήστε όταν συνδέσετε το Datamars" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/synchronizeDatamarsButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:contentDescription="Μεταφέρει Sessions από το Scanner"
                 android:onClick="showExternalStorage"
-                android:text="OK" />
+                android:text="Συγχρονισμός με Datamars Scanner" />
+
+            <Button
+                android:id="@+id/viewStoredSessions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:onClick="showDialog"
+                android:text="Προβολή Sessions" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
