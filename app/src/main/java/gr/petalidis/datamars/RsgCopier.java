@@ -14,6 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import gr.petalidis.datamars.activities.CalendarActivity;
 import gr.petalidis.datamars.rsglibrary.Rsg;
 import gr.petalidis.datamars.rsglibrary.RsgExporter;
 import gr.petalidis.datamars.rsglibrary.RsgReader;
@@ -26,7 +27,7 @@ import gr.petalidis.datamars.rsglibrary.RsgSessionScanner;
  * Created by npetalid on 29/10/17.
  */
 
-public class RsgCopier extends AsyncTask<Object, String, String> {
+public class RsgCopier extends AsyncTask<Object, String, Integer> {
 
     WeakReference<TextView> textView;
     WeakReference<Button> button;
@@ -63,7 +64,7 @@ public class RsgCopier extends AsyncTask<Object, String, String> {
 
 
     @Override
-    protected String doInBackground(Object... params) {
+    protected Integer doInBackground(Object... params) {
         int numberOfSessionsLocated = 0;
         int numberOfFilesWritter = 0;
 
@@ -87,6 +88,8 @@ public class RsgCopier extends AsyncTask<Object, String, String> {
             }
 
             sessions = RsgSessionScanner.scanUsbDirectory(rsgRootDirectory.getCsvDirectory());
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ParseException e) {
@@ -94,7 +97,7 @@ public class RsgCopier extends AsyncTask<Object, String, String> {
         }
 
 
-        return "Wrote " + numberOfFilesWritter + " files";
+        return numberOfFilesWritter;
     }
 
     @Override
@@ -108,31 +111,40 @@ public class RsgCopier extends AsyncTask<Object, String, String> {
 
 
     @Override
-    protected void onPostExecute(String s) {
+    protected void onPostExecute(Integer numberOfFilesWritten) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
-        super.onPostExecute(s);
+        super.onPostExecute(numberOfFilesWritten);
+
         TextView actualView = textView.get();
         if (actualView != null) {
-            actualView.setText(s + "\n");
+            if (numberOfFilesWritten == 0) {
 
-        }
+                actualView.setText("No datamars or no sessions found\n");
 
-        Button actualButton = button.get();
-        if (actualButton != null) {
-            actualButton.setText("Ο Συγχρονισμός ολοκληρώθηκε. Ξαναδοκιμάστε");
-            actualButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Context actualContext = context.get();
-                    if (actualContext != null && sessions != null) {
-                         Intent intent = new Intent(actualContext, CalendarActivity.class);
-                            intent.putExtra("dates", sessions);
-                            actualContext.startActivity(intent);
-                    }
+            } else {
+                Button actualButton = button.get();
+
+                actualView.setText("Synced " + numberOfFilesWritten + " files \n");
+                if (actualButton != null)
+
+                {
+                    actualButton.setText("Ο Συγχρονισμός ολοκληρώθηκε. Ξαναδοκιμάστε");
+                    actualButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Context actualContext = context.get();
+                            if (actualContext != null && sessions != null) {
+                                Intent intent = new Intent(actualContext, CalendarActivity.class);
+                                intent.putExtra("dates", sessions);
+                                actualContext.startActivity(intent);
+                            }
+                        }
+                    });
                 }
-            });
+            }
         }
+
 
     }
 }

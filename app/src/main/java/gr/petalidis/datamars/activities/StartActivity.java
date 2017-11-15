@@ -1,4 +1,4 @@
-package gr.petalidis.datamars;
+package gr.petalidis.datamars.activities;
 
 import android.Manifest;
 import android.app.Activity;
@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import gr.petalidis.datamars.R;
 import gr.petalidis.datamars.fragments.AppStatusFragment;
 import gr.petalidis.datamars.fragments.ChooseDirectoryFragment;
 import gr.petalidis.datamars.rsglibrary.RsgRootDirectory;
@@ -78,7 +79,7 @@ public class StartActivity extends AppCompatActivity implements AppStatusFragmen
         // The ACTION_OPEN_DOCUMENT intent was sent with the request code
         // READ_REQUEST_CODE. If the request code seen here doesn't match, it's the
         // response to some other intent, and the code below shouldn't run at all.
-        TextView textView = (TextView) findViewById(R.id.textView);
+        TextView textView = (TextView) findViewById(R.id.status_text_view);
 
         if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
             // The document selected by the user won't be returned in the intent.
@@ -107,7 +108,7 @@ public class StartActivity extends AppCompatActivity implements AppStatusFragmen
 
     private void showFailure()
     {
-        TextView textView = (TextView) findViewById(R.id.textView);
+        TextView textView = (TextView) findViewById(R.id.status_text_view);
         textView.setText("Failed to get permissions");
     }
     @Override

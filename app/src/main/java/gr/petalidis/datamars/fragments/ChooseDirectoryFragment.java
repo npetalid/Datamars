@@ -111,11 +111,11 @@ public class ChooseDirectoryFragment extends DialogFragment  {
         final ArrayList<String> usbs = (ArrayList<String>)args.getSerializable("usbList");
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
+       // builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+         //   public void onClick(DialogInterface dialog, int id) {
                 // User clicked OK button
-            }
-        });
+          //  }
+        //});
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // User cancelled the dialog

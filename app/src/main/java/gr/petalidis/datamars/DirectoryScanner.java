@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static gr.petalidis.datamars.R.id.status_text_view;
-import static gr.petalidis.datamars.R.id.textView;
 
 /**
  * Created by npetalid on 29/10/17.

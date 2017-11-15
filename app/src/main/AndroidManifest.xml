@@ -12,23 +12,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".StartActivity">
+        <activity android:name=".activities.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CalendarActivity"
+        <activity android:name=".activities.CalendarActivity"
             android:launchMode="singleTop"
             />
         <activity
-            android:name=".ViewRsgActivity"
+            android:name=".activities.ViewRsgActivity"
             android:label="@string/title_activity_view_rsg"
-            android:parentActivityName=".CalendarActivity">
+            android:parentActivityName=".activities.CalendarActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="gr.petalidis.datamars.CalendarActivity" />
+                android:value="gr.petalidis.datamars.activities.CalendarActivity" />
         </activity>
     </application>
 

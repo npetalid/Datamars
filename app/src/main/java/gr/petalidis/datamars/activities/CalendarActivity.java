@@ -1,4 +1,4 @@
-package gr.petalidis.datamars;
+package gr.petalidis.datamars.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,8 +10,8 @@ import com.squareup.timessquare.CalendarPickerView;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 
+import gr.petalidis.datamars.R;
 import gr.petalidis.datamars.rsglibrary.RsgSessionFiles;
 
 public class CalendarActivity extends AppCompatActivity {

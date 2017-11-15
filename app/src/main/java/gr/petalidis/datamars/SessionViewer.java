@@ -3,22 +3,11 @@ package gr.petalidis.datamars;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Environment;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
-import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.List;
 
-import gr.petalidis.datamars.rsglibrary.Rsg;
-import gr.petalidis.datamars.rsglibrary.RsgExporter;
-import gr.petalidis.datamars.rsglibrary.RsgReader;
-import gr.petalidis.datamars.rsglibrary.RsgRootDirectory;
-import gr.petalidis.datamars.rsglibrary.RsgSession;
+import gr.petalidis.datamars.activities.CalendarActivity;
 import gr.petalidis.datamars.rsglibrary.RsgSessionFiles;
 import gr.petalidis.datamars.rsglibrary.RsgSessionScanner;
 
