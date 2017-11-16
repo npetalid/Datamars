@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 
@@ -22,6 +23,7 @@ public class ViewRsgActivity extends AppCompatActivity {
 
     private TextView mTextMessage;
     private String filename = "";
+    private String date = "";
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -53,13 +55,19 @@ public class ViewRsgActivity extends AppCompatActivity {
             if (filename == null) {
                 filename = "";
             }
+            if (date == null) {
+                date = "";
+            }
         } else {
             Intent intent = getIntent();
             if (intent != null) {
                 filename = intent.getStringExtra("rsg");
+                date = intent.getStringExtra("date");
             }
         }
         try {
+            TextView dateField = (TextView)findViewById(R.id.rsgDate);
+            dateField.setText(date);
             ArrayList<Rsg> rsgs = RsgReader.readRsgFromTablet(filename);
             RsgAdapter adapter = new RsgAdapter(this, rsgs);
             GridView gridView = (GridView) findViewById(R.id.rsglistId);
@@ -188,6 +196,7 @@ public class ViewRsgActivity extends AppCompatActivity {
         // This bundle will be passed to onCreate if the process is
         // killed and restarted.
         savedInstanceState.putString("filename", filename);
+        savedInstanceState.putString("date",date);
     }
 
     @Override
@@ -198,6 +207,7 @@ public class ViewRsgActivity extends AppCompatActivity {
             if (filename == null) {
                 filename = "";
             }
+            date = savedInstanceState.getString("date");
         }
     }
 

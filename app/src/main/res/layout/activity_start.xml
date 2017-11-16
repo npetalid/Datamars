@@ -22,12 +22,6 @@
             android:id="@+id/linear_layout"
             >
 
-            <TextView
-                android:id="@+id/editText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Πατήστε όταν συνδέσετε το Datamars" />
-
             <Button
                 android:id="@+id/synchronizeDatamarsButton"
                 android:layout_width="match_parent"

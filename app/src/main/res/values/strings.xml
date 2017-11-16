@@ -9,7 +9,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_rsg_list">Rsgs</string>
     <string name="title_rsg_detail">Rsg Detail</string>
-    <string name="title_activity_view_rsg">ViewRsgActivity</string>
+    <string name="title_activity_view_rsg">Προβολή λεπτομερειών</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>

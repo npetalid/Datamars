@@ -3,6 +3,7 @@ package gr.petalidis.datamars.rsglibrary;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -29,12 +30,12 @@ public class Rsg {
         this.identificationCode = identificationCode.substring(11, 23);
         this.countryCode = identificationCode.substring(7, 11);
 
-        SimpleDateFormat format = new SimpleDateFormat("ddMMyyyy HHmmss");
+        SimpleDateFormat format =  new SimpleDateFormat("ddMMyyyy HHmmss", Locale.US);
         try {
             this.date = format.parse(date + " " + time);
         } catch (ParseException e) {
             //Retry with different time format
-            format = new SimpleDateFormat("ddMMyyyy Hmmss");
+            format = new SimpleDateFormat("ddMMyyyy Hmmss", Locale.US);
             this.date = format.parse(date + " " + time);
         }
     }

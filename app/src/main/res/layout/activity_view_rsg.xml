@@ -6,7 +6,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+
     tools:context="gr.petalidis.datamars.activities.ViewRsgActivity">
+
+    <TextView
+        android:id="@+id/rsgDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:singleLine="true" />
 
     <LinearLayout
         android:layout_width="wrap_content"

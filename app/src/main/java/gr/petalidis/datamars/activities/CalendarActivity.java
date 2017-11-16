@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import com.squareup.timessquare.CalendarPickerView;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -15,11 +16,13 @@ import gr.petalidis.datamars.R;
 import gr.petalidis.datamars.rsglibrary.RsgSessionFiles;
 
 public class CalendarActivity extends AppCompatActivity {
-    private Context mContext;
-    private RsgSessionFiles files;
+    private RsgSessionFiles files = new RsgSessionFiles();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+         final Context mContext = this;
+
+
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
             files = (RsgSessionFiles) savedInstanceState.getSerializable("dates");
@@ -37,7 +40,6 @@ public class CalendarActivity extends AppCompatActivity {
                 files = new RsgSessionFiles();
             }
         }
-        mContext = this;
 
         CalendarPickerView calendarView = (CalendarPickerView) findViewById(R.id.calendar_view);
         Calendar cal = Calendar.getInstance();
@@ -64,6 +66,7 @@ public class CalendarActivity extends AppCompatActivity {
                 Intent intent = new Intent(mContext, ViewRsgActivity.class);
                 try {
                     intent.putExtra("rsg", files.getFilename(date));
+                    intent.putExtra("date", SimpleDateFormat.getDateInstance().format(date));
                     startActivity(intent);
                     return true;
                 } catch (ParseException e) {
@@ -83,9 +86,7 @@ public class CalendarActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        // Save UI state changes to the savedInstanceState.
-        // This bundle will be passed to onCreate if the process is
-        // killed and restarted.
+
         savedInstanceState.putSerializable("dates", files);
     }
 

@@ -19,11 +19,9 @@ import gr.petalidis.datamars.rsglibrary.Rsg;
 
 public class RsgAdapter extends ArrayAdapter<Rsg> {
     private final SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
-    ArrayList<Rsg> rsgs = new ArrayList();
 
     public RsgAdapter(Context context, ArrayList<Rsg> rsgs) {
         super(context, 0, rsgs);
-        this.rsgs = rsgs;
     }
 
     @Override
@@ -45,9 +43,5 @@ public class RsgAdapter extends ArrayAdapter<Rsg> {
         mydate.setText(format.format(rsg.getDate()));
         // Return the completed view to render on screen
         return convertView;
-    }
-
-    public ArrayList<Rsg> getRsgs() {
-        return rsgs;
     }
 }

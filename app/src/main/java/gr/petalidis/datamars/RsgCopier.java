@@ -30,7 +30,6 @@ import gr.petalidis.datamars.rsglibrary.RsgSessionScanner;
 public class RsgCopier extends AsyncTask<Object, String, Integer> {
 
     WeakReference<TextView> textView;
-    WeakReference<Button> button;
 
     WeakReference<Context> context;
 
@@ -55,9 +54,8 @@ public class RsgCopier extends AsyncTask<Object, String, Integer> {
         return false;
     }
 
-    public RsgCopier(Context context, TextView textView, Button button) {
+    public RsgCopier(Context context, TextView textView) {
         this.textView = new WeakReference<TextView>(textView);
-        this.button = new WeakReference<Button>(button);
         this.context = new WeakReference<Context>(context);
 
     }
@@ -112,36 +110,14 @@ public class RsgCopier extends AsyncTask<Object, String, Integer> {
 
     @Override
     protected void onPostExecute(Integer numberOfFilesWritten) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-
         super.onPostExecute(numberOfFilesWritten);
 
         TextView actualView = textView.get();
         if (actualView != null) {
             if (numberOfFilesWritten == 0) {
-
                 actualView.setText("No datamars or no sessions found\n");
-
             } else {
-                Button actualButton = button.get();
-
                 actualView.setText("Synced " + numberOfFilesWritten + " files \n");
-                if (actualButton != null)
-
-                {
-                    actualButton.setText("Ο Συγχρονισμός ολοκληρώθηκε. Ξαναδοκιμάστε");
-                    actualButton.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Context actualContext = context.get();
-                            if (actualContext != null && sessions != null) {
-                                Intent intent = new Intent(actualContext, CalendarActivity.class);
-                                intent.putExtra("dates", sessions);
-                                actualContext.startActivity(intent);
-                            }
-                        }
-                    });
-                }
             }
         }
 

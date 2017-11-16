@@ -59,7 +59,7 @@ public class StartActivity extends AppCompatActivity implements AppStatusFragmen
 
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        Fragment fragment = fragmentManager.findFragmentById(R.id.statusFragmentId);
+        Fragment fragment = fragmentManager.findFragmentByTag("gr.petalidis.datamars.status_fragment");
         if (fragment!=null) {
             fragmentTransaction.remove(fragment);
         }
@@ -68,7 +68,7 @@ public class StartActivity extends AppCompatActivity implements AppStatusFragmen
         fragmentTransaction = fragmentManager.beginTransaction();
 
         fragment = new AppStatusFragment();
-        fragmentTransaction.add(R.id.linear_layout_fragment, fragment);
+        fragmentTransaction.add(R.id.linear_layout_fragment, fragment, "gr.petalidis.datamars.status_fragment");
 
         fragmentTransaction.commit();
     }

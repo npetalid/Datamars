@@ -100,8 +100,9 @@ public class AppStatusFragment extends Fragment {
     public void onStart() {
         super.onStart();
         TextView textView = (TextView)getView().findViewById(R.id.status_text_view);
-        Button button = (Button)getActivity().findViewById(R.id.synchronizeDatamarsButton);
-        status = new RsgCopier(getContext(),textView, button);
+        textView.clearComposingText();
+        textView.setText("");
+        status = new RsgCopier(getContext(),textView);
         status.execute();
     }
 
