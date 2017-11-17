@@ -1,75 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
 
     tools:context="gr.petalidis.datamars.activities.ViewRsgActivity">
 
     <TextView
         android:id="@+id/rsgDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="384dp"
+        android:layout_height="18dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
         android:ems="10"
-        android:singleLine="true" />
+        android:singleLine="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
+
+    <Button
+        android:id="@+id/countryButton"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="117dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:width="115dp"
+        android:onClick="sortGridEntriesByCountry"
+        android:paddingLeft="1dp"
+        android:paddingRight="1dp"
+        android:text="@string/countryText"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rsgDate" />
+
+    <Button
+        android:id="@+id/idButton"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="52dp"
+        android:width="115dp"
+        android:onClick="sortGridEntriesById"
+        android:paddingLeft="1dp"
+        android:paddingRight="1dp"
+        android:text="@string/identificationText"
+        android:textAlignment="center"
+        app:layout_constraintBaseline_toBaselineOf="@+id/countryButton"
+        app:layout_constraintStart_toEndOf="@+id/countryButton" />
+
+    <Button
+        android:id="@+id/timeButton"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_marginStart="8dp"
+        android:width="115dp"
+        android:onClick="sortGridEntriesByTime"
+        android:paddingLeft="1dp"
+        android:paddingRight="1dp"
+        android:text="@string/timeText"
+        android:textAlignment="center"
+        app:layout_constraintBaseline_toBaselineOf="@+id/idButton"
+        app:layout_constraintStart_toEndOf="@+id/idButton" />
 
-        <Button
-            android:id="@+id/countryButton"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:width="115dp"
-            android:onClick="sortGridEntriesByCountry"
-            android:paddingLeft="1dp"
-            android:paddingRight="1dp"
-            android:text="Country"
-            android:textAlignment="center" />
-
-        <Button
-            android:id="@+id/idButton"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:width="115dp"
-            android:onClick="sortGridEntriesById"
-            android:paddingLeft="1dp"
-            android:paddingRight="1dp"
-            android:text="Identification"
-            android:textAlignment="center" />
-
-        <Button
-            android:id="@+id/timeButton"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:width="115dp"
-            android:onClick="sortGridEntriesByTime"
-            android:paddingLeft="1dp"
-            android:paddingRight="1dp"
-            android:text="Time"
-            android:textAlignment="center" />
-
-    </LinearLayout>
 
     <GridView
         android:id="@+id/rsglistId"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_width="317dp"
+        android:layout_height="377dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:columnWidth="115dp"
         android:paddingLeft="0dp"
         android:paddingRight="0dp"
         android:paddingTop="1dp"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@+id/timeButton"
+        app:layout_constraintHorizontal_bias="0.285"
+        app:layout_constraintStart_toStartOf="@+id/countryButton"
+        app:layout_constraintTop_toBottomOf="@+id/idButton" />
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

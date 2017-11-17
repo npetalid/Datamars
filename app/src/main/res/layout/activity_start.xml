@@ -6,47 +6,46 @@
     android:layout_height="match_parent"
     tools:context="gr.petalidis.datamars.activities.StartActivity">
 
+    <Button
+        android:id="@+id/synchronizeDatamarsButton"
+        android:layout_width="289dp"
+        android:layout_height="60dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="Μεταφέρει Sessions από το Scanner"
+        android:onClick="showExternalStorage"
+        android:text="@string/synchronizeText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/viewStoredSessions"
+        android:layout_width="290dp"
+        android:layout_height="54dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="32dp"
+        android:onClick="showDialog"
+        android:text="@string/showSessionsText"
+        app:layout_constraintEnd_toEndOf="@+id/synchronizeDatamarsButton"
+        app:layout_constraintHorizontal_bias="0.111"
+        app:layout_constraintStart_toStartOf="@+id/synchronizeDatamarsButton"
+        app:layout_constraintTop_toBottomOf="@+id/synchronizeDatamarsButton" />
+
     <LinearLayout
-        android:layout_width="368dp"
-        android:layout_height="495dp"
+        android:id="@+id/linear_layout_fragment"
+        android:layout_width="307dp"
+        android:layout_height="165dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="80dp"
         android:layout_weight="1"
         android:orientation="vertical"
-        tools:layout_editor_absoluteY="8dp"
-        tools:layout_editor_absoluteX="8dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:id="@+id/linear_layout"
-            >
-
-            <Button
-                android:id="@+id/synchronizeDatamarsButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:contentDescription="Μεταφέρει Sessions από το Scanner"
-                android:onClick="showExternalStorage"
-                android:text="Συγχρονισμός με Datamars Scanner" />
-
-            <Button
-                android:id="@+id/viewStoredSessions"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:onClick="showDialog"
-                android:text="Προβολή Sessions" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:id="@+id/linear_layout_fragment"
-            >
-
-        </LinearLayout>
-
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/viewStoredSessions"
+        app:layout_constraintStart_toStartOf="@+id/viewStoredSessions"
+        app:layout_constraintTop_toBottomOf="@+id/viewStoredSessions">
 
     </LinearLayout>
 

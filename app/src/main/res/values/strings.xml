@@ -1,21 +1,22 @@
 <resources>
     <string name="app_name">Datamars</string>
 
-    <string name="title_activity_debug_window">DebugWindow</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_rsg_list">Rsgs</string>
     <string name="title_rsg_detail">Rsg Detail</string>
     <string name="title_activity_view_rsg">Προβολή λεπτομερειών</string>
+    <string name="title_activity_calendar">Ημερολόγιο Datamars</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="ok">Εντάξει</string>
     <string name="cancel">Άκυρο</string>
     <string name="pickUsb">Διάλεξε συσκευή</string>
+    <string name="countryText">Χώρα</string>
+    <string name="identificationText">Ταυτότητα</string>
+    <string name="timeText">Ώρα</string>
+    <string name="synchronizeText">Συγχρονισμός με Datamars</string>
+    <string name="showSessionsText">Προβολή Sessions</string>
+
 
 
 </resources>

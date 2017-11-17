@@ -20,6 +20,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.CalendarActivity"
+            android:label="@string/title_activity_calendar"
+
             android:launchMode="singleTop"
             />
         <activity
