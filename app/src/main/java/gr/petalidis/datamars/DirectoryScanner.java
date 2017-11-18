@@ -9,56 +9,32 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-import static gr.petalidis.datamars.R.id.status_text_view;
-
 /**
  * Created by npetalid on 29/10/17.
  */
 
 public class DirectoryScanner extends AsyncTask<Void,Void,List<String>> {
 
-    WeakReference<TextView> textView;
+    private WeakReference<TextView> textView;
 
     public DirectoryScanner(TextView textView) {
-        this.textView = new WeakReference<TextView>(textView);
+        this.textView = new WeakReference<>(textView);
     }
 
     private List<String> startShowing()
     {
-
-        List<String> sessionLocations = recurseIntoFilePath(new ArrayList<String>(),"/storage");
-
-    //     sessionLocations = recurseIntoFilePath(sessionLocations,"/");
-
-      //  sessionLocations = recurseIntoFilePath(sessionLocations,"/mnt");
-
-        //String m_str = Environment.getExternalStorageDirectory()
-      //          .getAbsolutePath();
-
-      //  if (isExternalStorageReadable()) {
-      //      sessionLocations = recurseIntoFilePath(sessionLocations,m_str);
-
-     //   }
-
-        return sessionLocations;
-        // textView.setText(m_str);
+        return recurseIntoFilePath(new ArrayList<String>(),"/storage");
     }
 
     /* Checks if external storage is available to at least read */
     public boolean isExternalStorageReadable() {
         String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state) ||
-                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-            return true;
-        }
-        return false;
+        return (Environment.MEDIA_MOUNTED.equals(state) ||
+                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state));
     }
 
-    public List<String> recurseIntoFilePath(List<String> results, String path)
+    private List<String> recurseIntoFilePath(List<String> results, String path)
     {
-
-        //TextView textView = (TextView) getView().findViewById(R.id.status_text_view);
-
         File f = new File(path.toString());
         File [] files = f.listFiles();
         if (files != null) {

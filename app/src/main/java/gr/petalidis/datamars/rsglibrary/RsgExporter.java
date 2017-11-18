@@ -1,7 +1,6 @@
 package gr.petalidis.datamars.rsglibrary;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -22,12 +21,15 @@ public class RsgExporter {
 
 
         if (file.exists()) {
-            file.delete();
+            boolean delete = file.delete();
+            if (!delete) {
+                throw new IOException("File with same name already present that I could not overwrite");
+            }
         }
         if (file.createNewFile()) {
             try(
                 FileOutputStream fOut = new FileOutputStream(file);
-                OutputStreamWriter writer = new OutputStreamWriter(fOut);
+                OutputStreamWriter writer = new OutputStreamWriter(fOut)
             ) {
                 for (Rsg rsg : rsgList) {
                     writer.append(rsg.toString());

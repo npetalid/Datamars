@@ -1,13 +1,12 @@
 package gr.petalidis.datamars.rsglibrary;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 /**
  * Created by npetalid on 14/10/17.
  */
 
-public class RsgFileUtility {
+class RsgFileUtility {
 
     private final static int MINIMUM_YEAR = 2000;
 
@@ -15,7 +14,7 @@ public class RsgFileUtility {
     private static final String VALID_PREFIX = "session_";
 
 
-    public static boolean isValidYear(String year)
+    static boolean isValidYear(String year)
     {
         Calendar calendar = Calendar.getInstance();
         int currentYear = calendar.get(Calendar.YEAR);
@@ -27,7 +26,7 @@ public class RsgFileUtility {
         }
     }
 
-    public static boolean isValidMonth(String month)
+    static boolean isValidMonth(String month)
     {
         try {
             int monthInt = Integer.parseInt(month);
@@ -37,7 +36,7 @@ public class RsgFileUtility {
         }
     }
 
-    public static boolean isValidDay(String day) {
+     static boolean isValidDay(String day) {
         try {
             int dayInt = Integer.parseInt(day);
             return 1 <= dayInt && dayInt <= 31;
@@ -46,12 +45,12 @@ public class RsgFileUtility {
         }
     }
 
-    public static boolean isValidFilename(String rsgFilename)
+     static boolean isValidFilename(String rsgFilename)
     {
         return rsgFilename.endsWith(VALID_SUFFIX);
     }
 
-    public static String getDate(String rsgFilename) {
+     static String getDate(String rsgFilename) {
         String dateSuffix = "MMYYYY";
 
         String date = rsgFilename.replaceFirst(VALID_PREFIX, "").replaceFirst(VALID_SUFFIX, "");

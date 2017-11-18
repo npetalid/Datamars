@@ -2,7 +2,6 @@ package gr.petalidis.datamars.rsglibrary;
 
 import android.support.annotation.NonNull;
 
-import java.io.File;
 import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,7 +16,7 @@ public class RsgSession implements Comparable<RsgSession>, Serializable {
     private String filepath;
     final static private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
-    public RsgSession(String filename, String filepath) throws ParseException
+    RsgSession(String filename, String filepath) throws ParseException
     {
         String dateString = filename.replace(".csv","");
         this.date = formatter.parse(dateString);
@@ -49,7 +48,7 @@ public class RsgSession implements Comparable<RsgSession>, Serializable {
         return formatter.format(date)+".csv";
     }
 
-    public static boolean isValidRsgCsvSessionFile(String name)
+    static boolean isValidRsgCsvSessionFile(String name)
     {
        boolean hasProperSuffix = name.endsWith(".csv");
        String nameWithoutSuffix = name.replace(".csv","");
@@ -73,8 +72,7 @@ public class RsgSession implements Comparable<RsgSession>, Serializable {
 
     @Override
     public int hashCode() {
-        int result = getDate().hashCode();
-        return result;
+        return getDate().hashCode();
     }
 
     @Override

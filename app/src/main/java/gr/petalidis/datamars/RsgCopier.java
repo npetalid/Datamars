@@ -1,20 +1,15 @@
 package gr.petalidis.datamars;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Environment;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
-import gr.petalidis.datamars.activities.CalendarActivity;
 import gr.petalidis.datamars.rsglibrary.Rsg;
 import gr.petalidis.datamars.rsglibrary.RsgExporter;
 import gr.petalidis.datamars.rsglibrary.RsgReader;
@@ -29,34 +24,28 @@ import gr.petalidis.datamars.rsglibrary.RsgSessionScanner;
 
 public class RsgCopier extends AsyncTask<Object, String, Integer> {
 
-    WeakReference<TextView> textView;
+    private WeakReference<TextView> textView;
 
-    WeakReference<Context> context;
+    private WeakReference<Context> context;
 
-    RsgSessionFiles sessions = new RsgSessionFiles();
+    private RsgSessionFiles sessions = new RsgSessionFiles();
 
       /* Checks if external storage is available to at least read */
 
     private boolean isExternalStorageReadable() {
         String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state) ||
-                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-            return true;
-        }
-        return false;
+        return (Environment.MEDIA_MOUNTED.equals(state) ||
+                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state));
     }
 
     private boolean isExternalStorageWritable() {
         String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            return true;
-        }
-        return false;
+        return (Environment.MEDIA_MOUNTED.equals(state));
     }
 
     public RsgCopier(Context context, TextView textView) {
-        this.textView = new WeakReference<TextView>(textView);
-        this.context = new WeakReference<Context>(context);
+        this.textView = new WeakReference<>(textView);
+        this.context = new WeakReference<>(context);
 
     }
 
@@ -86,11 +75,7 @@ public class RsgCopier extends AsyncTask<Object, String, Integer> {
             }
 
             sessions = RsgSessionScanner.scanUsbDirectory(rsgRootDirectory.getCsvDirectory());
-        } catch (IllegalStateException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
+        } catch (IllegalStateException  | IOException | ParseException e) {
             e.printStackTrace();
         }
 

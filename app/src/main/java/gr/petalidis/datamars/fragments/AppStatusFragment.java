@@ -1,13 +1,12 @@
 package gr.petalidis.datamars.fragments;
 
+import android.app.Fragment;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import gr.petalidis.datamars.R;
@@ -70,10 +69,7 @@ public class AppStatusFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        View view = inflater.inflate(R.layout.fragment_app_status, container, false);
-
-
-        return view;
+        return inflater.inflate(R.layout.fragment_app_status, container, false);
 
     }
 
@@ -100,10 +96,12 @@ public class AppStatusFragment extends Fragment {
     public void onStart() {
         super.onStart();
         TextView textView = (TextView)getView().findViewById(R.id.status_text_view);
-        textView.clearComposingText();
-        textView.setText("");
-        status = new RsgCopier(getContext(),textView);
-        status.execute();
+        if (textView!=null) {
+            textView.clearComposingText();
+            textView.setText("");
+            status = new RsgCopier(getContext(), textView);
+            status.execute();
+        }
     }
 
     @Override

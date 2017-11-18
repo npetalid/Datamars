@@ -3,9 +3,6 @@ package gr.petalidis.datamars.rsglibrary;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.text.ParseException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by npetalid on 14/10/17.
