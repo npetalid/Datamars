@@ -13,7 +13,7 @@
         android:width="115dp"
         android:paddingLeft="0dp"
         android:paddingRight="0dp"
-        android:text="Country"
+        android:text="@string/countryText"
         android:textAlignment="center" />
 
     <TextView
@@ -23,7 +23,7 @@
         android:width="115dp"
         android:paddingLeft="0dp"
         android:paddingRight="0dp"
-        android:text="Identification"
+        android:text="@string/identificationText"
         android:textAlignment="center" />
 
     <TextView
@@ -33,7 +33,7 @@
         android:width="115dp"
         android:paddingLeft="0dp"
         android:paddingRight="0dp"
-        android:text="Time"
+        android:text="@string/timeText"
         android:textAlignment="center" />
 
 </LinearLayout>
