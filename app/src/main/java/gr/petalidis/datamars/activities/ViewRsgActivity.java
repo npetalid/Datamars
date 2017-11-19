@@ -1,3 +1,19 @@
+/*        Copyright 2017 Nikolaos Petalidis
+*
+*        Licensed under the Apache License, Version 2.0 (the "License");
+*        you may not use this file except in compliance with the License.
+*        You may obtain a copy of the License at
+*
+*        http://www.apache.org/licenses/LICENSE-2.0
+*
+*        Unless required by applicable law or agreed to in writing, software
+*        distributed under the License is distributed on an "AS IS" BASIS,
+*        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+*        See the License for the specific language governing permissions and
+*        limitations under the License.
+*/
+
+
 package gr.petalidis.datamars.activities;
 
 import android.content.Intent;
@@ -17,6 +33,7 @@ import java.util.Comparator;
 import gr.petalidis.datamars.R;
 import gr.petalidis.datamars.rsglibrary.Rsg;
 import gr.petalidis.datamars.rsglibrary.RsgReader;
+
 
 public class ViewRsgActivity extends AppCompatActivity {
 
@@ -191,9 +208,7 @@ public class ViewRsgActivity extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        // Save UI state changes to the savedInstanceState.
-        // This bundle will be passed to onCreate if the process is
-        // killed and restarted.
+
         savedInstanceState.putString("filename", filename);
         savedInstanceState.putString("date",date);
     }

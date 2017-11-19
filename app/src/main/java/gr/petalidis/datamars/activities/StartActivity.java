@@ -21,9 +21,29 @@ import gr.petalidis.datamars.fragments.AppStatusFragment;
 import gr.petalidis.datamars.fragments.ChooseDirectoryFragment;
 import gr.petalidis.datamars.rsglibrary.RsgRootDirectory;
 
+/**
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+
+ * http://www.apache.org/licenses/LICENSE-2.0
+
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+
+
 public class StartActivity extends AppCompatActivity implements AppStatusFragment.OnFragmentInteractionListener,  ChooseDirectoryFragment.OnFragmentInteractionListener {
     private static final int PERMISSION_REQUEST_CODE=1;
-
+    private static final String FRAGMENT_TAG = "gr.petalidis.datamars.status_fragment";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +80,7 @@ public class StartActivity extends AppCompatActivity implements AppStatusFragmen
 
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        Fragment fragment = fragmentManager.findFragmentByTag("gr.petalidis.datamars.status_fragment");
+        Fragment fragment = fragmentManager.findFragmentByTag(FRAGMENT_TAG);
         if (fragment!=null) {
             fragmentTransaction.remove(fragment);
         }
@@ -69,7 +89,7 @@ public class StartActivity extends AppCompatActivity implements AppStatusFragmen
         fragmentTransaction = fragmentManager.beginTransaction();
 
         fragment = new AppStatusFragment();
-        fragmentTransaction.add(R.id.linear_layout_fragment, fragment, "gr.petalidis.datamars.status_fragment");
+        fragmentTransaction.add(R.id.linear_layout_fragment, fragment, FRAGMENT_TAG);
 
         fragmentTransaction.commit();
     }
@@ -89,7 +109,7 @@ public class StartActivity extends AppCompatActivity implements AppStatusFragmen
             // Pull that URI using resultData.getData().
             if (resultData != null) {
                 Uri uri = resultData.getData();
-                if (uri.getPath()!=null) {
+                if (uri!=null && uri.getPath()!=null) {
                     textView.append(uri.getPath() + "\n");
                 }
 
@@ -108,7 +128,7 @@ public class StartActivity extends AppCompatActivity implements AppStatusFragmen
     private void showFailure()
     {
         TextView textView = (TextView) findViewById(R.id.status_text_view);
-        textView.setText("Failed to get permissions");
+        textView.setText(R.string.failedPermissionsText);
     }
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull  int[] grantResults) {

@@ -1,22 +1,18 @@
 <resources>
-    <string name="app_name">Datamars</string>
+    <string name="app_name">BovScanner</string>
 
-    <string name="title_rsg_list">Rsgs</string>
-    <string name="title_rsg_detail">Rsg Detail</string>
     <string name="title_activity_view_rsg">Προβολή λεπτομερειών</string>
-    <string name="title_activity_calendar">Ημερολόγιο Datamars</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
-    <string name="ok">Εντάξει</string>
+    <string name="title_activity_calendar">Ημερολόγιο</string>
+    <string name="title_home">Αρχική Σελίδα</string>
+    <string name="title_dashboard">Πίνακας Επιλογών</string>
+    <string name="title_notifications">Ειδοποιήσεις</string>
     <string name="cancel">Άκυρο</string>
     <string name="pickUsb">Διάλεξε συσκευή</string>
     <string name="countryText">Χώρα</string>
     <string name="identificationText">Ταυτότητα</string>
     <string name="timeText">Ώρα</string>
-    <string name="synchronizeText">Συγχρονισμός με Datamars</string>
+    <string name="synchronizeText">Συγχρονισμός με Scanner</string>
     <string name="showSessionsText">Προβολή Sessions</string>
-
-
-
+    <string name="failedPermissionsText">Δε δόθηκαν δικαιώματα ανάγνωσης/γραφής</string>
+    <string name="msg_failed_sync">Δε βρέθηκε συνδεδεμένη συσκευή datamars ή δεν υπάρχουν αποθηκευμένα sessions</string>
 </resources>

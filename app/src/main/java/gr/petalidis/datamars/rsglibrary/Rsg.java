@@ -1,3 +1,18 @@
+/*        Copyright 2017 Nikolaos Petalidis
+*
+*        Licensed under the Apache License, Version 2.0 (the "License");
+*        you may not use this file except in compliance with the License.
+*        You may obtain a copy of the License at
+*
+*        http://www.apache.org/licenses/LICENSE-2.0
+*
+*        Unless required by applicable law or agreed to in writing, software
+*        distributed under the License is distributed on an "AS IS" BASIS,
+*        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+*        See the License for the specific language governing permissions and
+*        limitations under the License.
+*/
+
 package gr.petalidis.datamars.rsglibrary;
 
 import java.text.ParseException;
@@ -6,7 +21,7 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * Created by npetalid on 24/10/17. ISO Long (default): - Animal:
+ *  ISO Long (default): - Animal:
  * "A0000000964000000123456" (23 char) A 0 00 000 0964 000000123456 1st char: A
  * = Animal 2nd char: 0 = Retagging from 0 to 7 3rd and 4th chars: 00 = User
  * information 5th to 7th chars: 000 = Additional information field (unused) 8th

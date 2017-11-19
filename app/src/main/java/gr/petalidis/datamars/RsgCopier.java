@@ -1,3 +1,19 @@
+/*
+     Copyright 2017 Nikolaos Petalidis
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+         http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+ */
+
+
 package gr.petalidis.datamars;
 
 import android.content.Context;
@@ -17,10 +33,6 @@ import gr.petalidis.datamars.rsglibrary.RsgRootDirectory;
 import gr.petalidis.datamars.rsglibrary.RsgSession;
 import gr.petalidis.datamars.rsglibrary.RsgSessionFiles;
 import gr.petalidis.datamars.rsglibrary.RsgSessionScanner;
-
-/**
- * Created by npetalid on 29/10/17.
- */
 
 public class RsgCopier extends AsyncTask<Object, String, Integer> {
 
@@ -100,7 +112,7 @@ public class RsgCopier extends AsyncTask<Object, String, Integer> {
         TextView actualView = textView.get();
         if (actualView != null) {
             if (numberOfFilesWritten == 0) {
-                actualView.setText("No datamars or no sessions found\n");
+                actualView.setText(R.string.msg_failed_sync);
             } else {
                 actualView.setText("Synced " + numberOfFilesWritten + " files \n");
             }
