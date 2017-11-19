@@ -9,13 +9,17 @@
 
     <TextView
         android:id="@+id/rsgDate"
-        android:layout_width="384dp"
-        android:layout_height="18dp"
+        android:layout_width="346dp"
+        android:layout_height="25dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
         android:singleLine="true"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/idButton"
+        app:layout_constraintEnd_toEndOf="@+id/timeButton"
+        app:layout_constraintStart_toStartOf="@+id/countryButton"
         app:layout_constraintTop_toTopOf="parent" />
 
 

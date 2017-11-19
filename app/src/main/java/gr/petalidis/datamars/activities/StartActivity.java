@@ -16,9 +16,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
 
+import java.io.IOException;
+
 import gr.petalidis.datamars.R;
 import gr.petalidis.datamars.fragments.AppStatusFragment;
 import gr.petalidis.datamars.fragments.ChooseDirectoryFragment;
+import gr.petalidis.datamars.rsglibrary.CsvRootDirectory;
 import gr.petalidis.datamars.rsglibrary.RsgRootDirectory;
 
 /**
@@ -62,13 +65,20 @@ public class StartActivity extends AppCompatActivity implements AppStatusFragmen
     public void showDialog(View view)
     {
         FragmentManager fragmentManager = getFragmentManager();
-        RsgRootDirectory rsgRootDirectory = new RsgRootDirectory();
+        String currentUsbName = "";
+        try {
+            RsgRootDirectory rsgRootDirectory = new RsgRootDirectory();
+            currentUsbName = rsgRootDirectory.getUsbName();
+        } catch (IllegalStateException e) {
+            //Do nothing
+        }
 
+        CsvRootDirectory csvRootDirectory = new CsvRootDirectory();
 
 
         ChooseDirectoryFragment fragment = new ChooseDirectoryFragment();
         Bundle args = new Bundle();
-        args.putSerializable("usbList",rsgRootDirectory.getProbableUsbs());
+        args.putSerializable("usbList",csvRootDirectory.getProbableUsbs(currentUsbName));
         fragment.setArguments(args);
         fragment.show(fragmentManager,"Some tag");
 

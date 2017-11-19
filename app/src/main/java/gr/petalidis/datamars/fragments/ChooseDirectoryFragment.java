@@ -22,10 +22,12 @@ import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import gr.petalidis.datamars.R;
 import gr.petalidis.datamars.SessionViewer;
+import gr.petalidis.datamars.rsglibrary.CsvRootDirectory;
 import gr.petalidis.datamars.rsglibrary.RsgRootDirectory;
 
 
@@ -51,9 +53,14 @@ public class ChooseDirectoryFragment extends DialogFragment {
             builder.setTitle(R.string.pickUsb)
                     .setItems(usbs.toArray(new String[usbs.size()]), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            SessionViewer sessionViewer = new SessionViewer(getContext());
-                            String fullPath = RsgRootDirectory.getCsvPath(usbs.get(which));
-                            sessionViewer.execute(fullPath);
+                            try {
+                                SessionViewer sessionViewer = new SessionViewer(getContext());
+                                CsvRootDirectory csvRootDirectory = new CsvRootDirectory();
+                                String fullPath = csvRootDirectory.getDirectory() + File.separator + usbs.get(which);
+                                sessionViewer.execute(fullPath);
+                            } catch (IllegalStateException e) {
+                                //Do nothing
+                            }
                         }
                     });
         }

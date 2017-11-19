@@ -14,5 +14,5 @@
     <string name="synchronizeText">Συγχρονισμός με Scanner</string>
     <string name="showSessionsText">Προβολή Sessions</string>
     <string name="failedPermissionsText">Δε δόθηκαν δικαιώματα ανάγνωσης/γραφής</string>
-    <string name="msg_failed_sync">Δε βρέθηκε συνδεδεμένη συσκευή datamars ή δεν υπάρχουν αποθηκευμένα sessions</string>
+    <string name="msg_failed_sync">Δε βρέθηκε συνδεδεμένo scanner ή δεν υπάρχουν sessions</string>
 </resources>

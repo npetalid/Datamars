@@ -25,6 +25,7 @@ import java.util.Set;
 
 public class RsgRootDirectory {
 
+    private CsvRootDirectory csvRootDirectory = new CsvRootDirectory();
     private String rsgRoot;
 
     private String usbName = "";
@@ -77,41 +78,6 @@ public class RsgRootDirectory {
         return usbName;
     }
 
-    public static String getExternalStoragePath()
-    {
-
-        String m_str = Environment.getExternalStorageDirectory()
-                .getAbsolutePath() + File.separator + "GS232";
-
-        if (!isExternalStorageReadable() || !isExternalStorageWritable()) {
-            throw new IllegalStateException("Could not write to external storage");
-        }
-        return m_str;
-    }
-    public static String getCsvPath(String usbName)
-    {
-        return getExternalStoragePath() + File.separator + usbName;
-    }
-    public ArrayList<String> getProbableUsbs() {
-
-        Set<String> usbs = new HashSet<>();
-
-        File topDirectory = new File(getExternalStoragePath());
-
-        File[] files = topDirectory.listFiles();
-        if (files != null) {
-            for (File inFile : files) {
-                if (inFile.isDirectory() && inFile.canRead()) {
-                    usbs.add(inFile.getName());
-                }
-            }
-        }
-        usbs.add(getUsbName());
-        ArrayList<String> usbList = new ArrayList<>();
-        usbList.addAll(usbs);
-        return usbList;
-
-    }
     public String getCsvDirectory() {
         return csvPath;
     }
@@ -130,14 +96,8 @@ public class RsgRootDirectory {
     }
 
     private String calcCsvPath(String usbName) throws  IllegalStateException{
-        String m_str = Environment.getExternalStorageDirectory()
-                .getAbsolutePath() + File.separator + "GS232";
 
-        if (!isExternalStorageReadable() || !isExternalStorageWritable()) {
-            throw new IllegalStateException("Could not write to external storage");
-        }
-
-        File topDirectory = new File(m_str);
+        File topDirectory = new File(csvRootDirectory.getDirectory());
 
         if (!topDirectory.exists()) {
             boolean mkdir = topDirectory.mkdir();
@@ -145,7 +105,7 @@ public class RsgRootDirectory {
                 throw new IllegalStateException("Could not create top level directory");
             }
         }
-        File datamarsDir = new File(m_str + File.separator + usbName);
+        File datamarsDir = new File(csvRootDirectory.getDirectory() + File.separator + usbName);
         if (!datamarsDir.exists()) {
             boolean mkDir = datamarsDir.mkdir();
             if (mkDir == false) {
@@ -155,14 +115,5 @@ public class RsgRootDirectory {
 
         return datamarsDir.getAbsolutePath();
     }
-    private static boolean isExternalStorageWritable() {
-        String state = Environment.getExternalStorageState();
-        return Environment.MEDIA_MOUNTED.equals(state);
-    }
 
-    private static boolean isExternalStorageReadable() {
-        String state = Environment.getExternalStorageState();
-        return Environment.MEDIA_MOUNTED.equals(state) ||
-                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state);
-    }
 }
