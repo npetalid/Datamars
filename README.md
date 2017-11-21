@@ -6,4 +6,4 @@ The stored sessions can also be viewed by any other application since they are s
 
 The sessions are stored under the GS232/<DEVICE-ID> folder
 
-The code is distributed under the Apache 2.0 License: http://www.apache.org/licenses/LICENSE-2.0
+The code and the derived product are distributed under the open source Apache 2.0 License: http://www.apache.org/licenses/LICENSE-2.0
