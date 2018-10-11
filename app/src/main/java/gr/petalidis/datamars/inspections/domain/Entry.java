@@ -110,4 +110,9 @@ public class Entry implements Serializable {
     public void setComment(String comment) {
         this.comment = comment;
     }
+
+    public boolean isDummy()
+    {
+        return this.getProducerTin().equals(Inspectee.getDummyInspectee().getTin());
+    }
 }

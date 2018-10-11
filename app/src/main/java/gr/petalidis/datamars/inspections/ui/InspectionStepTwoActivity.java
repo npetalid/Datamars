@@ -1,6 +1,5 @@
 package gr.petalidis.datamars.inspections.ui;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -8,27 +7,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 import gr.petalidis.datamars.R;
 import gr.petalidis.datamars.inspections.domain.Inspection;
-import gr.petalidis.datamars.inspections.service.RsgService;
-import gr.petalidis.datamars.inspections.service.StubRsgService;
+import gr.petalidis.datamars.inspections.validators.TinValidator;
 import gr.petalidis.datamars.rsglibrary.Rsg;
 import gr.petalidis.datamars.rsglibrary.RsgReader;
-import gr.petalidis.datamars.rsglibrary.RsgSessionFiles;
 
 public class InspectionStepTwoActivity extends AppCompatActivity {
-    Inspection inspection;
-     String filename = "";
+    private Inspection inspection;
+    private String filename = "";
 
-    Date inspectionDate;
+    private Date inspectionDate;
+    private Set<Rsg> rsgs = new HashSet<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,37 +39,96 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
         } else {
             inspectionDate = (Date) getIntent().getExtras().getSerializable("inspectionDate");
             filename = getIntent().getExtras().getString("rsgFilename");
+        }
+        try {
+            rsgs.addAll(RsgReader.readRsgFromTablet(filename));
+            setContentView(R.layout.activity_inspection_step_two);
+            setAnimalCount(rsgs.size());
+            if (inspection != null) {
+                setProducer1Name();
+                setProducer2Name();
+                setProducer3Name();
+                setProducer4Name();
+                setProducer1Tin();
+                setProducer2Tin();
+                setProducer3Tin();
+                setProducer4Tin();
+            }
+            EditText tin = (EditText) findViewById(R.id.producer1TinText);
+            tin.addTextChangedListener(new TinWatcher(new TinValidator(),tin));
+            tin = (EditText) findViewById(R.id.producer2TinText);
+            tin.addTextChangedListener(new TinWatcher(new TinValidator(),tin));
+            tin = (EditText) findViewById(R.id.producer3TinText);
+            tin.addTextChangedListener(new TinWatcher(new TinValidator(),tin));
+            tin = (EditText) findViewById(R.id.producer4TinText);
+            tin.addTextChangedListener(new TinWatcher(new TinValidator(),tin));
 
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
-        setContentView(R.layout.activity_inspection_step_two);
-        if (inspection != null) {
-            setProducer1Name();
-            setProducer2Name();
-            setProducer3Name();
-            setProducer4Name();
-            setProducer1Tin();
-            setProducer2Tin();
-            setProducer3Tin();
-            setProducer4Tin();
-        }
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         outState.putSerializable("inspection", inspection);
-        outState.putString("rsgFilename",filename);
+        outState.putString("rsgFilename", filename);
         outState.putSerializable("inspectionDate", inspectionDate);
 
         // call superclass to save any view hierarchy
         super.onSaveInstanceState(outState);
     }
 
+    private boolean formHasErrors()
+    {
+        boolean hasErrors = false;
+        TinValidator validator = new TinValidator();
+        EditText tin = (EditText) findViewById(R.id.producer1TinText);
+        String tinString = tin.getText().toString();
+        EditText producer1Name = (EditText) findViewById(R.id.producer1NameText);
+        String producer1NameString = producer1Name.getText().toString();
+
+        EditText tin2 = (EditText) findViewById(R.id.producer2TinText);
+        String tinString2 = tin2.getText().toString();
+        EditText tin3 = (EditText) findViewById(R.id.producer3TinText);
+        String tinString3 = tin3.getText().toString();
+        EditText tin4 = (EditText) findViewById(R.id.producer4TinText);
+        String tinString4 = tin4.getText().toString();
+
+        if (!validator.isValid(tinString)) {
+            hasErrors = true;
+            tin.setError("Το ΑΦΜ δεν είναι σωστό");
+        }
+        if (producer1NameString.length()<2) {
+            hasErrors = true;
+            producer1Name.setError("Υποχρεωτικό πεδίο");
+        }
+
+        if (tinString2.length()>0 && !validator.isValid(tinString2)) {
+            hasErrors = true;
+            tin2.setError("Το ΑΦΜ δεν είναι σωστό");
+        }
+
+        if (tinString3.length()>0 && !validator.isValid(tinString2)) {
+            hasErrors = true;
+            tin3.setError("Το ΑΦΜ δεν είναι σωστό");
+        }
+
+        if (tinString4.length()>0 && !validator.isValid(tinString2)) {
+            hasErrors = true;
+            tin4.setError("Το ΑΦΜ δεν είναι σωστό");
+        }
+
+        return hasErrors;
+
+    }
     public void goToInspectionStepThreeActivity(View view) {
-        Intent intent = new Intent(this, InspectionStepThreeActivity.class);
-        Set<Rsg> rsgs = new HashSet<>();
-        try {
-            rsgs.addAll(RsgReader.readRsgFromTablet(filename));
+
+        if (!formHasErrors()) {
+            Intent intent = new Intent(this, InspectionStepThreeActivity.class);
+
             inspection = new Inspection(inspectionDate, getProducer1Tin(), getProducer1Name());
 
             inspection.setProducer2Name(getProducer2Name());
@@ -87,10 +144,6 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
             intent.putExtra("inspection", inspection);
 
             startActivity(intent);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
         }
 
 
@@ -185,5 +238,10 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
     private void setProducer4Tin() {
         EditText tin = (EditText) findViewById(R.id.producer4TinText);
         if (inspection != null) tin.setText(inspection.getProducer4Tin());
+    }
+
+    private void setAnimalCount(int value) {
+        TextView animalCountValue = (TextView) findViewById(R.id.animalCountValue);
+        animalCountValue.setText(value + "");
     }
 }

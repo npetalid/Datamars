@@ -7,7 +7,32 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="inspections.ui.InspectionStepTwoActivity">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        >
+        <TextView
+            android:id="@+id/animalCount"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Σύνολο ζώων που ελέγχθηκαν:"
+            android:textSize="20sp"
+            />
 
+        <TextView
+            android:id="@+id/animalCountValue"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Όνομα"
+            android:textSize="20sp"
+            />
+    </LinearLayout>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -122,7 +147,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_marginRight="20dp"
-            android:hint="2ος συσ/μενος"
+            android:hint="2ος συστ/νος"
             android:paddingRight="10dp"
             android:textSize="20sp"
             android:inputType="number"/>
@@ -140,7 +165,7 @@
             android:layout_width="0dp"
             android:layout_weight="2"
             android:layout_height="wrap_content"
-            android:hint="2ος συσ/μένος"
+            android:hint="2ος συστ/νος"
             android:textSize="20sp"
             android:inputType="textPersonName"
             android:text=""/>
@@ -167,7 +192,7 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_marginRight="20dp"
-            android:hint="3ος συσ/μενος"
+            android:hint="3ος συστ/νος"
             android:paddingRight="10dp"
             android:textSize="20sp"
             android:inputType="number"/>
@@ -186,7 +211,7 @@
             android:layout_weight="2"
             android:layout_height="wrap_content"
             android:textSize="20sp"
-            android:hint="3ος συσ/μενος"
+            android:hint="3ος συστ/νος"
             android:inputType="textPersonName"
             android:text=""/>
     </LinearLayout>

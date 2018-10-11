@@ -1,5 +1,7 @@
 package gr.petalidis.datamars.inspections.domain;
 
+import android.widget.TextView;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -8,9 +10,17 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import gr.petalidis.datamars.R;
 import gr.petalidis.datamars.rsglibrary.Rsg;
 
 public class Inspection implements Serializable {
+
+    private final String KID_ANIMAL = "Ερίφιο";
+    private final String GOAT_ANIMAL ="Γίδα";
+    private final String LAMB_ANIMAL ="Αρνί";
+    private final String SHEEP_ANIMAL ="Προβατίνα";
+    private final String HEGOAT_ANIMAL ="Τράγος";
+    private final String RAM_ANIMAL = "Κριάρι";
 
     private UUID id = UUID.randomUUID();
 
@@ -145,7 +155,7 @@ public class Inspection implements Serializable {
         if (!producer2Name.trim().isEmpty()) names.add(new Inspectee(producer2Tin,producer2Name));
         if (!producer3Name.trim().isEmpty()) names.add(new Inspectee(producer3Tin,producer3Name));
         if (!producer4Name.trim().isEmpty()) names.add(new Inspectee(producer4Tin,producer4Name));
-        names.add(DummyInspectee.getInstance());
+        names.add(Inspectee.getDummyInspectee());
         return names;
     }
 
@@ -156,7 +166,42 @@ public class Inspection implements Serializable {
         if (!producer2Tin.trim().isEmpty()) names.add(producer2Tin);
         if (!producer3Tin.trim().isEmpty()) names.add(producer3Tin);
         if (!producer4Tin.trim().isEmpty()) names.add(producer4Tin);
-        names.add("Άλλος");
+        names.add(Inspectee.getDummyInspectee().getName());
         return names;
     }
+
+    public long getValidEntriesCount() {
+        return getEntries().stream().filter(x->!x.isDummy()).count();
+    }
+
+    public long getInRegisterCount() {
+        return getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true).count();
+    }
+
+    public long getLambCount() {
+        return getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
+                && x.getAnimalType().trim().equals(LAMB_ANIMAL)).count();
+    }
+    public long getSheepCount(){
+        return getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
+                && x.getAnimalType().trim().equals(SHEEP_ANIMAL)).count();
+    }
+    public long getKidCount() {
+        return getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
+                && x.getAnimalType().trim().equals(KID_ANIMAL)).count();
+    }
+    public long getGoatCount() {
+        return getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
+                && x.getAnimalType().trim().equals(GOAT_ANIMAL)).count();
+    }
+    public long getRamCount() {
+        return getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
+                && x.getAnimalType().trim().equals(RAM_ANIMAL)).count();
+    }
+    public long getHeGoatCount() {
+        return getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
+                && x.getAnimalType().trim().equals(HEGOAT_ANIMAL)).count();
+    }
+
+
 }

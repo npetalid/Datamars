@@ -22,7 +22,8 @@ public class InspectionStepThreeAdapter extends ArrayAdapter<Entry> {
     private final List<Entry> objects;
     private final List<Inspectee> producerNames;
     private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm:ss");
-
+    private final ArrayAdapter<Inspectee> spinnerNamesAdapter;
+    private final ArrayAdapter<CharSequence> adapter;
     private class SpinnerListener implements AdapterView.OnItemSelectedListener {
         final private Entry item;
 
@@ -34,6 +35,7 @@ public class InspectionStepThreeAdapter extends ArrayAdapter<Entry> {
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long l) {
             String selectedItem = (String) parent.getItemAtPosition(pos);
             item.setAnimalType(selectedItem);
+
         }
 
         @Override
@@ -67,6 +69,11 @@ public class InspectionStepThreeAdapter extends ArrayAdapter<Entry> {
         this.context = context;
         this.objects = objects;
         this.producerNames = producerNames;
+        spinnerNamesAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, producerNames.toArray(new Inspectee[]{}));
+        spinnerNamesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter = ArrayAdapter.createFromResource(context,
+                R.array.animals_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     }
 
     @Override
@@ -81,17 +88,14 @@ public class InspectionStepThreeAdapter extends ArrayAdapter<Entry> {
         final CheckBox checkBox = (CheckBox) rowView.findViewById(R.id.checkBox);
 
         Spinner spinner = (Spinner) rowView.findViewById(R.id.spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(context,
-                R.array.animals_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         spinner.setOnItemSelectedListener(new SpinnerListener(item));
+        spinner.setSelection(adapter.getPosition(item.getAnimalType()));
 
         Spinner spinnerNames = (Spinner) rowView.findViewById(R.id.spinnerNames);
-        ArrayAdapter<Inspectee> spinnerNamesAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, producerNames.toArray(new Inspectee[]{}));
-        spinnerNamesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerNames.setAdapter(spinnerNamesAdapter);
         spinnerNames.setOnItemSelectedListener(new SpinnerNamesListener(item));
+        spinnerNames.setSelection(spinnerNamesAdapter.getPosition(new Inspectee(item.getProducerTin(),item.getProducer())));
 //
 //        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 //            @Override
