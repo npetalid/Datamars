@@ -25,6 +25,7 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.text.ParseException;
 import java.util.List;
+import java.util.Set;
 
 import gr.petalidis.datamars.rsglibrary.Rsg;
 import gr.petalidis.datamars.rsglibrary.RsgExporter;
@@ -78,7 +79,7 @@ public class RsgCopier extends AsyncTask<Object, String, Integer> {
             numberOfSessionsLocated += rsgSessionFiles.getSessions().size();
             publishProgress(numberOfSessionsLocated + " sessions located");
             for (RsgSession rsgSession : rsgSessionFiles.getSessions()) {
-                List<Rsg> rsgs = RsgReader.readRsgFromScanner(rsgSession.getFilepath());
+                Set<Rsg> rsgs = RsgReader.readRsgFromScanner(rsgSession.getFilepath());
                 String filename = RsgExporter.export(rsgs, rsgRootDirectory.getCsvDirectory(), rsgSession.getCsvName());
                 if (!filename.equals("")) {
                     publishProgress("Wrote file " + filename);

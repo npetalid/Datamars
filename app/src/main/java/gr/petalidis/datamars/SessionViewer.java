@@ -30,10 +30,11 @@ import gr.petalidis.datamars.rsglibrary.RsgSessionScanner;
 public class SessionViewer extends AsyncTask<String, String, RsgSessionFiles> {
 
     private WeakReference<Context> context;
+    private WeakReference<String> nextActivityName;
 
-
-    public SessionViewer(Context context) {
+    public SessionViewer(Context context, String nextActivityName) {
         this.context = new WeakReference<>(context);
+        this.nextActivityName = new WeakReference<>(nextActivityName);
     }
 
 
@@ -42,7 +43,6 @@ public class SessionViewer extends AsyncTask<String, String, RsgSessionFiles> {
         RsgSessionFiles sessions = new RsgSessionFiles();
 
         String selectedUsb = params[0];
-
 
         try {
             sessions = RsgSessionScanner.scanUsbDirectory(selectedUsb);
@@ -59,8 +59,14 @@ public class SessionViewer extends AsyncTask<String, String, RsgSessionFiles> {
         super.onPostExecute(sessions);
 
         Context actualContext = context.get();
+        Class nextActivity = null;
+        try {
+              nextActivity = Class.forName(nextActivityName.get());
+        } catch (ClassNotFoundException e) {
+            nextActivity = CalendarActivity.class;
+        }
         if (actualContext != null && sessions != null) {
-            Intent intent = new Intent(actualContext, CalendarActivity.class);
+            Intent intent = new Intent(actualContext, nextActivity);
             intent.putExtra("dates", sessions);
             actualContext.startActivity(intent);
         }

@@ -32,15 +32,17 @@ import gr.petalidis.datamars.rsglibrary.RsgRootDirectory;
 
 
 public class ChooseDirectoryFragment extends DialogFragment {
+
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
     }
+
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Bundle args = getArguments();
         final ArrayList<String> usbs = (ArrayList<String>) args.getSerializable("usbList");
-
+        final String nextClassName = args.getString("nextClassName");
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -54,7 +56,7 @@ public class ChooseDirectoryFragment extends DialogFragment {
                     .setItems(usbs.toArray(new String[usbs.size()]), new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             try {
-                                SessionViewer sessionViewer = new SessionViewer(getContext());
+                                SessionViewer sessionViewer = new SessionViewer(getContext(),nextClassName);
                                 CsvRootDirectory csvRootDirectory = new CsvRootDirectory();
                                 String fullPath = csvRootDirectory.getDirectory() + File.separator + usbs.get(which);
                                 sessionViewer.execute(fullPath);

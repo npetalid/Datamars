@@ -32,6 +32,47 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="gr.petalidis.datamars.activities.CalendarActivity" />
         </activity>
+
+        <activity
+            android:name=".inspections.ui.CreateInspectionActivity"
+            android:label="@string/title_activity_create_inspection"
+            android:launchMode="singleTop">
+        </activity>
+        <activity
+            android:name=".inspections.ui.InspectionStepOneActivity"
+            android:label="@string/title_activity_inspection_step_one"
+            android:launchMode="singleTop"
+            android:parentActivityName=".inspections.ui.CreateInspectionActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".inspections.ui.CreateInspectionActivity" />
+        </activity>
+        <activity
+            android:name=".inspections.ui.InspectionStepTwoActivity"
+            android:label="@string/title_activity_inspection_step_two"
+            android:launchMode="singleTop"
+            android:parentActivityName=".inspections.ui.InspectionStepOneActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".inspections.ui.InspectionStepOneActivity" />
+        </activity>
+        <activity
+            android:name=".inspections.ui.InspectionStepThreeActivity"
+            android:label="@string/title_activity_inspection_step_three"
+            android:launchMode="singleTop"
+            android:parentActivityName=".inspections.ui.InspectionStepTwoActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".inspections.ui.InspectionStepTwoActivity" />
+        </activity>
+        <activity
+            android:name=".inspections.ui.InspectionViewActivity"
+            android:label="@string/title_activity_inspection_view"
+            android:parentActivityName=".inspections.ui.CreateInspectionActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".inspections.ui.CreateInspectionActivity" />
+        </activity>
     </application>
 
 </manifest>

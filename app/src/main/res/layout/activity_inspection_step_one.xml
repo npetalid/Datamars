@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="inspections.ui.InspectionStepOneActivity">
+    <TextView
+        android:id="@+id/inspectionDateLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:text="Ημερομηνία Ελέγχου"
+        android:textSize="24sp"
+        />
+    <com.squareup.timessquare.CalendarPickerView
+        android:id="@+id/inspectionDateText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:dateTextAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+        >
+
+    </com.squareup.timessquare.CalendarPickerView>
+
+   <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="goToInspectionStepTwoActivity"
+            android:text="Συνέχεια" />
+
+    </LinearLayout>
+
+</LinearLayout>

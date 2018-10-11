@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="inspections.ui.InspectionStepTwoActivity">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        >
+    <TextView
+        android:id="@+id/producer1TinLabel"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:text="ΑΦΜ"
+        android:textSize="20sp"
+        />
+
+    <EditText
+        android:id="@+id/producer1TinText"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+        android:hint="Ελεγχόμενος"
+        android:inputType="number"
+        android:textSize="20sp"
+        />
+
+    <TextView
+        android:id="@+id/producer1NameLabel"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:text="Όνομα"
+        android:textSize="20sp"
+        />
+
+    <EditText
+        android:id="@+id/producer1NameText"
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:layout_height="wrap_content"
+        android:hint="Ελεγχόμενος"
+        android:textSize="20sp"
+        android:inputType="textPersonName"
+        android:text=""/>
+    </LinearLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        >
+        <TextView
+            android:id="@+id/producer2TinLabel"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="ΑΦΜ" />
+
+        <EditText
+            android:id="@+id/producer2TinText"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:hint="1ος συστ/νος"
+            android:textSize="20sp"
+            android:paddingRight="10dp"
+            android:inputType="number"/>
+
+        <TextView
+            android:id="@+id/producer2NameLabel"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="Όνομα"/>
+
+        <EditText
+            android:id="@+id/producer2NameText"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:hint="1ος συστ/νος"
+            android:textSize="20sp"
+            android:inputType="textPersonName"
+            android:text=""/>
+    </LinearLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        >
+        <TextView
+            android:id="@+id/producer3TinLabel"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="ΑΦΜ" />
+
+        <EditText
+            android:id="@+id/producer3TinText"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:hint="2ος συσ/μενος"
+            android:paddingRight="10dp"
+            android:textSize="20sp"
+            android:inputType="number"/>
+
+        <TextView
+            android:id="@+id/producer3NameLabel"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="Όνομα"/>
+
+        <EditText
+            android:id="@+id/producer3NameText"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:hint="2ος συσ/μένος"
+            android:textSize="20sp"
+            android:inputType="textPersonName"
+            android:text=""/>
+    </LinearLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        >
+        <TextView
+            android:id="@+id/producer4TinLabel"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="ΑΦΜ" />
+
+        <EditText
+            android:id="@+id/producer4TinText"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="20dp"
+            android:hint="3ος συσ/μενος"
+            android:paddingRight="10dp"
+            android:textSize="20sp"
+            android:inputType="number"/>
+
+        <TextView
+            android:id="@+id/producer4NameLabel"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:text="Όνομα"/>
+
+        <EditText
+            android:id="@+id/producer4NameText"
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:hint="3ος συσ/μενος"
+            android:inputType="textPersonName"
+            android:text=""/>
+    </LinearLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        >
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="goToInspectionStepThreeActivity"
+            android:textSize="20sp"
+            android:text="Καταχώρηση ευρημάτων" />
+
+    </LinearLayout>
+
+</LinearLayout>

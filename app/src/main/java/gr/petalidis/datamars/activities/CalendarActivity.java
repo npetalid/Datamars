@@ -70,11 +70,11 @@ public class CalendarActivity extends AppCompatActivity {
 
         Calendar cal2 = Calendar.getInstance();
         cal2.setTime(lastDate);
-        cal2.add(Calendar.MONTH, 1);
+        cal2.add(Calendar.DATE, 1);
         calendarView.init(cal.getTime(), cal2.getTime());
 
         calendarView.highlightDates(files.getDates());
-
+        calendarView.scrollToDate(cal2.getTime());
         calendarView.setCellClickInterceptor(new CalendarPickerView.CellClickInterceptor() {
             @Override
             public boolean onCellClicked(Date date) {

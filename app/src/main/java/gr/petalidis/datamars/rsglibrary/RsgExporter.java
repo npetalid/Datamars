@@ -20,10 +20,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.List;
+import java.util.Set;
 
 public class RsgExporter {
 
-    public static String export(List<Rsg> rsgList, String filepath, String name) throws IOException {
+    public static String export(Set<Rsg> rsgList, String filepath, String name) throws IOException {
         if (rsgList.isEmpty()) {
             return "";
         }

@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">BovScanner</string>
-
+    <string name="title_activity_create_inspection">Δημιουργία Ελέγχου</string>
+    <string name="title_activity_inspection_step_one">Καταχώρηση ημ/νιας ελέγχου</string>
+    <string name="title_activity_inspection_step_two">Καταχώρηση ελεγχομένων</string>
+    <string name="title_activity_inspection_step_three">Καταχώρηση ενωτίων</string>
+    <string name="title_activity_inspection_view">Εμφάνιση ελέγχου</string>
     <string name="title_activity_view_rsg">Προβολή λεπτομερειών</string>
     <string name="title_activity_calendar">Ημερολόγιο</string>
     <string name="title_home">Αρχική Σελίδα</string>
@@ -15,4 +19,13 @@
     <string name="showSessionsText">Προβολή Sessions</string>
     <string name="failedPermissionsText">Δε δόθηκαν δικαιώματα ανάγνωσης/γραφής</string>
     <string name="msg_failed_sync">Δε βρέθηκε συνδεδεμένo scanner ή δεν υπάρχουν sessions</string>
+    <string name="inspectionFunctions">Διαχείριση Ελέγχων</string>
+    <string name="inspectionFunctionsDescription">Εμφάνιση και δημιουργία νέων ελέγχων</string>
+    <string name="success">Επιτυχία!</string>
+    <string name = "kidAnimal">Ερίφιο</string>
+    <string name = "goatAnimal">Γίδα</string>
+    <string name = "lambAnimal">Αρνί</string>
+    <string name = "sheepAnimal">Προβατίνα</string>
+    <string name = "heGoatAnimal">Τράγος</string>
+    <string name = "ramAnimal">Κριάρι</string>
 </resources>

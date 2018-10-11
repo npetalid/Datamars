@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="comments_array">
+        <item></item>
+        <item>Θάνατος</item>
+        <item>Σφαγή</item>
+        <item>Διπλό</item>
+    </string-array>
+</resources>

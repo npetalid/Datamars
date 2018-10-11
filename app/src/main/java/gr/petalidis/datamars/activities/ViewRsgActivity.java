@@ -24,7 +24,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -86,10 +86,8 @@ public class ViewRsgActivity extends AppCompatActivity {
             dateField.setText(date);
             ArrayList<Rsg> rsgs = RsgReader.readRsgFromTablet(filename);
             RsgAdapter adapter = new RsgAdapter(this, rsgs);
-            GridView gridView = (GridView) findViewById(R.id.rsglistId);
+            ListView gridView = (ListView) findViewById(R.id.rsglistId);
             gridView.setAdapter(adapter);
-            adapter.addAll(rsgs);
-
         } catch (Exception e) {
             //
         }
@@ -98,7 +96,7 @@ public class ViewRsgActivity extends AppCompatActivity {
     }
 
     public void sortGridEntriesByCountry(View view) {
-        GridView gridView = (GridView) findViewById(R.id.rsglistId);
+        ListView gridView = (ListView) findViewById(R.id.rsglistId);
         RsgAdapter rsgAdapter = (RsgAdapter) gridView.getAdapter();
         rsgAdapter.sort(new Comparator<Rsg>() {
             @Override
@@ -117,7 +115,7 @@ public class ViewRsgActivity extends AppCompatActivity {
     }
 
     public void sortGridEntriesByCountryReverse(View view) {
-        GridView gridView = (GridView) findViewById(R.id.rsglistId);
+        ListView gridView = (ListView) findViewById(R.id.rsglistId);
         RsgAdapter rsgAdapter = (RsgAdapter) gridView.getAdapter();
         rsgAdapter.sort(new Comparator<Rsg>() {
             @Override
@@ -134,7 +132,7 @@ public class ViewRsgActivity extends AppCompatActivity {
         });
     }
     public void sortGridEntriesById(View view) {
-        GridView gridView = (GridView) findViewById(R.id.rsglistId);
+        ListView gridView = (ListView) findViewById(R.id.rsglistId);
         RsgAdapter rsgAdapter = (RsgAdapter) gridView.getAdapter();
         rsgAdapter.sort(new Comparator<Rsg>() {
             @Override
@@ -153,7 +151,7 @@ public class ViewRsgActivity extends AppCompatActivity {
     }
 
     public void sortGridEntriesByIdReverse(View view) {
-        GridView gridView = (GridView) findViewById(R.id.rsglistId);
+        ListView gridView = (ListView) findViewById(R.id.rsglistId);
         RsgAdapter rsgAdapter = (RsgAdapter) gridView.getAdapter();
         rsgAdapter.sort(new Comparator<Rsg>() {
             @Override
@@ -170,7 +168,7 @@ public class ViewRsgActivity extends AppCompatActivity {
     }
 
     public void sortGridEntriesByTime(View view) {
-        GridView gridView = (GridView) findViewById(R.id.rsglistId);
+        ListView gridView = (ListView) findViewById(R.id.rsglistId);
         RsgAdapter rsgAdapter = (RsgAdapter) gridView.getAdapter();
         rsgAdapter.sort(new Comparator<Rsg>() {
             @Override
@@ -188,7 +186,7 @@ public class ViewRsgActivity extends AppCompatActivity {
     }
 
     public void sortGridEntriesByTimeReverse(View view) {
-        GridView gridView = (GridView) findViewById(R.id.rsglistId);
+        ListView gridView = (ListView) findViewById(R.id.rsglistId);
         RsgAdapter rsgAdapter = (RsgAdapter) gridView.getAdapter();
         rsgAdapter.sort(new Comparator<Rsg>() {
             @Override

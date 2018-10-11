@@ -22,15 +22,17 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class RsgReader {
 
 
-    public static List<Rsg> readRsgFromScanner(String filepath) throws IOException, ParseException {
+    public static Set<Rsg> readRsgFromScanner(String filepath) throws IOException, ParseException {
 
         File file = new File(filepath);
-        List<Rsg> rsgs = new ArrayList<>();
+        Set<Rsg> rsgs = new HashSet<>();
         if (file != null) {
             try (BufferedReader br = new BufferedReader(new FileReader(file))) {
                 String line;

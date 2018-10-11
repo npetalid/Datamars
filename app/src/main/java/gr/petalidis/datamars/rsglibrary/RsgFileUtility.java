@@ -64,7 +64,7 @@ class RsgFileUtility {
      static String getDate(String rsgFilename) {
         String dateSuffix = "MMYYYY";
 
-        String date = rsgFilename.replaceFirst(VALID_PREFIX, "").replaceFirst(VALID_SUFFIX, "");
+        String date = rsgFilename.replaceFirst(VALID_PREFIX, "").replaceFirst(VALID_SUFFIX, "").trim();
 
         return date.substring(0, date.length() - dateSuffix.length());
 

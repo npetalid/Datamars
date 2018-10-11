@@ -1,52 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="gr.petalidis.datamars.activities.StartActivity">
 
     <Button
         android:id="@+id/synchronizeDatamarsButton"
-        android:layout_width="289dp"
-        android:layout_height="60dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:contentDescription="Μεταφέρει Sessions από το Scanner"
         android:onClick="showExternalStorage"
         android:text="@string/synchronizeText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="20sp"
+        />
 
     <Button
         android:id="@+id/viewStoredSessions"
-        android:layout_width="290dp"
-        android:layout_height="54dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
         android:onClick="showDialog"
         android:text="@string/showSessionsText"
-        app:layout_constraintEnd_toEndOf="@+id/synchronizeDatamarsButton"
-        app:layout_constraintHorizontal_bias="0.111"
-        app:layout_constraintStart_toStartOf="@+id/synchronizeDatamarsButton"
-        app:layout_constraintTop_toBottomOf="@+id/synchronizeDatamarsButton" />
+        android:textSize="20sp"
+
+        />
+
+    <Button
+        android:id="@+id/inspectionsButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/inspectionFunctionsDescription"
+        android:onClick="goToInspections"
+        android:text="@string/inspectionFunctions"
+        android:textSize="20sp"
+        />
 
     <LinearLayout
         android:id="@+id/linear_layout_fragment"
-        android:layout_width="307dp"
-        android:layout_height="165dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="80dp"
         android:layout_weight="1"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/viewStoredSessions"
-        app:layout_constraintStart_toStartOf="@+id/viewStoredSessions"
-        app:layout_constraintTop_toBottomOf="@+id/viewStoredSessions">
+        android:orientation="vertical">
 
     </LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

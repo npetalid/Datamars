@@ -21,6 +21,7 @@ import java.io.IOException;
 import gr.petalidis.datamars.R;
 import gr.petalidis.datamars.fragments.AppStatusFragment;
 import gr.petalidis.datamars.fragments.ChooseDirectoryFragment;
+import gr.petalidis.datamars.inspections.ui.CreateInspectionActivity;
 import gr.petalidis.datamars.rsglibrary.CsvRootDirectory;
 import gr.petalidis.datamars.rsglibrary.RsgRootDirectory;
 
@@ -77,8 +78,11 @@ public class StartActivity extends AppCompatActivity implements AppStatusFragmen
 
 
         ChooseDirectoryFragment fragment = new ChooseDirectoryFragment();
+
         Bundle args = new Bundle();
         args.putSerializable("usbList",csvRootDirectory.getProbableUsbs(currentUsbName));
+        args.putString("nextClassName",CalendarActivity.class.getName());
+
         fragment.setArguments(args);
         fragment.show(fragmentManager,"Some tag");
 
@@ -102,6 +106,30 @@ public class StartActivity extends AppCompatActivity implements AppStatusFragmen
         fragmentTransaction.add(R.id.linear_layout_fragment, fragment, FRAGMENT_TAG);
 
         fragmentTransaction.commit();
+    }
+
+    public void goToInspections(View view)
+    {
+        FragmentManager fragmentManager = getFragmentManager();
+        String currentUsbName = "";
+        try {
+            RsgRootDirectory rsgRootDirectory = new RsgRootDirectory();
+            currentUsbName = rsgRootDirectory.getUsbName();
+        } catch (IllegalStateException e) {
+            //Do nothing
+        }
+
+        CsvRootDirectory csvRootDirectory = new CsvRootDirectory();
+
+
+        ChooseDirectoryFragment fragment = new ChooseDirectoryFragment();
+
+        Bundle args = new Bundle();
+        args.putSerializable("usbList",csvRootDirectory.getProbableUsbs(currentUsbName));
+        args.putString("nextClassName",CreateInspectionActivity.class.getName());
+
+        fragment.setArguments(args);
+        fragment.show(fragmentManager,"Some tag");
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode,
