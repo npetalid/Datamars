@@ -18,7 +18,8 @@
     <string name="timeText">Ώρα</string>
     <string name="synchronizeText">Συγχρονισμός με Scanner</string>
     <string name="showSessionsText">Προβολή Sessions</string>
-    <string name="failedPermissionsText">Δε δόθηκαν δικαιώματα ανάγνωσης/γραφής</string>
+    <string name="failedReadWritePermissionsText">Δε δόθηκαν δικαιώματα ανάγνωσης/γραφής</string>
+    <string name="failedGpsPermissionsText">Δε δόθηκαν δικαιώματα ανάγνωσης τοποθεσίας</string>
     <string name="msg_failed_sync">Δε βρέθηκε συνδεδεμένo scanner ή δεν υπάρχουν sessions</string>
     <string name="inspectionFunctions">Διαχείριση Ελέγχων</string>
     <string name="inspectionFunctionsDescription">Εμφάνιση και δημιουργία νέων ελέγχων</string>

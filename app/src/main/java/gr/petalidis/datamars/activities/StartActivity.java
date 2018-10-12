@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -12,11 +13,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
-
-import java.io.IOException;
 
 import gr.petalidis.datamars.R;
 import gr.petalidis.datamars.fragments.AppStatusFragment;
@@ -46,7 +47,8 @@ import gr.petalidis.datamars.rsglibrary.RsgRootDirectory;
 
 
 public class StartActivity extends AppCompatActivity implements AppStatusFragment.OnFragmentInteractionListener,  ChooseDirectoryFragment.OnFragmentInteractionListener {
-    private static final int PERMISSION_REQUEST_CODE=1;
+    private static final int PERMISSION_READWRITE_REQUEST_CODE =1;
+
     private static final String FRAGMENT_TAG = "gr.petalidis.datamars.status_fragment";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +56,7 @@ public class StartActivity extends AppCompatActivity implements AppStatusFragmen
         setContentView(R.layout.activity_start);
 
         ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_REQUEST_CODE);
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_READWRITE_REQUEST_CODE);
 
     }
 
@@ -163,20 +165,22 @@ public class StartActivity extends AppCompatActivity implements AppStatusFragmen
                 Environment.MEDIA_MOUNTED_READ_ONLY.equals(state));
     }
 
-    private void showFailure()
+    private void showFailure(String msg)
     {
         TextView textView = (TextView) findViewById(R.id.status_text_view);
-        textView.setText(R.string.failedPermissionsText);
+        textView.setText(msg);
     }
+
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull  int[] grantResults) {
         switch (requestCode) {
-            case PERMISSION_REQUEST_CODE:
+            case PERMISSION_READWRITE_REQUEST_CODE:
                 if (!(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    showFailure();
-
+                    showFailure(getResources().getString(R.string.failedReadWritePermissionsText));
                 }
                 break;
         }
     }
+
 }

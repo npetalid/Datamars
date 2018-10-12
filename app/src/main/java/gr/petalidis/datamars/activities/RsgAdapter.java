@@ -31,7 +31,7 @@ import gr.petalidis.datamars.R;
 import gr.petalidis.datamars.rsglibrary.Rsg;
 
 public class RsgAdapter extends ArrayAdapter<Rsg> {
-    private final SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+    private final SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss");
 
     public RsgAdapter(Context context, ArrayList<Rsg> rsgs) {
         super(context, 0, rsgs);

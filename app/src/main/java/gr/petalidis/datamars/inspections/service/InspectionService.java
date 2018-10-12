@@ -35,4 +35,12 @@ public class InspectionService {
         EntryRepository.save(dbHandler,inspection.getValidEntries());
         return inspection;
     }
+    public List<String> getCsvString(DbHandler dbHandler, String uuidString) throws PersistenceException{
+        try {
+            Inspection inspection =  InspectionRepository.getInspectionFor(dbHandler,uuidString);
+            return inspection.toStrings();
+        } catch (ParseException e) {
+            throw new PersistenceException(e.getLocalizedMessage());
+        }
+    }
 }

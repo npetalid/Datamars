@@ -1,6 +1,5 @@
 package gr.petalidis.datamars.inspections.ui;
 
-import android.graphics.ComposePathEffect;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -14,15 +13,12 @@ import android.widget.TextView;
 import java.util.Comparator;
 
 import gr.petalidis.datamars.R;
-import gr.petalidis.datamars.activities.RsgAdapter;
 import gr.petalidis.datamars.inspections.domain.Entry;
-import gr.petalidis.datamars.inspections.domain.Inspectee;
 import gr.petalidis.datamars.inspections.domain.Inspection;
-import gr.petalidis.datamars.rsglibrary.Rsg;
 
 public class InspectionViewActivity extends AppCompatActivity {
 
-    private final static SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-YYYY");
+    private final static SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
     private Inspection inspection;
 
     @Override
@@ -52,6 +48,7 @@ public class InspectionViewActivity extends AppCompatActivity {
 
 
         setInspectionDateTextView();
+        setInspectionCoordinatesTextView();
         setProducer1TextView();
         setProducer2TextView();
         setProducer3TextView();
@@ -91,7 +88,11 @@ public class InspectionViewActivity extends AppCompatActivity {
         if (inspection != null)
             inspectionDateTextView.setText(dateFormat.format(inspection.getDate()));
     }
-
+    private void setInspectionCoordinatesTextView() {
+        TextView coordinatesTextView = (TextView) findViewById(R.id.viewCoordinatesValue);
+        if (inspection != null)
+            coordinatesTextView.setText(inspection.getLatitude() +", " + inspection.getLongitude());
+    }
     private void setProducer1TextView() {
         TextView producerTextView = (TextView) findViewById(R.id.viewInspectionProducer1Value);
         if (inspection != null)
@@ -224,6 +225,17 @@ public class InspectionViewActivity extends AppCompatActivity {
         button.setOnClickListener(v ->
         { inspectionViewAdapter.sort(Comparator.comparing(Entry::isInRegister).reversed());
             button.setOnClickListener(y->sortGridEntriesByIsInRegister(y));
+        });
+    }
+
+    public void sortGridEntriesByComments(View view) {
+        ListView gridView = (ListView) findViewById(R.id.customlist);
+        InspectionViewAdapter inspectionViewAdapter = (InspectionViewAdapter) gridView.getAdapter();
+        inspectionViewAdapter.sort(Comparator.comparing(Entry::getComment));
+        Button button = (Button)findViewById(R.id.viewCommentsButton);
+        button.setOnClickListener(v ->
+        { inspectionViewAdapter.sort(Comparator.comparing(Entry::getComment).reversed());
+            button.setOnClickListener(y->sortGridEntriesByComments(y));
         });
     }
 }

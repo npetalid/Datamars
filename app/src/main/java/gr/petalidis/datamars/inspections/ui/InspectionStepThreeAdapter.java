@@ -16,6 +16,7 @@ import java.util.List;
 import gr.petalidis.datamars.R;
 import gr.petalidis.datamars.inspections.domain.Entry;
 import gr.petalidis.datamars.inspections.domain.Inspectee;
+import gr.petalidis.datamars.inspections.utilities.TagFormatter;
 
 public class InspectionStepThreeAdapter extends ArrayAdapter<Entry> {
     private final Context context;
@@ -23,7 +24,9 @@ public class InspectionStepThreeAdapter extends ArrayAdapter<Entry> {
     private final List<Inspectee> producerNames;
     private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm:ss");
     private final ArrayAdapter<Inspectee> spinnerNamesAdapter;
+    private final ArrayAdapter<CharSequence> adapterComments;
     private final ArrayAdapter<CharSequence> adapter;
+
     private class SpinnerListener implements AdapterView.OnItemSelectedListener {
         final private Entry item;
 
@@ -64,6 +67,26 @@ public class InspectionStepThreeAdapter extends ArrayAdapter<Entry> {
         }
     }
 
+    private class SpinnerCommentsListener implements AdapterView.OnItemSelectedListener {
+        final private Entry item;
+
+        public SpinnerCommentsListener(Entry item) {
+            this.item = item;
+        }
+
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int pos, long l) {
+            String selectedItem = (String) parent.getItemAtPosition(pos);
+            item.setComment(selectedItem);
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> adapterView) {
+            //do Nothing
+        }
+    }
+
+
     public InspectionStepThreeAdapter(Context context, int resource, List<Inspectee> producerNames, List<Entry> objects) {
         super(context, resource, objects);
         this.context = context;
@@ -74,6 +97,9 @@ public class InspectionStepThreeAdapter extends ArrayAdapter<Entry> {
         adapter = ArrayAdapter.createFromResource(context,
                 R.array.animals_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        adapterComments = ArrayAdapter.createFromResource(context, R.array.comments_array,android.R.layout.simple_spinner_item);
+        adapterComments.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     }
 
     @Override
@@ -95,7 +121,12 @@ public class InspectionStepThreeAdapter extends ArrayAdapter<Entry> {
         Spinner spinnerNames = (Spinner) rowView.findViewById(R.id.spinnerNames);
         spinnerNames.setAdapter(spinnerNamesAdapter);
         spinnerNames.setOnItemSelectedListener(new SpinnerNamesListener(item));
-        spinnerNames.setSelection(spinnerNamesAdapter.getPosition(new Inspectee(item.getProducerTin(),item.getProducer())));
+        spinnerNames.setSelection(spinnerNamesAdapter.getPosition(new Inspectee(item.getProducerTin(), item.getProducer())));
+
+        Spinner spinnerComments = (Spinner) rowView.findViewById(R.id.viewCommments);
+        spinnerComments.setAdapter(adapterComments);
+        spinnerComments.setOnItemSelectedListener(new SpinnerCommentsListener(item));
+        spinnerComments.setSelection(adapterComments.getPosition(item.getComment()));
 //
 //        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 //            @Override
@@ -107,7 +138,7 @@ public class InspectionStepThreeAdapter extends ArrayAdapter<Entry> {
 //                return false;
 //            }
 //        });
-        textView.setText(item.getTag());
+        textView.setText(TagFormatter.format(item.getTag()));
         tagDateView.setText(simpleDateFormat.format(item.getTagDate()));
         checkBox.setChecked(item.isInRegister());
 

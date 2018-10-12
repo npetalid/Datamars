@@ -17,7 +17,7 @@ public class EntryRepository {
 
     public static void save(DbHandler dbHandler, List<Entry> entries)
     {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-YYYY hh:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
 
         try (final SQLiteDatabase db = dbHandler.getWritableDatabase()) {
             entries.forEach(e -> {
@@ -31,6 +31,8 @@ public class EntryRepository {
                 values.put("producer", e.getProducer());
                 values.put("producerTin", e.getProducerTin());
                 values.put("isInRegister", e.isInRegister() == true ? 1 : 0);
+                values.put("comment", e.getComment());
+
                 db.insert(DbHandler.TABLE_INSPECTION_ENTRIES, null, values);
             });
 
@@ -40,7 +42,7 @@ public class EntryRepository {
 
     public static List<Entry> getEntriesFor(DbHandler dbHandler, UUID inspectionId) throws ParseException
     {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-YYYY hh:mm:ss");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
 
         List<Entry> entries = new ArrayList<>();
 
@@ -53,7 +55,9 @@ public class EntryRepository {
                 "animalType," +
                 "producer," +
                 "producerTin,"+
-                "isInRegister FROM " + DbHandler.TABLE_INSPECTION_ENTRIES + " where inspectionId = '" + inspectionId.toString() + "'";
+                "isInRegister, " +
+                "comment " +
+                " FROM " + DbHandler.TABLE_INSPECTION_ENTRIES + " where inspectionId = '" + inspectionId.toString() + "'";
 
         try (final SQLiteDatabase db = dbHandler.getReadableDatabase();
              Cursor cursor = db.rawQuery(selectDateProducerQuery, null)) {
@@ -70,6 +74,7 @@ public class EntryRepository {
                     entry.setProducer(cursor.getString(6));
                     entry.setProducerTin(cursor.getString(7));
                     entry.setInRegister(cursor.getInt(8)==1?true:false);
+                    entry.setComment(cursor.getString(9));
                     entries.add(entry);
                 } while (cursor.moveToNext());
             }

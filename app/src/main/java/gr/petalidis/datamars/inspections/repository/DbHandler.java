@@ -31,6 +31,8 @@ public class DbHandler extends SQLiteOpenHelper {
                 "producer3Name TEXT, " +
                 "producer4Tin TEXT, " +
                 "producer4Name TEXT, " +
+                "locationX REAL," +
+                "locationY REAL," +
                 "date TEXT " +
                 ") ";
         String CREATE_TABLE_INSPECTION_ENTRIES = "CREATE TABLE IF NOT EXISTS " + TABLE_INSPECTION_ENTRIES +
@@ -43,7 +45,8 @@ public class DbHandler extends SQLiteOpenHelper {
                 "isInRegister INTEGER, " +
                 "producer TEXT, " +
                 "producerTin TEXT, " +
-                "animalType TEXT " +
+                "animalType TEXT, " +
+                "comment TEXT" +
                 ") ";
 
         sqLiteDatabase.execSQL(CREATE_TABLE_INSPECTIONS);

@@ -14,6 +14,7 @@ import java.util.List;
 
 import gr.petalidis.datamars.R;
 import gr.petalidis.datamars.inspections.domain.Entry;
+import gr.petalidis.datamars.inspections.utilities.TagFormatter;
 
 public class InspectionViewAdapter extends ArrayAdapter<Entry> {
     private final Context context;
@@ -38,15 +39,17 @@ public class InspectionViewAdapter extends ArrayAdapter<Entry> {
         TextView textViewTime = (TextView) rowView.findViewById(R.id.viewTagTime);
         TextView textViewOwner = (TextView) rowView.findViewById(R.id.viewTagOwner);
         TextView textViewType = (TextView) rowView.findViewById(R.id.viewTagType);
+        TextView textViewComment = (TextView) rowView.findViewById(R.id.viewCommments);
+
         CheckBox textViewIsInRegister = (CheckBox) rowView.findViewById(R.id.viewIsInRegister);
 
-        textViewTag.setText(item.getTag());
+        textViewTag.setText(TagFormatter.format(item.getTag()));
         textViewTime.setText(simpleDateFormat.format(item.getTagDate()));
         textViewOwner.setText(item.getProducer());
         textViewType.setText(item.getAnimalType());
         textViewIsInRegister.setChecked(item.isInRegister());
         textViewIsInRegister.setEnabled(false);
-
+        textViewComment.setText(item.getComment());
         return rowView;
     }
 

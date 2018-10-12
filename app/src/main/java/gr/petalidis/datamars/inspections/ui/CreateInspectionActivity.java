@@ -4,13 +4,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.List;
 
 import gr.petalidis.datamars.R;
@@ -18,6 +22,7 @@ import gr.petalidis.datamars.inspections.domain.Inspection;
 import gr.petalidis.datamars.inspections.dto.InspectionDateProducer;
 import gr.petalidis.datamars.inspections.exceptions.PersistenceException;
 import gr.petalidis.datamars.inspections.repository.DbHandler;
+import gr.petalidis.datamars.inspections.service.FileService;
 import gr.petalidis.datamars.inspections.service.InspectionService;
 import gr.petalidis.datamars.rsglibrary.RsgSessionFiles;
 
@@ -60,13 +65,13 @@ public class CreateInspectionActivity extends Activity {
             final CreateInspectionAdapter adapter = new CreateInspectionAdapter(this,
                     android.R.layout.simple_list_item_1, inspectionDateProducerList);
 
-            LayoutInflater inflater = getLayoutInflater();
-
-            ViewGroup header = (ViewGroup) inflater.inflate(R.layout.listinspectionsheader, listview, false);
-            listview.addHeaderView(header);
-
-            ViewGroup footer = (ViewGroup) inflater.inflate(R.layout.listinspectionsfooter, listview, false);
-            listview.addFooterView(footer);
+//            LayoutInflater inflater = getLayoutInflater();
+//
+//            ViewGroup header = (ViewGroup) inflater.inflate(R.layout.listinspectionsheader, listview, false);
+//            listview.addHeaderView(header);
+//
+//            ViewGroup footer = (ViewGroup) inflater.inflate(R.layout.listinspectionsfooter, listview, false);
+//            listview.addFooterView(footer);
 
             listview.setAdapter(adapter);
 
@@ -90,6 +95,7 @@ public class CreateInspectionActivity extends Activity {
                 }
 
             });
+
         } catch (PersistenceException e) {
             Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
         }

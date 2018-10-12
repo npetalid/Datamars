@@ -2,6 +2,7 @@
 <resources>
     <string-array name="comments_array">
         <item></item>
+        <item>Πώληση</item>
         <item>Θάνατος</item>
         <item>Σφαγή</item>
         <item>Διπλό</item>

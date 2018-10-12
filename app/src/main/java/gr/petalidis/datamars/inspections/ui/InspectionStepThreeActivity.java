@@ -164,5 +164,14 @@ public class InspectionStepThreeActivity extends AppCompatActivity {
             button.setOnClickListener(y->sortGridEntriesByIsInRegister(y));
         });
     }
-
+    public void sortGridEntriesByComments(View view) {
+        ListView gridView = (ListView) findViewById(R.id.customlist);
+        InspectionViewAdapter inspectionViewAdapter = (InspectionViewAdapter) gridView.getAdapter();
+        inspectionViewAdapter.sort(Comparator.comparing(Entry::getComment));
+        Button button = (Button)findViewById(R.id.viewCommentsButton);
+        button.setOnClickListener(v ->
+        { inspectionViewAdapter.sort(Comparator.comparing(Entry::getComment).reversed());
+            button.setOnClickListener(y->sortGridEntriesByComments(y));
+        });
+    }
 }

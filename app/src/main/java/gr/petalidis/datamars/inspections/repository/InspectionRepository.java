@@ -7,18 +7,21 @@ import android.database.sqlite.SQLiteDatabase;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
+import gr.petalidis.datamars.activities.CalendarActivity;
 import gr.petalidis.datamars.inspections.domain.Inspection;
 import gr.petalidis.datamars.inspections.dto.InspectionDateProducer;
 import gr.petalidis.datamars.inspections.exceptions.PersistenceException;
 
 public class InspectionRepository {
 
-    private final static SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-YYYY hh:mm:ss");
 
     public static Inspection save(DbHandler dbHandler, Inspection inspection) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
 
         try (SQLiteDatabase db = dbHandler.getWritableDatabase()) {
             ContentValues values = new ContentValues();
@@ -31,6 +34,8 @@ public class InspectionRepository {
             values.put("producer3Tin", inspection.getProducer3Tin());
             values.put("producer4Name", inspection.getProducer4Name());
             values.put("producer4Tin", inspection.getProducer4Tin());
+            values.put("locationX", inspection.getLatitude());
+            values.put("locationY", inspection.getLongitude());
             values.put("date", dateFormat.format(inspection.getDate()));
 
             db.insert(DbHandler.TABLE_INSPECTIONS, null, values);
@@ -39,6 +44,7 @@ public class InspectionRepository {
     }
 
     public static List<InspectionDateProducer> getAllInspections(DbHandler dbHandler) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
 
         List<InspectionDateProducer> inspectionDateProducerArrayList = new ArrayList<>();
         final String selectDateProducerQuery = "SELECT id,date,producer1Name FROM " + DbHandler.TABLE_INSPECTIONS + " ORDER BY date DESC";
@@ -59,12 +65,13 @@ public class InspectionRepository {
     }
 
     public static Inspection getInspectionFor(DbHandler dbHandler, String uuidString) throws ParseException, PersistenceException {
-
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
         String selectDateProducerQuery = "SELECT id, date, " +
                 "producer1Tin, producer1Name," +
                 "producer2Tin, producer2Name," +
                 "producer3Tin, producer3Name," +
-                "producer4Tin, producer4Name " +
+                "producer4Tin, producer4Name, " +
+                "locationX, locationY " +
                 "FROM " + DbHandler.TABLE_INSPECTIONS + " WHERE id = '" + uuidString + "'";
 
         UUID uuid = UUID.fromString(uuidString);
@@ -75,6 +82,7 @@ public class InspectionRepository {
                 throw new PersistenceException("Expected one entry, found none or too many");
             }
             cursor.moveToFirst();
+
             Inspection inspection = new Inspection(
                     dateFormat.parse(cursor.getString(1)),
                     cursor.getString(2),
@@ -86,6 +94,8 @@ public class InspectionRepository {
             inspection.setProducer3Name(cursor.getString(7));
             inspection.setProducer4Tin(cursor.getString(8));
             inspection.setProducer4Name(cursor.getString(9));
+            inspection.setLatitude(cursor.getFloat(10));
+            inspection.setLongitude(cursor.getFloat(11));
             inspection.setEntries(EntryRepository.getEntriesFor(dbHandler,inspection.getId()));
             return inspection;
         }

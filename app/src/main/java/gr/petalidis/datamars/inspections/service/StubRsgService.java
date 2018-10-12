@@ -16,7 +16,7 @@ import gr.petalidis.datamars.rsglibrary.Rsg;
 
 public class StubRsgService implements RsgService {
     private Set<Rsg> rsgs = new HashSet<>();
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-YYYY");
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     public StubRsgService() {
         List<Calendar> calendars = new ArrayList<>();

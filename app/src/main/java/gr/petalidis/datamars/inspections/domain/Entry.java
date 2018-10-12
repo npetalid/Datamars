@@ -1,11 +1,13 @@
 package gr.petalidis.datamars.inspections.domain;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
 public class Entry implements Serializable {
 
+    private final static SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
     private UUID id = UUID.randomUUID();
 
     private UUID inspectionId;
@@ -16,7 +18,7 @@ public class Entry implements Serializable {
     private boolean isInRegister = true;
     private String producer = "";
     private String producerTin = "";
-    private String animalType = "";
+    private String animalType = Animals.SHEEP_ANIMAL;
     private String comment = "";
     public Entry()
     {
@@ -50,6 +52,9 @@ public class Entry implements Serializable {
         return tag;
     }
 
+    public String getOwner() {
+        return tag.substring(4,8);
+    }
     public void setTag(String tag) {
         this.tag = tag;
     }
@@ -114,5 +119,11 @@ public class Entry implements Serializable {
     public boolean isDummy()
     {
         return this.getProducerTin().equals(Inspectee.getDummyInspectee().getTin());
+    }
+
+    @Override
+    public String toString()
+    {
+        return country+","+tag+","+format.format(tagDate)+","+(isInRegister==true?"ΝΑΙ":"ΟΧΙ")+","+producer+","+producerTin+","+animalType+","+comment;
     }
 }

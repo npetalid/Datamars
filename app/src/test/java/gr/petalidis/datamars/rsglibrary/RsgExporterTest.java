@@ -18,7 +18,10 @@ package gr.petalidis.datamars.rsglibrary;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertTrue;
@@ -62,13 +65,14 @@ public class RsgExporterTest {
     @Test
     public void testExport() throws Exception {
         System.out.println("export");
-         List<Rsg> rsgList = new ArrayList<>();
-        rsgList.add(new Rsg("A0040000300055000011420", "26072017", "123917"));
+        Set<Rsg> rsgList = new HashSet<>();
+        Rsg rsg0 = new Rsg("A0040000300055000011420", "26072017", "123917");
+        rsgList.add(rsg0);
         rsgList.add(new Rsg("A0040000300055000011420", "26072017", "124028"));
 
         RsgExporter instance = new RsgExporter();
-        String expectedFilename = folder.getRoot().getAbsolutePath()+ File.separator + rsgList.get(0).getName()+".csv";
-        RsgExporter.export(rsgList, folder.getRoot().getAbsolutePath(),rsgList.get(0).getName()+".csv");
+        String expectedFilename = folder.getRoot().getAbsolutePath()+ File.separator + rsg0.getName()+".csv";
+        RsgExporter.export(rsgList, folder.getRoot().getAbsolutePath(),rsg0.getName()+".csv");
         File file = new File(expectedFilename);
         assertTrue(file.exists());
         

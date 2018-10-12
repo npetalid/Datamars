@@ -73,6 +73,10 @@ public class Rsg {
         return date;
     }
 
+    public String getOwner()
+    {
+        return identificationCode.substring(4,8);
+    }
     public String getName() {
         SimpleDateFormat format = new SimpleDateFormat("ddMMyyyy");
         return format.format(date);

@@ -59,5 +59,14 @@
         android:padding="10dp"
         android:gravity="center"
         />
-
+    <Spinner
+        android:id="@+id/viewCommments"
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:layout_height="fill_parent"
+        android:textSize="20sp"
+        android:padding="10dp"
+        android:gravity="center"
+        android:textAlignment="center"
+        />
 </LinearLayout>
