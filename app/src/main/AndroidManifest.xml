@@ -52,6 +52,7 @@
             android:name=".inspections.ui.InspectionStepTwoActivity"
             android:label="@string/title_activity_inspection_step_two"
             android:launchMode="singleTop"
+            android:windowSoftInputMode="stateVisible|adjustResize"
             android:parentActivityName=".inspections.ui.InspectionStepOneActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

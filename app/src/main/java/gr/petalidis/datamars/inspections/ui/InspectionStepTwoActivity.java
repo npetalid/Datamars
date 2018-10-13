@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -27,15 +28,18 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import gr.petalidis.datamars.R;
-import gr.petalidis.datamars.inspections.domain.Entry;
-import gr.petalidis.datamars.inspections.domain.Inspectee;
 import gr.petalidis.datamars.inspections.domain.Inspection;
+import gr.petalidis.datamars.inspections.repository.DbHandler;
+import gr.petalidis.datamars.inspections.repository.EntryRepository;
 import gr.petalidis.datamars.inspections.utilities.WGS84Converter;
 import gr.petalidis.datamars.inspections.validators.TinValidator;
 import gr.petalidis.datamars.rsglibrary.Rsg;
@@ -49,14 +53,14 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
 
     private Date inspectionDate;
     private Set<Rsg> rsgs = new HashSet<>();
-    private String producer1Tag = "";
-    private String producer2Tag = "";
-    private String producer3Tag = "";
-    private String producer4Tag = "";
+
     Set<String> owners = new HashSet<>();
-    private FusedLocationProviderClient mFusedLocationClient;
 
     private Location gpsLocation = null;
+    private DbHandler dbHandler;
+
+    private Activity mContext;
+
     private class SpinnerListener implements AdapterView.OnItemSelectedListener {
         private String producerTag;
 
@@ -75,8 +79,7 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
             //do Nothing
         }
 
-        public String getSelection()
-        {
+        public String getSelection() {
             return producerTag;
         }
     }
@@ -84,8 +87,8 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // recovering the instance state
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
+        this.mContext = this;
 
 
         if (savedInstanceState != null) {
@@ -96,62 +99,37 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
             inspectionDate = (Date) getIntent().getExtras().getSerializable("inspectionDate");
             filename = getIntent().getExtras().getString("rsgFilename");
         }
-        try {
-            rsgs.addAll(RsgReader.readRsgFromTablet(filename));
-            owners = rsgs.stream().map(x->x.getOwner()).collect(Collectors.toSet());
+        setContentView(R.layout.activity_inspection_step_two);
 
-            setContentView(R.layout.activity_inspection_step_two);
-            setAnimalCount(rsgs.size());
-            if (inspection != null) {
-                setProducer1Name();
-                setProducer2Name();
-                setProducer3Name();
-                setProducer4Name();
-                setProducer1Tin();
-                setProducer2Tin();
-                setProducer3Tin();
-                setProducer4Tin();
-            }
-            setProducer1Tag();
-            setProducer2Tag();
-            setProducer3Tag();
-            setProducer4Tag();
-            EditText tin = findViewById(R.id.producer1TinText);
-            tin.addTextChangedListener(new TinWatcher(new TinValidator(), tin));
-            tin =  findViewById(R.id.producer2TinText);
-            tin.addTextChangedListener(new TinWatcher(new TinValidator(), tin));
-            tin = findViewById(R.id.producer3TinText);
-            tin.addTextChangedListener(new TinWatcher(new TinValidator(), tin));
-            tin =  findViewById(R.id.producer4TinText);
-            tin.addTextChangedListener(new TinWatcher(new TinValidator(), tin));
+        // recovering the instance state
+        checkLocationPermission();
+        InspectionStepTwoAsyncTask inspectionStepTwoActivityAsyncTask = new InspectionStepTwoAsyncTask();
 
-            AlertDialog.Builder gpsAlertDialog = new AlertDialog.Builder(this);
-            checkLocationPermission(this);
+        inspectionStepTwoActivityAsyncTask.execute(filename,new SimpleDateFormat("dd-MM-yyyy hh:mm:ss").format(inspectionDate));
 
-            if (ActivityCompat.checkSelfPermission(
-                    this, Manifest.permission.ACCESS_FINE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED &&
-                    ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
-                            != PackageManager.PERMISSION_GRANTED) {
-
-                String msg = "Δε δώσατε δικαιώματα πρόσβασης στο GPS.\n Δεν ήταν δυνατή η ανάγνωση των συντεταγμένων της τοποθεσίας";
-                gpsAlertDialog.setTitle("Αδυναμία πρόσβασης στις υπηρεσίες τοποθεσίας").setMessage(msg)
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-
-                            }
-                        });
-
-                gpsAlertDialog.show();
-            } else {
-
-            }
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
+        if (inspection != null) {
+            setProducer1Name();
+            setProducer2Name();
+            setProducer3Name();
+            setProducer4Name();
+            setProducer1Tin();
+            setProducer2Tin();
+            setProducer3Tin();
+            setProducer4Tin();
         }
+
+        EditText tin = findViewById(R.id.producer1TinText);
+        tin.addTextChangedListener(new TinWatcher(new TinValidator(), tin));
+        tin = findViewById(R.id.producer2TinText);
+        tin.addTextChangedListener(new TinWatcher(new TinValidator(), tin));
+        tin = findViewById(R.id.producer3TinText);
+        tin.addTextChangedListener(new TinWatcher(new TinValidator(), tin));
+        tin = findViewById(R.id.producer4TinText);
+        tin.addTextChangedListener(new TinWatcher(new TinValidator(), tin));
+
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
     }
 
     @Override
@@ -212,16 +190,16 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
 
     public void goToInspectionStepThreeActivity(View view) {
 
-        if (!formHasErrors()) {
+        if (!formHasErrors() && !rsgs.isEmpty()) {
 
             Spinner producer1TagSpinner = findViewById(R.id.producer1TagValue);
-            String producer1Tag = (String)producer1TagSpinner.getSelectedItem();
+            String producer1Tag = (String) producer1TagSpinner.getSelectedItem();
             Spinner producer2TagSpinner = findViewById(R.id.producer2TagValue);
-            String producer2Tag = (String)producer2TagSpinner.getSelectedItem();
+            String producer2Tag = (String) producer2TagSpinner.getSelectedItem();
             Spinner producer3TagSpinner = findViewById(R.id.producer3TagValue);
-            String producer3Tag = (String)producer3TagSpinner.getSelectedItem();
+            String producer3Tag = (String) producer3TagSpinner.getSelectedItem();
             Spinner producer4TagSpinner = findViewById(R.id.producer4TagValue);
-            String producer4Tag = (String)producer4TagSpinner.getSelectedItem();
+            String producer4Tag = (String) producer4TagSpinner.getSelectedItem();
 
             Intent intent = new Intent(this, InspectionStepThreeActivity.class);
 
@@ -236,34 +214,34 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
             inspection.setProducer4Name(getProducer4Name());
             inspection.setProducer4Tin(getProducer4Tin());
 
-            double[] coordinates = {0.0,0.0};
-            if (gpsLocation!=null) {
-                coordinates = WGS84Converter.toGGRS87(gpsLocation.getLatitude(),gpsLocation.getLongitude());
+            double[] coordinates = {0.0, 0.0};
+            if (gpsLocation != null) {
+                coordinates = WGS84Converter.toGGRS87(gpsLocation.getLatitude(), gpsLocation.getLongitude());
             }
             inspection.setLatitude(coordinates[0]);
             inspection.setLongitude(coordinates[1]);
             inspection.initEntries(rsgs);
 
-            inspection.getEntries().stream().filter(x->x.getOwner().equals(producer1Tag)).forEach(x->{
+            inspection.getEntries().stream().filter(x -> x.getOwner().equals(producer1Tag)).forEach(x -> {
                 x.setProducerTin(inspection.getProducer1Tin());
                 x.setProducer(inspection.getProducer1Name());
             });
 
             if (!inspection.getProducer2Tin().isEmpty()) {
-                inspection.getEntries().stream().filter(x->x.getOwner().equals(producer2Tag)).forEach(x->{
+                inspection.getEntries().stream().filter(x -> x.getOwner().equals(producer2Tag)).forEach(x -> {
                     x.setProducerTin(inspection.getProducer2Tin());
                     x.setProducer(inspection.getProducer2Name());
                 });
             }
 
             if (!inspection.getProducer3Tin().isEmpty()) {
-                inspection.getEntries().stream().filter(x->x.getOwner().equals(producer3Tag)).forEach(x->{
+                inspection.getEntries().stream().filter(x -> x.getOwner().equals(producer3Tag)).forEach(x -> {
                     x.setProducerTin(inspection.getProducer3Tin());
                     x.setProducer(inspection.getProducer3Name());
                 });
             }
             if (!inspection.getProducer4Tin().isEmpty()) {
-                inspection.getEntries().stream().filter(x->x.getOwner().equals(producer4Tag)).forEach(x->{
+                inspection.getEntries().stream().filter(x -> x.getOwner().equals(producer4Tag)).forEach(x -> {
                     x.setProducerTin(inspection.getProducer4Tin());
                     x.setProducer(inspection.getProducer4Name());
                 });
@@ -366,18 +344,22 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
         Spinner producer1TagSpinner = findViewById(R.id.producer1TagValue);
         producer1TagSpinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, owners.toArray(new String[]{})));
     }
+
     private void setProducer2Tag() {
         Spinner producer2TagSpinner = findViewById(R.id.producer2TagValue);
         producer2TagSpinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, owners.toArray(new String[]{})));
     }
+
     private void setProducer3Tag() {
         Spinner producer3TagSpinner = findViewById(R.id.producer3TagValue);
         producer3TagSpinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, owners.toArray(new String[]{})));
     }
+
     private void setProducer4Tag() {
         Spinner producer4TagSpinner = findViewById(R.id.producer4TagValue);
         producer4TagSpinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, owners.toArray(new String[]{})));
     }
+
     private void setProducer4Tin() {
         EditText tin = (EditText) findViewById(R.id.producer4TinText);
         if (inspection != null) tin.setText(inspection.getProducer4Tin());
@@ -390,16 +372,17 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
 
 
     private void setGpsLocation(Location location) {
-        gpsLocation = location;
-        double[] coordinates = {0.0,0.0};
-        if (gpsLocation!=null) {
-           coordinates = WGS84Converter.toGGRS87(gpsLocation.getLatitude(),gpsLocation.getLongitude());
+        double[] coordinates = {0.0, 0.0};
+        if (gpsLocation != null) {
+            coordinates = WGS84Converter.toGGRS87(gpsLocation.getLatitude(), gpsLocation.getLongitude());
         }
         TextView gpsLocation = (TextView) findViewById(R.id.gpsValue);
-        gpsLocation.setText(coordinates[0] + "," + coordinates[1] + " με ακρίβεια 68% εντός:" + location.getAccuracy() + " μέτρων");
+        gpsLocation.setText(coordinates[0] + ", " + coordinates[1] + "\n (με ακρίβεια 68% εντός:"
+                + String.format(Locale.forLanguageTag("el"), "%.2f", location.getAccuracy())+ " μέτρων)");
     }
 
-    public boolean checkLocationPermission(Activity thisActivity) {
+    public boolean checkLocationPermission() {
+
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -417,7 +400,7 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 //Prompt the user once explanation has been shown
-                                ActivityCompat.requestPermissions(thisActivity,
+                                ActivityCompat.requestPermissions(mContext,
                                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_GPS_REQUEST_CODE);
                             }
                         })
@@ -432,17 +415,12 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
             }
             return false;
         } else {
-            AlertDialog.Builder gpsAlertDialog = new AlertDialog.Builder(this);
+            FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
             mFusedLocationClient.getLastLocation()
                     .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                         @Override
                         public void onSuccess(Location location) {
-                            // Got last known location. In some rare situations this can be null.
-                            if (location != null) {
-                                setGpsLocation(location);
-                            } else {
-                                showGpsFailure();
-                            }
+                            gpsLocation = location;
                         }
                     });
             return true;
@@ -460,6 +438,7 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
                 });
         gpsAlertDialog.show();
     }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {
@@ -467,11 +446,63 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
                 if (!(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     showGpsFailure();
                 } else {
-                    checkLocationPermission(this);
+                    checkLocationPermission();
                 }
                 break;
         }
     }
 
 
+    private class InspectionStepTwoAsyncTask extends AsyncTask<String, String, Set<Rsg>> {
+
+        protected Set<Rsg> doInBackground(String... strings) {
+
+            int count = strings.length;
+            Date inspectionDate;
+            if (count != 2) {
+                return new HashSet<>();
+            }
+            try {
+
+                String filename = strings[0];
+                String dateString = strings[1];
+                inspectionDate = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss").parse(dateString);
+
+                DbHandler dbHandler = new DbHandler(mContext.getApplicationContext());
+
+                List<Rsg> alreadyCheckedRsgs = EntryRepository.getAlreadyCheckedRsgsFor(dbHandler, inspectionDate);
+
+                rsgs = RsgReader.readRsgFromTablet(filename)
+                        .stream()
+                        .filter(rsg -> alreadyCheckedRsgs.stream().noneMatch(seenRsg -> seenRsg.equals(rsg)))
+                        .collect(Collectors.toSet());
+                return rsgs;
+
+            } catch (IOException | ParseException e) {
+                return new HashSet<>();
+
+            }
+        }
+
+
+        protected void onPostExecute(Set<Rsg> rsgs) {
+            if (rsgs.isEmpty()) {
+                Notifier.notify(mContext, "Δεν υπάρχουν σκαναρισμένα ενώτια για τον έλεγχο αυτό!", Notifier.NOTIFICATION_MESSAGE_TYPE.INFO_MESSAGE);
+            }
+            owners = rsgs.stream().map(x -> x.getOwner()).collect(Collectors.toSet());
+            setAnimalCount(rsgs.size());
+            setProducer1Tag();
+            setProducer2Tag();
+            setProducer3Tag();
+            setProducer4Tag();
+
+            // Got last known location. In some rare situations this can be null.
+            if (gpsLocation != null) {
+                setGpsLocation(gpsLocation);
+            } else {
+                showGpsFailure();
+            }
+        }
+
+    }
 }

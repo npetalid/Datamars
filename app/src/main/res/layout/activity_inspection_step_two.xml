@@ -1,333 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="inspections.ui.InspectionStepTwoActivity">
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        >
-        <TextView
-            android:id="@+id/gpsLabel"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="Συντεταγμένες ελέγχου:"
-            android:textSize="20sp"
-            />
-
-        <TextView
-            android:id="@+id/gpsValue"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="20sp"
-            />
-    </LinearLayout>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        >
-        <TextView
-            android:id="@+id/animalCount"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="Σύνολο ζώων που ελέγχθηκαν:"
-            android:textSize="20sp"
-            />
-
-        <TextView
-            android:id="@+id/animalCountValue"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="Όνομα"
-            android:textSize="20sp"
-            />
-    </LinearLayout>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        >
-    <TextView
-        android:id="@+id/producer1TinLabel"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:text="ΑΦΜ"
-        android:textSize="20sp"
-        />
-
-    <EditText
-        android:id="@+id/producer1TinText"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="20dp"
-        android:hint="Ελεγχόμενος"
-        android:inputType="number"
-        android:textSize="20sp"
-        />
-
-    <TextView
-        android:id="@+id/producer1NameLabel"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:text="Όνομα"
-        android:textSize="20sp"
-        />
-
-    <EditText
-        android:id="@+id/producer1NameText"
-        android:layout_width="0dp"
-        android:layout_weight="2"
-        android:layout_height="wrap_content"
-        android:hint="Ελεγχόμενος"
-        android:textSize="20sp"
-        android:inputType="textPersonName"
-        android:text=""/>
-
-        <TextView
-            android:id="@+id/producer1TagLabel"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="4ψήφιο εκμετάλλευσης"
-            android:textSize="20sp"
-            />
-
-        <Spinner
-            android:id="@+id/producer1TagValue"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:hint="Δώστε τα 4 φηφία από τα 12 ψηφία του ενωτίου που αντιστοιχούν στον παραγωγό"
-            android:inputType="number"
-            android:textSize="20sp"
-            />
-
-    </LinearLayout>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        >
-        <TextView
-            android:id="@+id/producer2TinLabel"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="ΑΦΜ" />
-
-        <EditText
-            android:id="@+id/producer2TinText"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:hint="1ος συστ/νος"
-            android:textSize="20sp"
-            android:paddingRight="10dp"
-            android:inputType="number"/>
-
-        <TextView
-            android:id="@+id/producer2NameLabel"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="Όνομα"/>
-
-        <EditText
-            android:id="@+id/producer2NameText"
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="wrap_content"
-            android:hint="1ος συστ/νος"
-            android:textSize="20sp"
-            android:inputType="textPersonName"
-            android:text=""/>
-        <TextView
-            android:id="@+id/producer2TagLabel"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="4ψήφιο εκμετάλλευσης"
-            android:textSize="20sp"
-            />
-
-        <Spinner
-            android:id="@+id/producer2TagValue"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:hint="Δώστε τα 4 φηφία από τα 12 ψηφία του ενωτίου που αντιστοιχούν στον παραγωγό"
-            android:inputType="number"
-            android:textSize="20sp"
-            />
-
-    </LinearLayout>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        >
-        <TextView
-            android:id="@+id/producer3TinLabel"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="ΑΦΜ" />
-
-        <EditText
-            android:id="@+id/producer3TinText"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:hint="2ος συστ/νος"
-            android:paddingRight="10dp"
-            android:textSize="20sp"
-            android:inputType="number"/>
-
-        <TextView
-            android:id="@+id/producer3NameLabel"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="Όνομα"/>
-
-        <EditText
-            android:id="@+id/producer3NameText"
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="wrap_content"
-            android:hint="2ος συστ/νος"
-            android:textSize="20sp"
-            android:inputType="textPersonName"
-            android:text=""/>
-        <TextView
-            android:id="@+id/producer3TagLabel"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="4ψήφιο εκμετάλλευσης"
-            android:textSize="20sp"
-            />
-
-        <Spinner
-            android:id="@+id/producer3TagValue"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:hint="Δώστε τα 4 φηφία από τα 12 ψηφία του ενωτίου που αντιστοιχούν στον παραγωγό"
-            android:inputType="number"
-            android:textSize="20sp"
-            />
-    </LinearLayout>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        >
-        <TextView
-            android:id="@+id/producer4TinLabel"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="ΑΦΜ" />
-
-        <EditText
-            android:id="@+id/producer4TinText"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:hint="3ος συστ/νος"
-            android:paddingRight="10dp"
-            android:textSize="20sp"
-            android:inputType="number"/>
-
-        <TextView
-            android:id="@+id/producer4NameLabel"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="Όνομα"/>
-
-        <EditText
-            android:id="@+id/producer4NameText"
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:hint="3ος συστ/νος"
-            android:inputType="textPersonName"
-            android:text=""/>
-        <TextView
-            android:id="@+id/producer4TagLabel"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="4ψήφιο εκμετάλλευσης"
-            android:textSize="20sp"
-            />
-
-        <Spinner
-            android:id="@+id/producer4TagValue"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="20dp"
-            android:hint="Δώστε τα 4 φηφία από τα 12 ψηφία του ενωτίου που αντιστοιχούν στον παραγωγό"
-            android:inputType="number"
-            android:textSize="20sp"
-            />
-    </LinearLayout>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        >
+        android:layout_marginTop="10dp">
 
         <Button
             android:id="@+id/button"
@@ -336,8 +21,283 @@
             android:layout_weight="1"
             android:onClick="goToInspectionStepThreeActivity"
             android:textSize="20sp"
-            android:text="Καταχώρηση ευρημάτων" />
+            android:text="Επόμενο βήμα: Καταχώρηση ενωτίων" />
 
     </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp">
+
+        <TextView
+            android:id="@+id/gpsLabel"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Συντεταγμένες ελέγχου:"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/gpsValue"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp">
+
+        <TextView
+            android:id="@+id/animalCount"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Σύνολο ζώων που ελέγχθηκαν:"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/animalCountValue"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp">
+
+                <TextView
+                    android:id="@+id/producer1TagLabel"
+                    android:layout_width="0dp"
+                    android:layout_weight="6"
+                    android:layout_height="wrap_content"
+                    android:text="4ψήφιο εκμετάλ/σης"
+                    android:textSize="20sp"
+                    android:gravity="right" />
+
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp">
+
+                <TextView
+                    android:id="@+id/producer1Label"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Βασικός"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/producer1TinText"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:hint="ΑΦΜ"
+                    android:inputType="number"
+                    android:textSize="20sp" />
+
+                <EditText
+                    android:id="@+id/producer1NameText"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:hint="Ονοματεπώνυμο"
+                    android:textSize="20sp"
+                    android:inputType="textPersonName"
+                    android:text="" />
+
+                <Spinner
+                    android:id="@+id/producer1TagValue"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:hint="Δώστε τα 4 φηφία από τα 12 ψηφία του ενωτίου που αντιστοιχούν στον παραγωγό"
+                    android:inputType="number"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/producer2TinLabel"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:text="1ος συστ/νος" />
+
+                <EditText
+                    android:id="@+id/producer2TinText"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:hint="ΑΦΜ"
+                    android:textSize="20sp"
+                    android:paddingRight="10dp"
+                    android:inputType="number" />
+
+                <EditText
+                    android:id="@+id/producer2NameText"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:hint="Ονοματεπώνυμο"
+                    android:textSize="20sp"
+                    android:inputType="textPersonName"
+                    android:text="" />
+
+                <Spinner
+                    android:id="@+id/producer2TagValue"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:hint="Δώστε τα 4 φηφία από τα 12 ψηφία του ενωτίου που αντιστοιχούν στον παραγωγό"
+                    android:inputType="number"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/producer3TinLabel"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:text="2ος συστ/νος" />
+
+                <EditText
+                    android:id="@+id/producer3TinText"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:hint="ΑΦΜ"
+                    android:paddingRight="10dp"
+                    android:textSize="20sp"
+                    android:inputType="number" />
+
+                <EditText
+                    android:id="@+id/producer3NameText"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:hint="Ονοματεπώνυμο"
+                    android:textSize="20sp"
+                    android:inputType="textPersonName" />
+
+                <Spinner
+                    android:id="@+id/producer3TagValue"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:hint="Δώστε τα 4 φηφία από τα 12 ψηφία του ενωτίου που αντιστοιχούν στον παραγωγό"
+                    android:inputType="number"
+                    android:textSize="20sp" />
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/producer4TinLabel"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:text="3ος συστ/νος" />
+
+                <EditText
+                    android:id="@+id/producer4TinText"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:hint="ΑΦΜ"
+                    android:paddingRight="10dp"
+                    android:textSize="20sp"
+                    android:inputType="number" />
+
+                <EditText
+                    android:id="@+id/producer4NameText"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:hint="Ονοματεπώνυμο"
+                    android:inputType="textPersonName"
+                    android:text="" />
+
+                <Spinner
+                    android:id="@+id/producer4TagValue"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:hint="Δώστε τα 4 φηφία από τα 12 ψηφία του ενωτίου που αντιστοιχούν στον παραγωγό"
+                    android:inputType="number"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
 
 </LinearLayout>
