@@ -4,8 +4,6 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.TextView;
 
-import java.util.stream.IntStream;
-
 import gr.petalidis.datamars.inspections.validators.Validator;
 
 public class TinWatcher implements TextWatcher {

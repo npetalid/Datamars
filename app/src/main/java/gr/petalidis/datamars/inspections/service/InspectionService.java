@@ -9,6 +9,7 @@ import gr.petalidis.datamars.inspections.exceptions.PersistenceException;
 import gr.petalidis.datamars.inspections.repository.DbHandler;
 import gr.petalidis.datamars.inspections.repository.EntryRepository;
 import gr.petalidis.datamars.inspections.repository.InspectionRepository;
+import gr.petalidis.datamars.inspections.repository.ScannedDocumentRepository;
 
 public class InspectionService {
 
@@ -33,6 +34,7 @@ public class InspectionService {
     {
         InspectionRepository.save(dbHandler, inspection);
         EntryRepository.save(dbHandler,inspection.getValidEntries());
+        ScannedDocumentRepository.save(dbHandler,inspection.getScannedDocuments());
         return inspection;
     }
     public List<String> getCsvString(DbHandler dbHandler, String uuidString) throws PersistenceException{

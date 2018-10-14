@@ -16,7 +16,7 @@
     <string name="countryText">Χώρα</string>
     <string name="identificationText">Ταυτότητα</string>
     <string name="timeText">Ώρα</string>
-    <string name="synchronizeText">Συγχρονισμός με Scanner</string>
+    <string name="synchronizeText">Συγχρονισμός Scanner</string>
     <string name="showSessionsText">Προβολή Sessions</string>
     <string name="failedReadWritePermissionsText">Δε δόθηκαν δικαιώματα ανάγνωσης/γραφής</string>
     <string name="failedGpsPermissionsText">Δε δόθηκαν δικαιώματα ανάγνωσης τοποθεσίας</string>
@@ -24,10 +24,11 @@
     <string name="inspectionFunctions">Διαχείριση Ελέγχων</string>
     <string name="inspectionFunctionsDescription">Εμφάνιση και δημιουργία νέων ελέγχων</string>
     <string name="success">Επιτυχία!</string>
-    <string name = "kidAnimal">Ερίφιο</string>
-    <string name = "goatAnimal">Γίδα</string>
-    <string name = "lambAnimal">Αρνί</string>
-    <string name = "sheepAnimal">Προβατίνα</string>
-    <string name = "heGoatAnimal">Τράγος</string>
-    <string name = "ramAnimal">Κριάρι</string>
+    <string name="kidAnimal">Ερίφιο</string>
+    <string name="goatAnimal">Γίδα</string>
+    <string name="lambAnimal">Αρνί</string>
+    <string name="sheepAnimal">Προβατίνα</string>
+    <string name="heGoatAnimal">Τράγος</string>
+    <string name="ramAnimal">Κριάρι</string>
+    <string name="title_activity_inspection_step_photo">InspectionStepPhotoActivity</string>
 </resources>

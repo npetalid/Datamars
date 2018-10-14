@@ -6,6 +6,10 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_round"
@@ -13,6 +17,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="gr.petalidis.datamars.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_provider_paths"/>
+        </provider>
+
         <activity android:name=".activities.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,11 +35,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.CalendarActivity"
+        <activity
+            android:name=".activities.CalendarActivity"
             android:label="@string/title_activity_calendar"
-
-            android:launchMode="singleTop"
-            />
+            android:launchMode="singleTop" />
         <activity
             android:name=".activities.ViewRsgActivity"
             android:label="@string/title_activity_view_rsg"
@@ -33,12 +47,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="gr.petalidis.datamars.activities.CalendarActivity" />
         </activity>
-
         <activity
             android:name=".inspections.ui.CreateInspectionActivity"
             android:label="@string/title_activity_create_inspection"
-            android:launchMode="singleTop">
-        </activity>
+            android:launchMode="singleTop" />
         <activity
             android:name=".inspections.ui.InspectionStepOneActivity"
             android:label="@string/title_activity_inspection_step_one"
@@ -49,14 +61,25 @@
                 android:value=".inspections.ui.CreateInspectionActivity" />
         </activity>
         <activity
-            android:name=".inspections.ui.InspectionStepTwoActivity"
-            android:label="@string/title_activity_inspection_step_two"
+            android:name=".inspections.ui.InspectionStepPhotoActivity"
+            android:label="@string/title_activity_inspection_step_photo"
             android:launchMode="singleTop"
-            android:windowSoftInputMode="stateVisible|adjustResize"
-            android:parentActivityName=".inspections.ui.InspectionStepOneActivity">
+            android:parentActivityName=".inspections.ui.InspectionStepOneActivity"
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".inspections.ui.InspectionStepOneActivity" />
+        </activity>
+
+        <activity
+            android:name=".inspections.ui.InspectionStepTwoActivity"
+            android:label="@string/title_activity_inspection_step_two"
+            android:launchMode="singleTop"
+            android:parentActivityName=".inspections.ui.InspectionStepPhotoActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".inspections.ui.InspectionStepPhotoActivity" />
         </activity>
         <activity
             android:name=".inspections.ui.InspectionStepThreeActivity"
@@ -75,6 +98,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".inspections.ui.CreateInspectionActivity" />
         </activity>
+
     </application>
 
 </manifest>

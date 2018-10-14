@@ -1,7 +1,9 @@
 package gr.petalidis.datamars.inspections.ui;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Environment;
 import android.util.Log;
@@ -17,8 +19,11 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 import gr.petalidis.datamars.R;
+import gr.petalidis.datamars.activities.StartActivity;
 import gr.petalidis.datamars.inspections.domain.Inspection;
 import gr.petalidis.datamars.inspections.dto.InspectionDateProducer;
 import gr.petalidis.datamars.inspections.exceptions.PersistenceException;
@@ -57,6 +62,16 @@ public class CreateInspectionAdapter extends ArrayAdapter<InspectionDateProducer
             File downloads = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
             Inspection inspection = InspectionService.findInspectionFor(dbHandler,item.getId());
             FileService.export(inspection.toStrings(),downloads.getAbsolutePath(),inspection.getProducer1Tin()+"-"+simpleDateFormat.format(inspection.getDate())+".csv");
+            FileService.copyFilesToDirectory(inspection.getScannedDocuments().stream().map(y->y.getImagePath()).collect(Collectors.toList()), downloads.getAbsolutePath()+"/"+inspection.getProducer1Tin()+"-"+UUID.randomUUID().toString());
+            AlertDialog.Builder preSaveBuilder = new AlertDialog.Builder(this.context);
+
+            String msg = "Τα στοιχεία αποθηκεύθηκαν στη θέση " + downloads.getCanonicalPath();
+            preSaveBuilder.setTitle("Αποθήκευση ελέγχου").setMessage(msg)
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+            preSaveBuilder.show();
         } catch (IOException | PersistenceException e) {
             Log.e("CreateInspectionActivity",e.getLocalizedMessage());
         }});

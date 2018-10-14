@@ -1,23 +1,17 @@
 package gr.petalidis.datamars.inspections.ui;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.CalendarView;
 
 import com.squareup.timessquare.CalendarPickerView;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import gr.petalidis.datamars.R;
-import gr.petalidis.datamars.activities.ViewRsgActivity;
 import gr.petalidis.datamars.rsglibrary.RsgSessionFiles;
 
 
@@ -70,7 +64,7 @@ public class InspectionStepOneActivity extends AppCompatActivity {
         calendarView.setCellClickInterceptor(new CalendarPickerView.CellClickInterceptor() {
             @Override
             public boolean onCellClicked(Date date) {
-                Intent intent = new Intent(mContext, InspectionStepTwoActivity.class);
+                Intent intent = new Intent(mContext, InspectionStepPhotoActivity.class);
                 try {
                     intent.putExtra("rsgFilename", files.getFilename(date));
                     intent.putExtra("inspectionDate", date);

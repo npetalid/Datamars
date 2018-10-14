@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import gr.petalidis.datamars.R;
 import gr.petalidis.datamars.SessionViewer;
 import gr.petalidis.datamars.rsglibrary.CsvRootDirectory;
-import gr.petalidis.datamars.rsglibrary.RsgRootDirectory;
 
 
 public class ChooseDirectoryFragment extends DialogFragment {

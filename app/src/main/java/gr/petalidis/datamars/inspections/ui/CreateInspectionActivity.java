@@ -4,17 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.io.IOException;
 import java.util.List;
 
 import gr.petalidis.datamars.R;
@@ -22,7 +16,6 @@ import gr.petalidis.datamars.inspections.domain.Inspection;
 import gr.petalidis.datamars.inspections.dto.InspectionDateProducer;
 import gr.petalidis.datamars.inspections.exceptions.PersistenceException;
 import gr.petalidis.datamars.inspections.repository.DbHandler;
-import gr.petalidis.datamars.inspections.service.FileService;
 import gr.petalidis.datamars.inspections.service.InspectionService;
 import gr.petalidis.datamars.rsglibrary.RsgSessionFiles;
 

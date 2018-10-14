@@ -24,7 +24,6 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.text.ParseException;
-import java.util.List;
 import java.util.Set;
 
 import gr.petalidis.datamars.rsglibrary.Rsg;

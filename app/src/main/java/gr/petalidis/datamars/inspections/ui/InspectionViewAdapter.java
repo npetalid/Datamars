@@ -11,7 +11,6 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-
 import gr.petalidis.datamars.R;
 import gr.petalidis.datamars.inspections.domain.Entry;
 import gr.petalidis.datamars.inspections.utilities.TagFormatter;

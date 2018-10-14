@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import gr.petalidis.datamars.inspections.dto.ThumbnailDto;
 import gr.petalidis.datamars.rsglibrary.Rsg;
 
 public class Inspection implements Serializable {
@@ -28,6 +29,8 @@ public class Inspection implements Serializable {
     private String producer4Name = "";
 
     private List<Entry> entries = new ArrayList<>();
+
+    private List<ScannedDocument> scannedDocuments = new ArrayList<>();
 
     private double latitude = 0.0f;
     private double longitude = 0.0f;
@@ -123,6 +126,17 @@ public class Inspection implements Serializable {
         return entries;
     }
 
+    public List<ScannedDocument> getScannedDocuments() {
+        return scannedDocuments;
+    }
+
+    public void setScannedDocuments(List<ScannedDocument> scannedDocuments) {
+        this.scannedDocuments = scannedDocuments;
+    }
+
+    public void initScannedDocuments(List<ThumbnailDto> thumbnailDtos) {
+        this.scannedDocuments = thumbnailDtos.stream().map(x-> new ScannedDocument(this.id,x.getImagePath())).collect(Collectors.toList());
+    }
     public void initEntries(Set<Rsg> rsgs)
     {
 

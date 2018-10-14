@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.UUID;
 
 import gr.petalidis.datamars.inspections.domain.Entry;
-import gr.petalidis.datamars.inspections.exceptions.PersistenceException;
 import gr.petalidis.datamars.rsglibrary.Rsg;
 
 public class EntryRepository {
@@ -110,4 +109,6 @@ public class EntryRepository {
         }
         return entries;
     }
+
+
 }

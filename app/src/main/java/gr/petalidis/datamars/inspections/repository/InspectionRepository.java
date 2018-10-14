@@ -7,12 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
 
-import gr.petalidis.datamars.activities.CalendarActivity;
 import gr.petalidis.datamars.inspections.domain.Inspection;
 import gr.petalidis.datamars.inspections.dto.InspectionDateProducer;
 import gr.petalidis.datamars.inspections.exceptions.PersistenceException;
@@ -97,6 +94,7 @@ public class InspectionRepository {
             inspection.setLatitude(cursor.getFloat(10));
             inspection.setLongitude(cursor.getFloat(11));
             inspection.setEntries(EntryRepository.getEntriesFor(dbHandler,inspection.getId()));
+            inspection.setScannedDocuments(ScannedDocumentRepository.getScannedDocumentFor(dbHandler,inspection.getId()));
             return inspection;
         }
     }

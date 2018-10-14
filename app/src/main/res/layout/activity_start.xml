@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="gr.petalidis.datamars.activities.StartActivity">
-
-    <Button
-        android:id="@+id/synchronizeDatamarsButton"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+    <Button
+        android:id="@+id/synchronizeDatamarsButton"
+        android:layout_width="@dimen/box_size"
+        android:layout_height="@dimen/box_size"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
@@ -18,25 +21,26 @@
         android:onClick="showExternalStorage"
         android:text="@string/synchronizeText"
         android:textSize="20sp"
+        android:gravity="center"
         />
 
     <Button
         android:id="@+id/viewStoredSessions"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/box_size"
+        android:layout_height="@dimen/box_size"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:onClick="showDialog"
         android:text="@string/showSessionsText"
         android:textSize="20sp"
-
+        android:gravity="center"
         />
 
     <Button
         android:id="@+id/inspectionsButton"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/box_size"
+        android:layout_height="@dimen/box_size"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
@@ -44,7 +48,10 @@
         android:onClick="goToInspections"
         android:text="@string/inspectionFunctions"
         android:textSize="20sp"
+        android:gravity="center"
+
         />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/linear_layout_fragment"
@@ -62,4 +69,25 @@
             android:textSize="20sp"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="80dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Διατίθεται με άδεια ανοιχτού λογισμικού Apache 2.0"
+            android:textSize="8sp"
+            android:gravity="center"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="βλ. https://github.com/npetalid/Datamars"
+            android:textSize="8sp"
+            android:gravity="center"/>
+    </LinearLayout>
 </LinearLayout>

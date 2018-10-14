@@ -14,6 +14,7 @@ public class DbHandler extends SQLiteOpenHelper {
 
     public static final String TABLE_INSPECTION_ENTRIES = "ENTRIES";
 
+    public static final String TABLE_INSPECTION_SCANNED_DOCUMENT = "SCANNED_DOCUMENT";
 
     public DbHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -49,8 +50,15 @@ public class DbHandler extends SQLiteOpenHelper {
                 "comment TEXT" +
                 ") ";
 
+        String CREATE_TABLE_INSPECTION_IMAGES = "CREATE TABLE IF NOT EXISTS " + TABLE_INSPECTION_SCANNED_DOCUMENT +
+                " ( " +
+                "id TEXT PRIMARY KEY, " +
+                "inspectionId TEXT, " +
+                "imagePath TEXT " +
+                ") ";
         sqLiteDatabase.execSQL(CREATE_TABLE_INSPECTIONS);
         sqLiteDatabase.execSQL(CREATE_TABLE_INSPECTION_ENTRIES);
+        sqLiteDatabase.execSQL(CREATE_TABLE_INSPECTION_IMAGES);
 
     }
 

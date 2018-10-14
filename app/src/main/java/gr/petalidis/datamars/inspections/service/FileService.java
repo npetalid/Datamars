@@ -1,13 +1,12 @@
 package gr.petalidis.datamars.inspections.service;
 
+import org.apache.commons.io.FileUtils;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.List;
-import java.util.Set;
-
-import gr.petalidis.datamars.rsglibrary.Rsg;
 
 public class FileService {
     public static String export(List<String> strings, String filepath, String name) throws IOException {
@@ -15,7 +14,7 @@ public class FileService {
             return "";
         }
 
-        File file = new File(filepath,name);
+        File file = new File(filepath, name);
 
 
         if (file.exists()) {
@@ -25,7 +24,7 @@ public class FileService {
             }
         }
         if (file.createNewFile()) {
-            try(
+            try (
                     FileOutputStream fOut = new FileOutputStream(file);
                     OutputStreamWriter writer = new OutputStreamWriter(fOut)
             ) {
@@ -39,5 +38,31 @@ public class FileService {
         }
 
         throw new IOException("Could not write file " + file.getAbsolutePath());
+    }
+
+    public static void copyFilesToDirectory(List<String> filepaths, String destinationDirectory) throws IOException {
+        File directory = new File(destinationDirectory);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+
+        try {
+            filepaths.forEach(x -> {
+                File source = new File(x);
+
+                String destinationPath = destinationDirectory + "/" + source.getName();
+                File destination = new File(destinationPath);
+
+                try {
+                    FileUtils.copyFile(source, destination);
+                } catch (IOException e) {
+                    throw new RuntimeException("Unable to copy image " + x + " to " + destinationDirectory);
+                }
+
+            });
+        } catch (RuntimeException e) {
+            throw new IOException(e.getMessage());
+        }
+
     }
 }

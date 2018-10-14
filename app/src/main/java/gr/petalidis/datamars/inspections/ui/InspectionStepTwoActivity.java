@@ -29,6 +29,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -38,6 +39,7 @@ import java.util.stream.Collectors;
 
 import gr.petalidis.datamars.R;
 import gr.petalidis.datamars.inspections.domain.Inspection;
+import gr.petalidis.datamars.inspections.dto.ThumbnailDto;
 import gr.petalidis.datamars.inspections.repository.DbHandler;
 import gr.petalidis.datamars.inspections.repository.EntryRepository;
 import gr.petalidis.datamars.inspections.utilities.WGS84Converter;
@@ -50,6 +52,7 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
 
     private Inspection inspection;
     private String filename = "";
+    private ArrayList<ThumbnailDto> thumbnails;
 
     private Date inspectionDate;
     private Set<Rsg> rsgs = new HashSet<>();
@@ -95,9 +98,11 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
             inspection = (Inspection) savedInstanceState.getSerializable("inspection");
             inspectionDate = (Date) savedInstanceState.getSerializable("inspectionDate");
             filename = savedInstanceState.getString("rsgFilename");
+            thumbnails = (ArrayList<ThumbnailDto>) savedInstanceState.getSerializable("thumbnails");
         } else {
             inspectionDate = (Date) getIntent().getExtras().getSerializable("inspectionDate");
             filename = getIntent().getExtras().getString("rsgFilename");
+            thumbnails = (ArrayList<ThumbnailDto>) getIntent().getExtras().getSerializable("thumbnails");
         }
         setContentView(R.layout.activity_inspection_step_two);
 
@@ -137,7 +142,7 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
         outState.putSerializable("inspection", inspection);
         outState.putString("rsgFilename", filename);
         outState.putSerializable("inspectionDate", inspectionDate);
-
+        outState.putSerializable("thumbnails",thumbnails);
         // call superclass to save any view hierarchy
         super.onSaveInstanceState(outState);
     }
@@ -221,7 +226,7 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
             inspection.setLatitude(coordinates[0]);
             inspection.setLongitude(coordinates[1]);
             inspection.initEntries(rsgs);
-
+            inspection.initScannedDocuments(thumbnails);
             inspection.getEntries().stream().filter(x -> x.getOwner().equals(producer1Tag)).forEach(x -> {
                 x.setProducerTin(inspection.getProducer1Tin());
                 x.setProducer(inspection.getProducer1Name());
@@ -421,6 +426,7 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
                         @Override
                         public void onSuccess(Location location) {
                             gpsLocation = location;
+                            setGpsLocation(location);
                         }
                     });
             return true;
@@ -496,12 +502,12 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
             setProducer3Tag();
             setProducer4Tag();
 
-            // Got last known location. In some rare situations this can be null.
-            if (gpsLocation != null) {
-                setGpsLocation(gpsLocation);
-            } else {
-                showGpsFailure();
-            }
+//            // Got last known location. In some rare situations this can be null.
+//            if (gpsLocation != null) {
+//                setGpsLocation(gpsLocation);
+//            } else {
+//                showGpsFailure();
+//            }
         }
 
     }
