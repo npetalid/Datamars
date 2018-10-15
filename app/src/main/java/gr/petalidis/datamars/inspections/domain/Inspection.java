@@ -186,37 +186,37 @@ public class Inspection implements Serializable {
         return names;
     }
 
-    public long getValidEntriesCount() {
-        return getEntries().stream().filter(x->!x.isDummy()).count();
+    public long getValidEntriesCount(String producer1Tin) {
+        return getEntries().stream().filter(x->!x.isDummy() && x.getProducerTin().equals(producer1Tin)).count();
     }
 
-    public long getInRegisterCount() {
-        return getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true).count();
+    public long getInRegisterCount(String producer1Tin) {
+        return getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true && x.getProducerTin().equals(producer1Tin)).count();
     }
 
-    public long getLambCount() {
+    public long getLambCount(String producer1Tin) {
         return getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
-                && x.getAnimalType().trim().equals(Animals.LAMB_ANIMAL)).count();
+                && x.getAnimalType().trim().equals(Animals.LAMB_ANIMAL) && x.getProducerTin().equals(producer1Tin)).count();
     }
-    public long getSheepCount(){
+    public long getSheepCount(String producer1Tin){
         return getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
-                && x.getAnimalType().trim().equals(Animals.SHEEP_ANIMAL)).count();
+                && x.getAnimalType().trim().equals(Animals.SHEEP_ANIMAL) && x.getProducerTin().equals(producer1Tin)).count();
     }
-    public long getKidCount() {
+    public long getKidCount(String producer1Tin) {
         return getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
-                && x.getAnimalType().trim().equals(Animals.KID_ANIMAL)).count();
+                && x.getAnimalType().trim().equals(Animals.KID_ANIMAL) && x.getProducerTin().equals(producer1Tin)).count();
     }
-    public long getGoatCount() {
+    public long getGoatCount(String producer1Tin) {
         return getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
-                && x.getAnimalType().trim().equals(Animals.GOAT_ANIMAL)).count();
+                && x.getAnimalType().trim().equals(Animals.GOAT_ANIMAL) && x.getProducerTin().equals(producer1Tin)).count();
     }
-    public long getRamCount() {
+    public long getRamCount(String producer1Tin) {
         return getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
-                && x.getAnimalType().trim().equals(Animals.RAM_ANIMAL)).count();
+                && x.getAnimalType().trim().equals(Animals.RAM_ANIMAL) && x.getProducerTin().equals(producer1Tin)).count();
     }
-    public long getHeGoatCount() {
+    public long getHeGoatCount(String producer1Tin) {
         return getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
-                && x.getAnimalType().trim().equals(Animals.HEGOAT_ANIMAL)).count();
+                && x.getAnimalType().trim().equals(Animals.HEGOAT_ANIMAL) && x.getProducerTin().equals(producer1Tin)).count();
     }
 
     public double getLatitude() {

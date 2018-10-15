@@ -382,8 +382,9 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
             coordinates = WGS84Converter.toGGRS87(gpsLocation.getLatitude(), gpsLocation.getLongitude());
         }
         TextView gpsLocation = (TextView) findViewById(R.id.gpsValue);
+        float accuracy = location==null?1000.0f:location.getAccuracy();
         gpsLocation.setText(coordinates[0] + ", " + coordinates[1] + "\n (με ακρίβεια 68% εντός:"
-                + String.format(Locale.forLanguageTag("el"), "%.2f", location.getAccuracy())+ " μέτρων)");
+                + String.format(Locale.forLanguageTag("el"), "%.2f",accuracy)+ " μέτρων)");
     }
 
     public boolean checkLocationPermission() {

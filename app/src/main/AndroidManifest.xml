@@ -17,7 +17,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="gr.petalidis.datamars.fileprovider"
@@ -25,7 +24,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_provider_paths"/>
+                android:resource="@xml/file_provider_paths" />
         </provider>
 
         <activity android:name=".activities.StartActivity">
@@ -64,13 +63,11 @@
             android:name=".inspections.ui.InspectionStepPhotoActivity"
             android:label="@string/title_activity_inspection_step_photo"
             android:launchMode="singleTop"
-            android:parentActivityName=".inspections.ui.InspectionStepOneActivity"
-            >
+            android:parentActivityName=".inspections.ui.InspectionStepOneActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".inspections.ui.InspectionStepOneActivity" />
         </activity>
-
         <activity
             android:name=".inspections.ui.InspectionStepTwoActivity"
             android:label="@string/title_activity_inspection_step_two"
@@ -93,12 +90,21 @@
         <activity
             android:name=".inspections.ui.InspectionViewActivity"
             android:label="@string/title_activity_inspection_view"
-            android:parentActivityName=".inspections.ui.CreateInspectionActivity">
+            android:parentActivityName=".inspections.ui.CreateInspectionActivity"
+            android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".inspections.ui.CreateInspectionActivity" />
         </activity>
-
+        <activity
+            android:name=".inspections.ui.InspectionViewActivity2"
+            android:label="@string/title_activity_inspection_view2"
+            android:parentActivityName=".inspections.ui.InspectionViewActivity"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="gr.petalidis.datamars.inspections.ui.InspectionViewActivity" />
+        </activity>
     </application>
 
 </manifest>

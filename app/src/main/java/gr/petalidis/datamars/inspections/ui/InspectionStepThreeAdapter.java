@@ -103,10 +103,12 @@ public class InspectionStepThreeAdapter extends ArrayAdapter<Entry> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.edititems, parent, false);
+    public View getView(int position, View rowView, ViewGroup parent) {
+        if (rowView == null) {
+            LayoutInflater inflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        rowView = inflater.inflate(R.layout.edititems, parent, false);
+      }
         final Entry item = objects.get(position);
 
         TextView textView = (TextView) rowView.findViewById(R.id.textView);

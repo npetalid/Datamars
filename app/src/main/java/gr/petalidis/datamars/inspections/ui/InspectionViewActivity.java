@@ -1,5 +1,6 @@
 package gr.petalidis.datamars.inspections.ui;
 
+import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -31,22 +32,6 @@ public class InspectionViewActivity extends AppCompatActivity {
         }
         setContentView(R.layout.activity_inspection_view);
 
-        final ListView listview = (ListView) findViewById(R.id.customlist);
-
-        final InspectionViewAdapter adapter = new InspectionViewAdapter(this,
-                android.R.layout.simple_list_item_1, inspection.getEntries());
-        // Add a header to the ListView
-//        LayoutInflater inflater = getLayoutInflater();
-//
-//        ViewGroup header = (ViewGroup) inflater.inflate(R.layout.listitemsheader, listview, false);
-//        listview.addHeaderView(header);
-//
-//        ViewGroup footer = (ViewGroup) inflater.inflate(R.layout.listitemsfooter, listview, false);
-//        listview.addFooterView(footer);
-
-        listview.setAdapter(adapter);
-
-
         setInspectionDateTextView();
         setInspectionCoordinatesTextView();
         setProducer1TextView();
@@ -61,6 +46,33 @@ public class InspectionViewActivity extends AppCompatActivity {
         goatValue();
         ramValue();
         heGoatValue();
+
+        setTotalValue2();
+        setInRegisterValue2();
+        lambValue2();
+        sheepValue2();
+        kidValue2();
+        goatValue2();
+        ramValue2();
+        heGoatValue2();
+
+        setTotalValue3();
+        setInRegisterValue3();
+        lambValue3();
+        sheepValue3();
+        kidValue3();
+        goatValue3();
+        ramValue3();
+        heGoatValue3();
+
+        setTotalValue4();
+        setInRegisterValue4();
+        lambValue4();
+        sheepValue4();
+        kidValue4();
+        goatValue4();
+        ramValue4();
+        heGoatValue4();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
@@ -119,14 +131,14 @@ public class InspectionViewActivity extends AppCompatActivity {
 
     private void setTotalValue() {
         TextView stats = (TextView) findViewById(R.id.statsTotalValue);
-        long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy()).count();
+        long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.getProducerTin().equals(inspection.getProducer1Tin())).count();
         if (inspection != null)
             stats.setText(validEntries+"");
     }
 
     private void setInRegisterValue() {
         TextView stats = (TextView) findViewById(R.id.statsInRegisterValue);
-        long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true).count();
+        long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true && x.getProducerTin().equals(inspection.getProducer1Tin())).count();
         if (inspection != null)
             stats.setText(validEntries+"");
     }
@@ -134,108 +146,224 @@ public class InspectionViewActivity extends AppCompatActivity {
     private void lambValue() {
         TextView stats = (TextView) findViewById(R.id.lambsTotalValue);
         long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
-                && x.getAnimalType().trim().equals(getResources().getString(R.string.lambAnimal))).count();
+                && x.getAnimalType().trim().equals(getResources().getString(R.string.lambAnimal)) && x.getProducerTin().equals(inspection.getProducer1Tin())).count();
         if (inspection != null)
             stats.setText(validEntries+"");
     }
     private void sheepValue() {
         TextView stats = (TextView) findViewById(R.id.sheepTotalValue);
         long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
-                && x.getAnimalType().trim().equals(getResources().getString(R.string.sheepAnimal))).count();
+                && x.getAnimalType().trim().equals(getResources().getString(R.string.sheepAnimal)) && x.getProducerTin().equals(inspection.getProducer1Tin())).count();
         if (inspection != null)
             stats.setText(validEntries+"");
     }
     private void kidValue() {
         TextView stats = (TextView) findViewById(R.id.kidsTotalValue);
         long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
-                && x.getAnimalType().trim().equals(getResources().getString(R.string.kidAnimal))).count();
+                && x.getAnimalType().trim().equals(getResources().getString(R.string.kidAnimal)) && x.getProducerTin().equals(inspection.getProducer1Tin())).count();
         if (inspection != null)
             stats.setText(validEntries+"");
     }
     private void goatValue() {
         TextView stats = (TextView) findViewById(R.id.goatTotalValue);
         long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
-                && x.getAnimalType().trim().equals(getResources().getString(R.string.goatAnimal))).count();
+                && x.getAnimalType().trim().equals(getResources().getString(R.string.goatAnimal)) && x.getProducerTin().equals(inspection.getProducer1Tin())).count();
         if (inspection != null)
             stats.setText(validEntries+"");
     }
     private void ramValue() {
         TextView stats = (TextView) findViewById(R.id.ramTotalValue);
         long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
-                && x.getAnimalType().trim().equals(getResources().getString(R.string.ramAnimal))).count();
+                && x.getAnimalType().trim().equals(getResources().getString(R.string.ramAnimal)) && x.getProducerTin().equals(inspection.getProducer1Tin())).count();
         if (inspection != null)
             stats.setText(validEntries+"");
     }
     private void heGoatValue() {
         TextView stats = (TextView) findViewById(R.id.heGoatTotalValue);
         long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
-                && x.getAnimalType().trim().equals(getResources().getString(R.string.heGoatAnimal))).count();
+                && x.getAnimalType().trim().equals(getResources().getString(R.string.heGoatAnimal)) && x.getProducerTin().equals(inspection.getProducer1Tin())).count();
         if (inspection != null)
             stats.setText(validEntries+"");
     }
 
-    public void sortGridEntriesByTag(View view) {
-        ListView gridView = (ListView) findViewById(R.id.customlist);
-        InspectionViewAdapter inspectionViewAdapter = (InspectionViewAdapter) gridView.getAdapter();
-        inspectionViewAdapter.sort(Comparator.comparing(Entry::getTag));
-        Button button = (Button)findViewById(R.id.tag);
-        button.setOnClickListener(v ->
-            { inspectionViewAdapter.sort(Comparator.comparing(Entry::getTag).reversed());
-                button.setOnClickListener(y->sortGridEntriesByTag(y));
-            });
+
+    private void setTotalValue2() {
+        TextView stats = (TextView) findViewById(R.id.statsTotalValue2);
+        long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.getProducerTin().equals(inspection.getProducer2Tin())).count();
+        if (inspection != null)
+            stats.setText(validEntries+"");
     }
 
-    public void sortGridEntriesByTime(View view) {
-        ListView gridView = (ListView) findViewById(R.id.customlist);
-        InspectionViewAdapter inspectionViewAdapter = (InspectionViewAdapter) gridView.getAdapter();
-        inspectionViewAdapter.sort(Comparator.comparing(Entry::getTagDate));
-        Button button = (Button)findViewById(R.id.age);
-        button.setOnClickListener(v ->
-        { inspectionViewAdapter.sort(Comparator.comparing(Entry::getTagDate).reversed());
-            button.setOnClickListener(y->sortGridEntriesByTime(y));
-        });
+    private void setInRegisterValue2() {
+        TextView stats = (TextView) findViewById(R.id.statsInRegisterValue2);
+        long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true && x.getProducerTin().equals(inspection.getProducer2Tin())).count();
+        if (inspection != null)
+            stats.setText(validEntries+"");
     }
 
-    public void sortGridEntriesByAnimalType(View view) {
-        ListView gridView = (ListView) findViewById(R.id.customlist);
-        InspectionViewAdapter inspectionViewAdapter = (InspectionViewAdapter) gridView.getAdapter();
-        inspectionViewAdapter.sort(Comparator.comparing(Entry::getAnimalType));
-        Button button = (Button)findViewById(R.id.type);
-        button.setOnClickListener(v ->
-        { inspectionViewAdapter.sort(Comparator.comparing(Entry::getAnimalType).reversed());
-            button.setOnClickListener(y->sortGridEntriesByAnimalType(y));
-        });
+    private void lambValue2() {
+        TextView stats = (TextView) findViewById(R.id.lambsTotalValue2);
+        long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
+                && x.getAnimalType().trim().equals(getResources().getString(R.string.lambAnimal)) && x.getProducerTin().equals(inspection.getProducer2Tin())).count();
+        if (inspection != null)
+            stats.setText(validEntries+"");
+    }
+    private void sheepValue2() {
+        TextView stats = (TextView) findViewById(R.id.sheepTotalValue2);
+        long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
+                && x.getAnimalType().trim().equals(getResources().getString(R.string.sheepAnimal)) && x.getProducerTin().equals(inspection.getProducer2Tin())).count();
+        if (inspection != null)
+            stats.setText(validEntries+"");
+    }
+    private void kidValue2() {
+        TextView stats = (TextView) findViewById(R.id.kidsTotalValue2);
+        long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
+                && x.getAnimalType().trim().equals(getResources().getString(R.string.kidAnimal)) && x.getProducerTin().equals(inspection.getProducer2Tin())).count();
+        if (inspection != null)
+            stats.setText(validEntries+"");
+    }
+    private void goatValue2() {
+        TextView stats = (TextView) findViewById(R.id.goatTotalValue2);
+        long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
+                && x.getAnimalType().trim().equals(getResources().getString(R.string.goatAnimal)) && x.getProducerTin().equals(inspection.getProducer2Tin())).count();
+        if (inspection != null)
+            stats.setText(validEntries+"");
+    }
+    private void ramValue2() {
+        TextView stats = (TextView) findViewById(R.id.ramTotalValue2);
+        long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
+                && x.getAnimalType().trim().equals(getResources().getString(R.string.ramAnimal)) && x.getProducerTin().equals(inspection.getProducer2Tin())).count();
+        if (inspection != null)
+            stats.setText(validEntries+"");
+    }
+    private void heGoatValue2() {
+        TextView stats = (TextView) findViewById(R.id.heGoatTotalValue2);
+        long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
+                && x.getAnimalType().trim().equals(getResources().getString(R.string.heGoatAnimal)) && x.getProducerTin().equals(inspection.getProducer2Tin())).count();
+        if (inspection != null)
+            stats.setText(validEntries+"");
     }
 
-    public void sortGridEntriesByProducer(View view) {
-        ListView gridView = (ListView) findViewById(R.id.customlist);
-        InspectionViewAdapter inspectionViewAdapter = (InspectionViewAdapter) gridView.getAdapter();
-        inspectionViewAdapter.sort(Comparator.comparing(Entry::getProducer));
-        Button button = (Button)findViewById(R.id.names);
-        button.setOnClickListener(v ->
-        { inspectionViewAdapter.sort(Comparator.comparing(Entry::getProducer).reversed());
-            button.setOnClickListener(y->sortGridEntriesByProducer(y));
-        });
-    }
-    public void sortGridEntriesByIsInRegister(View view) {
-        ListView gridView = (ListView) findViewById(R.id.customlist);
-        InspectionViewAdapter inspectionViewAdapter = (InspectionViewAdapter) gridView.getAdapter();
-        inspectionViewAdapter.sort(Comparator.comparing(Entry::isInRegister));
-        Button button = (Button)findViewById(R.id.ischecked);
-        button.setOnClickListener(v ->
-        { inspectionViewAdapter.sort(Comparator.comparing(Entry::isInRegister).reversed());
-            button.setOnClickListener(y->sortGridEntriesByIsInRegister(y));
-        });
+
+    private void setTotalValue3() {
+        TextView stats = (TextView) findViewById(R.id.statsTotalValue3);
+        long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.getProducerTin().equals(inspection.getProducer3Tin())).count();
+        if (inspection != null)
+            stats.setText(validEntries+"");
     }
 
-    public void sortGridEntriesByComments(View view) {
-        ListView gridView = (ListView) findViewById(R.id.customlist);
-        InspectionViewAdapter inspectionViewAdapter = (InspectionViewAdapter) gridView.getAdapter();
-        inspectionViewAdapter.sort(Comparator.comparing(Entry::getComment));
-        Button button = (Button)findViewById(R.id.viewCommentsButton);
-        button.setOnClickListener(v ->
-        { inspectionViewAdapter.sort(Comparator.comparing(Entry::getComment).reversed());
-            button.setOnClickListener(y->sortGridEntriesByComments(y));
-        });
+    private void setInRegisterValue3() {
+        TextView stats = (TextView) findViewById(R.id.statsInRegisterValue3);
+        long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true && x.getProducerTin().equals(inspection.getProducer3Tin())).count();
+        if (inspection != null)
+            stats.setText(validEntries+"");
+    }
+
+    private void lambValue3() {
+        TextView stats = (TextView) findViewById(R.id.lambsTotalValue3);
+        long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
+                && x.getAnimalType().trim().equals(getResources().getString(R.string.lambAnimal)) && x.getProducerTin().equals(inspection.getProducer3Tin())).count();
+        if (inspection != null)
+            stats.setText(validEntries+"");
+    }
+    private void sheepValue3() {
+        TextView stats = (TextView) findViewById(R.id.sheepTotalValue3);
+        long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
+                && x.getAnimalType().trim().equals(getResources().getString(R.string.sheepAnimal)) && x.getProducerTin().equals(inspection.getProducer3Tin())).count();
+        if (inspection != null)
+            stats.setText(validEntries+"");
+    }
+    private void kidValue3() {
+        TextView stats = (TextView) findViewById(R.id.kidsTotalValue3);
+        long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
+                && x.getAnimalType().trim().equals(getResources().getString(R.string.kidAnimal)) && x.getProducerTin().equals(inspection.getProducer3Tin())).count();
+        if (inspection != null)
+            stats.setText(validEntries+"");
+    }
+    private void goatValue3() {
+        TextView stats = (TextView) findViewById(R.id.goatTotalValue3);
+        long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
+                && x.getAnimalType().trim().equals(getResources().getString(R.string.goatAnimal)) && x.getProducerTin().equals(inspection.getProducer3Tin())).count();
+        if (inspection != null)
+            stats.setText(validEntries+"");
+    }
+    private void ramValue3() {
+        TextView stats = (TextView) findViewById(R.id.ramTotalValue3);
+        long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
+                && x.getAnimalType().trim().equals(getResources().getString(R.string.ramAnimal)) && x.getProducerTin().equals(inspection.getProducer3Tin())).count();
+        if (inspection != null)
+            stats.setText(validEntries+"");
+    }
+    private void heGoatValue3() {
+        TextView stats = (TextView) findViewById(R.id.heGoatTotalValue3);
+        long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
+                && x.getAnimalType().trim().equals(getResources().getString(R.string.heGoatAnimal)) && x.getProducerTin().equals(inspection.getProducer3Tin())).count();
+        if (inspection != null)
+            stats.setText(validEntries+"");
+    }
+
+
+    private void setTotalValue4() {
+        TextView stats = (TextView) findViewById(R.id.statsTotalValue4);
+        long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.getProducerTin().equals(inspection.getProducer4Tin())).count();
+        if (inspection != null)
+            stats.setText(validEntries+"");
+    }
+
+    private void setInRegisterValue4() {
+        TextView stats = (TextView) findViewById(R.id.statsInRegisterValue4);
+        long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true && x.getProducerTin().equals(inspection.getProducer4Tin())).count();
+        if (inspection != null)
+            stats.setText(validEntries+"");
+    }
+
+    private void lambValue4() {
+        TextView stats = (TextView) findViewById(R.id.lambsTotalValue4);
+        long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
+                && x.getAnimalType().trim().equals(getResources().getString(R.string.lambAnimal)) && x.getProducerTin().equals(inspection.getProducer4Tin())).count();
+        if (inspection != null)
+            stats.setText(validEntries+"");
+    }
+    private void sheepValue4() {
+        TextView stats = (TextView) findViewById(R.id.sheepTotalValue4);
+        long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
+                && x.getAnimalType().trim().equals(getResources().getString(R.string.sheepAnimal)) && x.getProducerTin().equals(inspection.getProducer4Tin())).count();
+        if (inspection != null)
+            stats.setText(validEntries+"");
+    }
+    private void kidValue4() {
+        TextView stats = (TextView) findViewById(R.id.kidsTotalValue4);
+        long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
+                && x.getAnimalType().trim().equals(getResources().getString(R.string.kidAnimal)) && x.getProducerTin().equals(inspection.getProducer4Tin())).count();
+        if (inspection != null)
+            stats.setText(validEntries+"");
+    }
+    private void goatValue4() {
+        TextView stats = (TextView) findViewById(R.id.goatTotalValue4);
+        long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
+                && x.getAnimalType().trim().equals(getResources().getString(R.string.goatAnimal)) && x.getProducerTin().equals(inspection.getProducer4Tin())).count();
+        if (inspection != null)
+            stats.setText(validEntries+"");
+    }
+    private void ramValue4() {
+        TextView stats = (TextView) findViewById(R.id.ramTotalValue4);
+        long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
+                && x.getAnimalType().trim().equals(getResources().getString(R.string.ramAnimal)) && x.getProducerTin().equals(inspection.getProducer4Tin())).count();
+        if (inspection != null)
+            stats.setText(validEntries+"");
+    }
+    private void heGoatValue4() {
+        TextView stats = (TextView) findViewById(R.id.heGoatTotalValue4);
+        long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
+                && x.getAnimalType().trim().equals(getResources().getString(R.string.heGoatAnimal)) && x.getProducerTin().equals(inspection.getProducer4Tin())).count();
+        if (inspection != null)
+            stats.setText(validEntries+"");
+    }
+
+
+    public void goToViewActivityStep2(View view) {
+        Intent intent = new Intent(this, InspectionViewActivity2.class);
+        intent.putExtra("inspection",inspection);
+        startActivity(intent);
     }
 }

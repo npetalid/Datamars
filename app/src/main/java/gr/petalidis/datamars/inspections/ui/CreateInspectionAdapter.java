@@ -46,10 +46,12 @@ public class CreateInspectionAdapter extends ArrayAdapter<InspectionDateProducer
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.listinspections, parent, false);
+    public View getView(int position, View rowView, ViewGroup parent) {
+        if (rowView == null) {
+            LayoutInflater inflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        rowView = inflater.inflate(R.layout.listinspections, parent, false);
+     }
         final InspectionDateProducer item = objects.get(position);
 
         TextView inspectionDateText = (TextView) rowView.findViewById(R.id.inspectionDate);
@@ -79,7 +81,18 @@ public class CreateInspectionAdapter extends ArrayAdapter<InspectionDateProducer
 
         inspectionProducer.setText(item.getMainProducer());
         inspectionDateText.setText(item.getInspectionDate());
-
+        inspectionDateText.setOnTouchListener((x,y)->{
+            try {
+                Inspection inspection = InspectionService.findInspectionFor(dbHandler, item.getId());
+                Intent intent = new Intent(context, InspectionViewActivity.class);
+                intent.putExtra("inspection", inspection);
+                ((Activity)context).startActivity(intent);
+                return true;
+            } catch (PersistenceException e) {
+                Toast.makeText(context, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                return false;
+            }
+        });
         inspectionProducer.setOnTouchListener((x,y)->{
             try {
                 Inspection inspection = InspectionService.findInspectionFor(dbHandler, item.getId());

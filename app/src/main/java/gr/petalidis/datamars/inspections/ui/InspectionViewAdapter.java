@@ -28,10 +28,12 @@ public class InspectionViewAdapter extends ArrayAdapter<Entry> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rowView = inflater.inflate(R.layout.listitems, parent, false);
+    public View getView(int position, View rowView, ViewGroup parent) {
+        if (rowView == null) {
+            LayoutInflater inflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            rowView = inflater.inflate(R.layout.listitems, parent, false);
+        }
         final Entry item = objects.get(position);
 
         TextView textViewTag = (TextView) rowView.findViewById(R.id.viewTag);

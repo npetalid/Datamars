@@ -30,5 +30,6 @@
     <string name="sheepAnimal">Προβατίνα</string>
     <string name="heGoatAnimal">Τράγος</string>
     <string name="ramAnimal">Κριάρι</string>
-    <string name="title_activity_inspection_step_photo">InspectionStepPhotoActivity</string>
+    <string name="title_activity_inspection_step_photo">Ψηφιοποιήση εγγράφου</string>
+    <string name="title_activity_inspection_view2">Εμφάνιση ενωτίων ελέγχου</string>
 </resources>
