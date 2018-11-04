@@ -69,17 +69,18 @@
             android:textSize="20sp"
             android:padding="10dp"
             />
+
         <Button
             android:id="@+id/ischecked"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
-            android:text="Στο μητρώο;"
-            android:onClick="sortGridEntriesByIsInRegister"
+            android:layout_weight="1"
             android:background="#ffe238"
-            android:textSize="20sp"
+            android:longClickable="true"
+            android:onClick="sortGridEntriesByIsInRegister"
             android:padding="10dp"
-            />
+            android:text="Στο μητρώο;"
+            android:textSize="20sp" />
         <Button
             android:id="@+id/viewCommentsButton"
             android:layout_width="0dp"

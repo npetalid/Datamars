@@ -27,6 +27,11 @@ public class InspectionStepThreeAdapter extends ArrayAdapter<Entry> {
     private final ArrayAdapter<CharSequence> adapterComments;
     private final ArrayAdapter<CharSequence> adapter;
 
+    public void revertRegister() {
+        objects.forEach(x->x.setInRegister(!x.isInRegister()));
+    }
+
+
     private class SpinnerListener implements AdapterView.OnItemSelectedListener {
         final private Entry item;
 

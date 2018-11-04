@@ -105,6 +105,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="gr.petalidis.datamars.inspections.ui.InspectionViewActivity" />
         </activity>
+        <activity
+            android:name=".inspections.ui.InspectionViewPhotoActivity"
+            android:label="@string/title_activity_inspection_viewPhotoActivity"
+            android:parentActivityName=".inspections.ui.InspectionViewActivity"
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="gr.petalidis.datamars.inspections.ui.InspectionViewActivity" />
+        </activity>
     </application>
 
 </manifest>

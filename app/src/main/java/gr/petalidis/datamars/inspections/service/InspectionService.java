@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.util.List;
 
 import gr.petalidis.datamars.inspections.domain.Inspection;
+import gr.petalidis.datamars.inspections.domain.ScannedDocument;
 import gr.petalidis.datamars.inspections.dto.InspectionDateProducer;
 import gr.petalidis.datamars.inspections.exceptions.PersistenceException;
 import gr.petalidis.datamars.inspections.repository.DbHandler;
@@ -35,6 +36,14 @@ public class InspectionService {
         InspectionRepository.save(dbHandler, inspection);
         EntryRepository.save(dbHandler,inspection.getValidEntries());
         ScannedDocumentRepository.save(dbHandler,inspection.getScannedDocuments());
+        return inspection;
+    }
+
+    public static Inspection updatePhotos(DbHandler dbHandler,Inspection inspection, List<ScannedDocument> scannedDocuments)
+    {
+
+        ScannedDocumentRepository.save(dbHandler,scannedDocuments);
+        inspection.getScannedDocuments().addAll(scannedDocuments);
         return inspection;
     }
     public List<String> getCsvString(DbHandler dbHandler, String uuidString) throws PersistenceException{

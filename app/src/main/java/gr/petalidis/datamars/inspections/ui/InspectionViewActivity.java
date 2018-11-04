@@ -366,4 +366,10 @@ public class InspectionViewActivity extends AppCompatActivity {
         intent.putExtra("inspection",inspection);
         startActivity(intent);
     }
+
+    public void viewPhotos(View view) {
+        Intent intent = new Intent(this, InspectionViewPhotoActivity.class);
+        intent.putExtra("inspection",inspection);
+        startActivity(intent);
+    }
 }

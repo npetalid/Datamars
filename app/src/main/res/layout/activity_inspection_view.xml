@@ -697,6 +697,22 @@
             android:onClick="goToViewActivityStep2"
             />
     </LinearLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+        <Button
+            android:id="@+id/goToViewPhotos"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Προβολή σκαναρισμένων εγγράφων"
+            android:textSize="20sp"
+            android:onClick="viewPhotos"
+            />
+    </LinearLayout>
 
 </LinearLayout>
 

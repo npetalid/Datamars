@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,13 +19,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -64,6 +70,11 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
 
     private Activity mContext;
 
+    private boolean requestLocationUpdates = true;
+
+    private LocationCallback mLocationCallback;
+
+    private FusedLocationProviderClient mFusedLocationClient;
     private class SpinnerListener implements AdapterView.OnItemSelectedListener {
         private String producerTag;
 
@@ -99,15 +110,30 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
             inspectionDate = (Date) savedInstanceState.getSerializable("inspectionDate");
             filename = savedInstanceState.getString("rsgFilename");
             thumbnails = (ArrayList<ThumbnailDto>) savedInstanceState.getSerializable("thumbnails");
+            requestLocationUpdates = savedInstanceState.getBoolean("requestLocationUpdates");
         } else {
             inspectionDate = (Date) getIntent().getExtras().getSerializable("inspectionDate");
             filename = getIntent().getExtras().getString("rsgFilename");
             thumbnails = (ArrayList<ThumbnailDto>) getIntent().getExtras().getSerializable("thumbnails");
         }
+
         setContentView(R.layout.activity_inspection_step_two);
 
+        mLocationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
+                for (Location location : locationResult.getLocations()) {
+                    setGpsLocation(location);
+                }
+            };
+        };
         // recovering the instance state
         checkLocationPermission();
+
+
         InspectionStepTwoAsyncTask inspectionStepTwoActivityAsyncTask = new InspectionStepTwoAsyncTask();
 
         inspectionStepTwoActivityAsyncTask.execute(filename,new SimpleDateFormat("dd-MM-yyyy hh:mm:ss").format(inspectionDate));
@@ -143,6 +169,7 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
         outState.putString("rsgFilename", filename);
         outState.putSerializable("inspectionDate", inspectionDate);
         outState.putSerializable("thumbnails",thumbnails);
+        outState.putBoolean("requestLocationUpdates",requestLocationUpdates);
         // call superclass to save any view hierarchy
         super.onSaveInstanceState(outState);
     }
@@ -193,6 +220,19 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
 
     }
 
+    public void gpsToggle(View view) {
+        Button button = findViewById(R.id.gpsButton);
+
+        if (requestLocationUpdates == true) {
+            stopLocationUpdates();
+            requestLocationUpdates=false;
+            button.setText("Έναρξη ενημέρωσης συν/γμένων");
+        } else {
+            requestLocationUpdates =true;
+            checkLocationPermission();
+            button.setText("Παύση ενημέρωσης συν/γμένων");
+        }
+    }
     public void goToInspectionStepThreeActivity(View view) {
 
         if (!formHasErrors() && !rsgs.isEmpty()) {
@@ -377,14 +417,21 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
 
 
     private void setGpsLocation(Location location) {
-        double[] coordinates = {0.0, 0.0};
-        if (gpsLocation != null) {
+
+        if (location!=null &&
+                (gpsLocation==null || location.distanceTo(gpsLocation)>1 || location.getAccuracy()<gpsLocation.getAccuracy())) {
+            gpsLocation = location;
+
+            double[] coordinates = {0.0, 0.0};
+
             coordinates = WGS84Converter.toGGRS87(gpsLocation.getLatitude(), gpsLocation.getLongitude());
+
+            TextView gpsLocation = (TextView) findViewById(R.id.gpsValue);
+            float accuracy = location == null ? 1000.0f : location.getAccuracy();
+            gpsLocation.setText(String.format(Locale.forLanguageTag("el"), "%.2f", coordinates[0])
+                    + ", " + String.format(Locale.forLanguageTag("el"), "%.2f", coordinates[1]) + "\n (ακρίβεια 68% εντός:"
+                    + String.format(Locale.forLanguageTag("el"), "%.2f", accuracy) + "μ)");
         }
-        TextView gpsLocation = (TextView) findViewById(R.id.gpsValue);
-        float accuracy = location==null?1000.0f:location.getAccuracy();
-        gpsLocation.setText(coordinates[0] + ", " + coordinates[1] + "\n (με ακρίβεια 68% εντός:"
-                + String.format(Locale.forLanguageTag("el"), "%.2f",accuracy)+ " μέτρων)");
     }
 
     public boolean checkLocationPermission() {
@@ -421,15 +468,28 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
             }
             return false;
         } else {
-            FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+
             mFusedLocationClient.getLastLocation()
                     .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                         @Override
                         public void onSuccess(Location location) {
-                            gpsLocation = location;
                             setGpsLocation(location);
                         }
                     });
+            if (requestLocationUpdates) {
+                LocationRequest currentLocationRequest = new LocationRequest();
+                currentLocationRequest.setInterval(500)
+                        .setFastestInterval(0)
+                        .setMaxWaitTime(0)
+                        .setSmallestDisplacement(0)
+                        .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+                if (mFusedLocationClient!=null) {
+                    mFusedLocationClient.requestLocationUpdates(currentLocationRequest, mLocationCallback, null);
+                }
+            } else {
+                stopLocationUpdates();
+            }
             return true;
         }
     }
@@ -459,7 +519,23 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopLocationUpdates();
+    }
 
+    private void stopLocationUpdates() {
+        if (mFusedLocationClient!=null) {
+            mFusedLocationClient.removeLocationUpdates(mLocationCallback);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        checkLocationPermission();
+    }
     private class InspectionStepTwoAsyncTask extends AsyncTask<String, String, Set<Rsg>> {
 
         protected Set<Rsg> doInBackground(String... strings) {

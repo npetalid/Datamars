@@ -39,6 +39,10 @@ public class InspectionStepThreeActivity extends AppCompatActivity {
         dbHandler = new DbHandler(this.getApplicationContext());
         setContentView(R.layout.activity_inspection_step_three);
 
+        final Button checkButton = findViewById(R.id.ischecked);
+
+        checkButton.setOnLongClickListener(this::reverseSelection);
+
         final ListView listview = (ListView) findViewById(R.id.editItemsList);
 
         final InspectionStepThreeAdapter adapter = new InspectionStepThreeAdapter(this,
@@ -81,8 +85,8 @@ public class InspectionStepThreeActivity extends AppCompatActivity {
         AlertDialog.Builder preSaveBuilder = new AlertDialog.Builder(this);
 
         String msg = "Βρέθηκαν: \n" +
-                "Για τον παραγωγό " + inspection.getProducer1Name() +
-                inspection.getValidEntriesCount("\n" + inspection.getProducer1Tin()) + " ζώα\t" +
+                "Για τον παραγωγό " + inspection.getProducer1Name() + " \n" +
+                inspection.getValidEntriesCount(inspection.getProducer1Tin()) + " ζώα\t" +
                 inspection.getInRegisterCount(inspection.getProducer1Tin()) + " στο μητρώο\n" +
                 inspection.getLambCount(inspection.getProducer1Tin()) + " αρνιά\t" +
                 inspection.getSheepCount(inspection.getProducer1Tin()) + " προβατίνες\n" +
@@ -91,8 +95,8 @@ public class InspectionStepThreeActivity extends AppCompatActivity {
                 inspection.getRamCount(inspection.getProducer1Tin()) + " κριάρια\t" +
                 inspection.getHeGoatCount(inspection.getProducer1Tin()) + " τράγοι\n";
                 if (!inspection.getProducer2Tin().isEmpty()) {
-                   msg = msg + "\nΓια τον παραγωγό " + inspection.getProducer2Name() +
-                            inspection.getValidEntriesCount("\n" +inspection.getProducer2Tin()) + " ζώα\t" +
+                   msg = msg + "\nΓια τον παραγωγό " + inspection.getProducer2Name() + "\n" +
+                            inspection.getValidEntriesCount(inspection.getProducer2Tin()) + " ζώα\t" +
                             inspection.getInRegisterCount(inspection.getProducer2Tin()) + " στο μητρώο\n" +
                             inspection.getLambCount(inspection.getProducer2Tin()) + " αρνιά\t" +
                             inspection.getSheepCount(inspection.getProducer2Tin()) + " προβατίνες\n" +
@@ -102,8 +106,8 @@ public class InspectionStepThreeActivity extends AppCompatActivity {
                             inspection.getHeGoatCount(inspection.getProducer2Tin()) + " τράγοι\n";
                 }
          if (!inspection.getProducer3Tin().isEmpty()) {
-            msg = msg + "\nΓια τον παραγωγό " + inspection.getProducer3Name() +
-                    inspection.getValidEntriesCount("\n" +inspection.getProducer3Tin()) + " ζώα\t" +
+            msg = msg + "\nΓια τον παραγωγό " + inspection.getProducer3Name()  + "\n" +
+                    inspection.getValidEntriesCount(inspection.getProducer3Tin()) + " ζώα\t" +
                     inspection.getInRegisterCount(inspection.getProducer3Tin()) + " στο μητρώο\n" +
                     inspection.getLambCount(inspection.getProducer3Tin()) + " αρνιά\t" +
                     inspection.getSheepCount(inspection.getProducer3Tin()) + " προβατίνες\n" +
@@ -113,8 +117,8 @@ public class InspectionStepThreeActivity extends AppCompatActivity {
                     inspection.getHeGoatCount(inspection.getProducer3Tin()) + " τράγοι\n";
         }
         if (!inspection.getProducer4Tin().isEmpty()) {
-            msg = msg + "\nΓια τον παραγωγό " + inspection.getProducer4Name() +
-                    inspection.getValidEntriesCount("\n" +inspection.getProducer4Tin()) + " ζώα\t" +
+            msg = msg + "\nΓια τον παραγωγό " + inspection.getProducer4Name()  + "\n" +
+                    inspection.getValidEntriesCount(inspection.getProducer4Tin()) + " ζώα\t" +
                     inspection.getInRegisterCount(inspection.getProducer4Tin()) + " στο μητρώο\n" +
                     inspection.getLambCount(inspection.getProducer4Tin()) + " αρνιά\t" +
                     inspection.getSheepCount(inspection.getProducer4Tin()) + " προβατίνες\n" +
@@ -197,6 +201,15 @@ public class InspectionStepThreeActivity extends AppCompatActivity {
         { inspectionStepThreeAdapter.sort(Comparator.comparing(Entry::isInRegister).reversed());
             button.setOnClickListener(y->sortGridEntriesByIsInRegister(y));
         });
+    }
+
+    public boolean reverseSelection(View view) {
+        ListView gridView = (ListView) findViewById(R.id.editItemsList);
+        InspectionStepThreeAdapter inspectionStepThreeAdapter = (InspectionStepThreeAdapter) gridView.getAdapter();
+        inspectionStepThreeAdapter.revertRegister();
+        inspectionStepThreeAdapter.notifyDataSetChanged();
+        gridView.setAdapter(inspectionStepThreeAdapter);
+        return true;
     }
     public void sortGridEntriesByComments(View view) {
         ListView gridView = (ListView) findViewById(R.id.customlist);

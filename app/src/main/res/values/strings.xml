@@ -32,4 +32,5 @@
     <string name="ramAnimal">Κριάρι</string>
     <string name="title_activity_inspection_step_photo">Ψηφιοποιήση εγγράφου</string>
     <string name="title_activity_inspection_view2">Εμφάνιση ενωτίων ελέγχου</string>
+    <string name="title_activity_inspection_viewPhotoActivity">Προβολή σκαναρισμένων εγγράφων</string>
 </resources>
