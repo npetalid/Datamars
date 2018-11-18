@@ -38,7 +38,11 @@ class RsgParser {
         String []parts = rsgString.split("\\|");
 
         if (parts.length!=3 ) {
-            throw new IllegalArgumentException("Parts not divided by | character");
+            //Try , instead of |
+            parts = rsgString.split(",");
+            if (parts.length!=3) {
+                throw new IllegalArgumentException("Parts not divided by | character");
+            }
         }
 
         if (!parts[0].startsWith("[") && !parts[2].endsWith("]")) {
