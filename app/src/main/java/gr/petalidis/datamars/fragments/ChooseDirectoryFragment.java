@@ -21,6 +21,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ import gr.petalidis.datamars.rsglibrary.CsvRootDirectory;
 
 
 public class ChooseDirectoryFragment extends DialogFragment {
-
+    private final static String TAG = ChooseDirectoryFragment.class.getName();
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
     }
@@ -60,7 +61,7 @@ public class ChooseDirectoryFragment extends DialogFragment {
                                 String fullPath = csvRootDirectory.getDirectory() + File.separator + usbs.get(which);
                                 sessionViewer.execute(fullPath);
                             } catch (IllegalStateException e) {
-                                //Do nothing
+                                Log.e(TAG, "Unable to read csv Root Directory: " + e.getLocalizedMessage());
                             }
                         }
                     });

@@ -16,6 +16,7 @@
 package gr.petalidis.datamars.rsglibrary;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import java.io.Serializable;
 import java.text.ParseException;
@@ -26,6 +27,7 @@ public class RsgSession implements Comparable<RsgSession>, Serializable {
     private Date date;
     private String filepath;
     final static private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+    private final static String TAG = RsgSession.class.getName();
 
     RsgSession(String filename, String filepath) throws ParseException
     {
@@ -67,6 +69,7 @@ public class RsgSession implements Comparable<RsgSession>, Serializable {
             Date date = formatter.parse(nameWithoutSuffix);
             return hasProperSuffix;
         } catch (ParseException e) {
+            Log.e(TAG,"Received not valid session file name: "  + name +", " + e.getLocalizedMessage());
             return false;
         }
 

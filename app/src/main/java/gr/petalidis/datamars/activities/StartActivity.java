@@ -13,6 +13,7 @@ import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -44,6 +45,7 @@ import gr.petalidis.datamars.rsglibrary.RsgRootDirectory;
 
 
 public class StartActivity extends AppCompatActivity implements AppStatusFragment.OnFragmentInteractionListener,  ChooseDirectoryFragment.OnFragmentInteractionListener {
+    private static final String TAG = StartActivity.class.getName();
     private static final int PERMISSION_READWRITE_REQUEST_CODE =1;
 
     private static final String FRAGMENT_TAG = "gr.petalidis.datamars.status_fragment";
@@ -70,7 +72,7 @@ public class StartActivity extends AppCompatActivity implements AppStatusFragmen
             RsgRootDirectory rsgRootDirectory = new RsgRootDirectory();
             currentUsbName = rsgRootDirectory.getUsbName();
         } catch (IllegalStateException e) {
-            //Do nothing
+            Log.w(TAG, "Unable to read RsgRootDirectory: " + e.getLocalizedMessage());
         }
 
         CsvRootDirectory csvRootDirectory = new CsvRootDirectory();
@@ -115,7 +117,7 @@ public class StartActivity extends AppCompatActivity implements AppStatusFragmen
             RsgRootDirectory rsgRootDirectory = new RsgRootDirectory();
             currentUsbName = rsgRootDirectory.getUsbName();
         } catch (IllegalStateException e) {
-            //Do nothing
+            Log.w(TAG, "Unable to read RsgRootDirectory: " + e.getLocalizedMessage());
         }
 
         CsvRootDirectory csvRootDirectory = new CsvRootDirectory();

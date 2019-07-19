@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.squareup.timessquare.CalendarPickerView;
 
@@ -19,6 +20,7 @@ public class InspectionStepOneActivity extends AppCompatActivity {
 
     private RsgSessionFiles files = new RsgSessionFiles();
 
+    private final static String TAG = InspectionStepOneActivity.class.getName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         final Context mContext = this;
@@ -71,7 +73,7 @@ public class InspectionStepOneActivity extends AppCompatActivity {
                     startActivity(intent);
                     return true;
                 } catch (ParseException e) {
-                    e.printStackTrace();
+                    Log.e(TAG,"Received not valid name and/or date: " + e.getLocalizedMessage());
                 }
                 return false;
             }

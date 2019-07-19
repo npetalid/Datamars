@@ -218,7 +218,10 @@ public class Inspection implements Serializable {
         return getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
                 && x.getAnimalType().trim().equals(Animals.HEGOAT_ANIMAL) && x.getProducerTin().equals(producer1Tin)).count();
     }
-
+    public long getHorseCount(String producer1Tin) {
+        return getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
+                && x.getAnimalType().trim().equals(Animals.HORSE_ANIMAL) && x.getProducerTin().equals(producer1Tin)).count();
+    }
     public double getLatitude() {
         return latitude;
     }

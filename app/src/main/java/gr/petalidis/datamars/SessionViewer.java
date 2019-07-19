@@ -19,6 +19,7 @@ package gr.petalidis.datamars;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import java.lang.ref.WeakReference;
 import java.text.ParseException;
@@ -28,6 +29,7 @@ import gr.petalidis.datamars.rsglibrary.RsgSessionFiles;
 import gr.petalidis.datamars.rsglibrary.RsgSessionScanner;
 
 public class SessionViewer extends AsyncTask<String, String, RsgSessionFiles> {
+    private static final String TAG = SessionViewer.class.getName();
 
     private WeakReference<Context> context;
     private WeakReference<String> nextActivityName;
@@ -47,7 +49,7 @@ public class SessionViewer extends AsyncTask<String, String, RsgSessionFiles> {
         try {
             sessions = RsgSessionScanner.scanUsbDirectory(selectedUsb);
         } catch (ParseException e) {
-            e.printStackTrace();
+            Log.e(TAG,"Unable to scan Usb Directory: " + e.getLocalizedMessage());
         }
 
         return sessions;

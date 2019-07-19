@@ -19,6 +19,7 @@ package gr.petalidis.datamars;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.util.Log;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -35,6 +36,7 @@ import gr.petalidis.datamars.rsglibrary.RsgSessionFiles;
 import gr.petalidis.datamars.rsglibrary.RsgSessionScanner;
 
 public class RsgCopier extends AsyncTask<Object, String, Integer> {
+    private static final String TAG = RsgCopier.class.getName();
 
     private WeakReference<TextView> textView;
 
@@ -88,7 +90,8 @@ public class RsgCopier extends AsyncTask<Object, String, Integer> {
 
             sessions = RsgSessionScanner.scanUsbDirectory(rsgRootDirectory.getCsvDirectory());
         } catch (IllegalStateException  | IOException | ParseException e) {
-            e.printStackTrace();
+            Log.e(TAG,"Unable to scan Usb Directory: " + e.getLocalizedMessage());
+            publishProgress("Unable to scan Directory: " + e.getLocalizedMessage());
         }
 
 

@@ -140,9 +140,22 @@
             android:layout_height="wrap_content"
             android:text="Κριάρια"
             android:textSize="20sp" />
-
         <TextView
             android:id="@+id/ramTotalValue"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="20sp" />
+        <TextView
+            android:id="@+id/horsesTotalLabel"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Άλογα"
+            android:textSize="20sp" />
+        <TextView
+            android:id="@+id/horsesTotalValue"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -307,6 +320,21 @@
             android:layout_height="wrap_content"
             android:text=""
             android:textSize="20sp" />
+        <TextView
+            android:id="@+id/horsesTotalLabel2"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Άλογα"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/horsesTotalValue2"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="20sp" />
     </LinearLayout>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -465,6 +493,21 @@
             android:layout_height="wrap_content"
             android:text=""
             android:textSize="20sp" />
+        <TextView
+            android:id="@+id/horsesTotalLabel3"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Άλογα"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/horsesTotalValue3"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="20sp" />
     </LinearLayout>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -618,6 +661,21 @@
 
         <TextView
             android:id="@+id/ramTotalValue4"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="20sp" />
+        <TextView
+            android:id="@+id/horsesTotalLabel4"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Άλογα"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/horsesTotalValue4"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"

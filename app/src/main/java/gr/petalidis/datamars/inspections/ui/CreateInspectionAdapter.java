@@ -36,7 +36,7 @@ public class CreateInspectionAdapter extends ArrayAdapter<InspectionDateProducer
     private final List<InspectionDateProducer> objects;
     private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
     private final DbHandler dbHandler;
-
+    private final static String TAG = CreateInspectionAdapter.class.getName();
 
     public CreateInspectionAdapter(Context context, int resource, List<InspectionDateProducer> objects) {
         super(context, resource, objects);
@@ -89,6 +89,7 @@ public class CreateInspectionAdapter extends ArrayAdapter<InspectionDateProducer
                 ((Activity)context).startActivity(intent);
                 return true;
             } catch (PersistenceException e) {
+                Log.e(TAG, e.getLocalizedMessage());
                 Toast.makeText(context, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                 return false;
             }
@@ -101,6 +102,7 @@ public class CreateInspectionAdapter extends ArrayAdapter<InspectionDateProducer
                 ((Activity)context).startActivity(intent);
                 return true;
             } catch (PersistenceException e) {
+                Log.e(TAG, e.getLocalizedMessage());
                 Toast.makeText(context, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                 return false;
             }

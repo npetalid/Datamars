@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -37,6 +38,7 @@ import gr.petalidis.datamars.rsglibrary.RsgReader;
 
 public class ViewRsgActivity extends AppCompatActivity {
 
+    private final static String TAG = ViewRsgActivity.class.getName();
     private TextView mTextMessage;
     private String filename = "";
     private String date = "";
@@ -89,7 +91,7 @@ public class ViewRsgActivity extends AppCompatActivity {
             ListView gridView = (ListView) findViewById(R.id.rsglistId);
             gridView.setAdapter(adapter);
         } catch (Exception e) {
-            //
+            Log.e(TAG, "Unable to readRsgFromTablet: " + e.getLocalizedMessage());
         }
 
 

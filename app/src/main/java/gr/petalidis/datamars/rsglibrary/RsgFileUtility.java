@@ -15,10 +15,13 @@
 
 package gr.petalidis.datamars.rsglibrary;
 
+import android.util.Log;
+
 import java.util.Calendar;
 
 class RsgFileUtility {
 
+    private final static String TAG = RsgFileUtility.class.getName();
     private final static int MINIMUM_YEAR = 2000;
 
     private static final String VALID_SUFFIX = ".rsg";
@@ -33,6 +36,7 @@ class RsgFileUtility {
             int yearInt = Integer.parseInt(year);
             return MINIMUM_YEAR < yearInt && yearInt<=currentYear;
         } catch (NumberFormatException e) {
+            Log.e(TAG,"Received not Valid year: "  + year +", " + e.getLocalizedMessage());
             return false;
         }
     }
@@ -43,6 +47,7 @@ class RsgFileUtility {
             int monthInt = Integer.parseInt(month);
             return 0 <= monthInt && monthInt<=12;
         } catch (NumberFormatException e) {
+            Log.e(TAG,"Received not Valid month: "  + month +", " + e.getLocalizedMessage());
             return false;
         }
     }
@@ -52,6 +57,7 @@ class RsgFileUtility {
             int dayInt = Integer.parseInt(day);
             return 1 <= dayInt && dayInt <= 31;
         } catch (NumberFormatException e) {
+            Log.e(TAG,"Received not Valid day: "  + day +", " + e.getLocalizedMessage());
             return false;
         }
     }

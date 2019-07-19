@@ -12,6 +12,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,8 @@ public class InspectionStepPhotoActivity extends AppCompatActivity {
     private String filename = "";
 
     private Date inspectionDate;
+
+    private final String TAG = InspectionStepPhotoActivity.class.getName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,6 +123,8 @@ public class InspectionStepPhotoActivity extends AppCompatActivity {
                 cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(cameraIntent, REQUEST_PICTURE_CAPTURE);
             } catch (IOException ex) {
+                Log.e(TAG, "Photo file can't be created, please try again:" + ex.getLocalizedMessage());
+
                 Toast.makeText(this,
                         "Photo file can't be created, please try again",
                         Toast.LENGTH_SHORT).show();

@@ -15,6 +15,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NavUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -538,6 +539,7 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
     }
     private class InspectionStepTwoAsyncTask extends AsyncTask<String, String, Set<Rsg>> {
 
+        private final String TAG = InspectionStepTwoAsyncTask.class.getName();
         protected Set<Rsg> doInBackground(String... strings) {
 
             int count = strings.length;
@@ -562,6 +564,7 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
                 return rsgs;
 
             } catch (IOException | ParseException e) {
+                Log.e(TAG,"Received exception: " + e.getLocalizedMessage());
                 return new HashSet<>();
 
             }

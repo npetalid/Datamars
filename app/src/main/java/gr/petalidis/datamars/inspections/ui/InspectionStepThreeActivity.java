@@ -93,8 +93,9 @@ public class InspectionStepThreeActivity extends AppCompatActivity {
                 inspection.getKidCount(inspection.getProducer1Tin()) + " ερίφια\t" +
                 inspection.getGoatCount(inspection.getProducer1Tin()) + " γίδες\n" +
                 inspection.getRamCount(inspection.getProducer1Tin()) + " κριάρια\t" +
-                inspection.getHeGoatCount(inspection.getProducer1Tin()) + " τράγοι\n";
-                if (!inspection.getProducer2Tin().isEmpty()) {
+                inspection.getHeGoatCount(inspection.getProducer1Tin()) + " τράγοι\n"+
+                inspection.getHorseCount(inspection.getProducer1Tin()) + " άλογα\n";
+        if (!inspection.getProducer2Tin().isEmpty()) {
                    msg = msg + "\nΓια τον παραγωγό " + inspection.getProducer2Name() + "\n" +
                             inspection.getValidEntriesCount(inspection.getProducer2Tin()) + " ζώα\t" +
                             inspection.getInRegisterCount(inspection.getProducer2Tin()) + " στο μητρώο\n" +
@@ -103,7 +104,8 @@ public class InspectionStepThreeActivity extends AppCompatActivity {
                             inspection.getKidCount(inspection.getProducer2Tin()) + " ερίφια\t" +
                             inspection.getGoatCount(inspection.getProducer2Tin()) + " γίδες\n" +
                             inspection.getRamCount(inspection.getProducer2Tin()) + " κριάρια\t" +
-                            inspection.getHeGoatCount(inspection.getProducer2Tin()) + " τράγοι\n";
+                            inspection.getHeGoatCount(inspection.getProducer2Tin()) + " τράγοι\n"+
+                            inspection.getHorseCount(inspection.getProducer2Tin()) + " άλογα\n";
                 }
          if (!inspection.getProducer3Tin().isEmpty()) {
             msg = msg + "\nΓια τον παραγωγό " + inspection.getProducer3Name()  + "\n" +
@@ -114,7 +116,8 @@ public class InspectionStepThreeActivity extends AppCompatActivity {
                     inspection.getKidCount(inspection.getProducer3Tin()) + " ερίφια\t" +
                     inspection.getGoatCount(inspection.getProducer3Tin()) + " γίδες\n" +
                     inspection.getRamCount(inspection.getProducer3Tin()) + " κριάρια\t" +
-                    inspection.getHeGoatCount(inspection.getProducer3Tin()) + " τράγοι\n";
+                    inspection.getHeGoatCount(inspection.getProducer3Tin()) + " τράγοι\n" +
+                    inspection.getHorseCount(inspection.getProducer3Tin()) + " άλογα\n";
         }
         if (!inspection.getProducer4Tin().isEmpty()) {
             msg = msg + "\nΓια τον παραγωγό " + inspection.getProducer4Name()  + "\n" +
@@ -125,7 +128,8 @@ public class InspectionStepThreeActivity extends AppCompatActivity {
                     inspection.getKidCount(inspection.getProducer4Tin()) + " ερίφια\t" +
                     inspection.getGoatCount(inspection.getProducer4Tin()) + " γίδες\n" +
                     inspection.getRamCount(inspection.getProducer4Tin()) + " κριάρια\t" +
-                    inspection.getHeGoatCount(inspection.getProducer4Tin()) + " τράγοι\n";
+                    inspection.getHeGoatCount(inspection.getProducer4Tin()) + " τράγοι\n"+
+                    inspection.getHorseCount(inspection.getProducer4Tin()) + " άλογα\n";
         }
              msg = msg+   "Να γίνει αποθήκευση;";
         preSaveBuilder.setTitle("Αποθήκευση ελέγχου").setMessage(msg)

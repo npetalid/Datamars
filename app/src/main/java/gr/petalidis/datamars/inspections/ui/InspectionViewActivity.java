@@ -46,6 +46,7 @@ public class InspectionViewActivity extends AppCompatActivity {
         goatValue();
         ramValue();
         heGoatValue();
+        horseValue();
 
         setTotalValue2();
         setInRegisterValue2();
@@ -55,6 +56,7 @@ public class InspectionViewActivity extends AppCompatActivity {
         goatValue2();
         ramValue2();
         heGoatValue2();
+        horseValue2();
 
         setTotalValue3();
         setInRegisterValue3();
@@ -64,6 +66,7 @@ public class InspectionViewActivity extends AppCompatActivity {
         goatValue3();
         ramValue3();
         heGoatValue3();
+        horseValue3();
 
         setTotalValue4();
         setInRegisterValue4();
@@ -73,8 +76,10 @@ public class InspectionViewActivity extends AppCompatActivity {
         goatValue4();
         ramValue4();
         heGoatValue4();
+        horseValue4();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -178,6 +183,14 @@ public class InspectionViewActivity extends AppCompatActivity {
         if (inspection != null)
             stats.setText(validEntries+"");
     }
+    private void horseValue() {
+        TextView stats = (TextView) findViewById(R.id.horsesTotalValue);
+        long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
+                && x.getAnimalType().trim().equals(getResources().getString(R.string.horseAnimal)) && x.getProducerTin().equals(inspection.getProducer1Tin())).count();
+        if (inspection != null)
+            stats.setText(validEntries+"");
+    }
+
     private void heGoatValue() {
         TextView stats = (TextView) findViewById(R.id.heGoatTotalValue);
         long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
@@ -233,6 +246,13 @@ public class InspectionViewActivity extends AppCompatActivity {
         TextView stats = (TextView) findViewById(R.id.ramTotalValue2);
         long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
                 && x.getAnimalType().trim().equals(getResources().getString(R.string.ramAnimal)) && x.getProducerTin().equals(inspection.getProducer2Tin())).count();
+        if (inspection != null)
+            stats.setText(validEntries+"");
+    }
+    private void horseValue2() {
+        TextView stats = (TextView) findViewById(R.id.horsesTotalValue2);
+        long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
+                && x.getAnimalType().trim().equals(getResources().getString(R.string.horseAnimal)) && x.getProducerTin().equals(inspection.getProducer2Tin())).count();
         if (inspection != null)
             stats.setText(validEntries+"");
     }
@@ -294,6 +314,13 @@ public class InspectionViewActivity extends AppCompatActivity {
         if (inspection != null)
             stats.setText(validEntries+"");
     }
+    private void horseValue3() {
+        TextView stats = (TextView) findViewById(R.id.horsesTotalValue3);
+        long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
+                && x.getAnimalType().trim().equals(getResources().getString(R.string.horseAnimal)) && x.getProducerTin().equals(inspection.getProducer3Tin())).count();
+        if (inspection != null)
+            stats.setText(validEntries+"");
+    }
     private void heGoatValue3() {
         TextView stats = (TextView) findViewById(R.id.heGoatTotalValue3);
         long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
@@ -349,6 +376,14 @@ public class InspectionViewActivity extends AppCompatActivity {
         TextView stats = (TextView) findViewById(R.id.ramTotalValue4);
         long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
                 && x.getAnimalType().trim().equals(getResources().getString(R.string.ramAnimal)) && x.getProducerTin().equals(inspection.getProducer4Tin())).count();
+        if (inspection != null)
+            stats.setText(validEntries+"");
+    }
+
+    private void horseValue4() {
+        TextView stats = (TextView) findViewById(R.id.horsesTotalValue4);
+        long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true
+                && x.getAnimalType().trim().equals(getResources().getString(R.string.horseAnimal)) && x.getProducerTin().equals(inspection.getProducer4Tin())).count();
         if (inspection != null)
             stats.setText(validEntries+"");
     }

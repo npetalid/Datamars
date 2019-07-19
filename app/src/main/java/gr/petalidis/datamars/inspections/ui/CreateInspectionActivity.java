@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -25,6 +26,7 @@ public class CreateInspectionActivity extends Activity {
     private Context context;
     private RsgSessionFiles files = new RsgSessionFiles();
 
+    private final static String TAG = CreateInspectionActivity.class.getName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +83,7 @@ public class CreateInspectionActivity extends Activity {
                             intent.putExtra("inspection", inspection);
                             startActivity(intent);
                         } catch (PersistenceException e) {
+                            Log.e(TAG, e.getLocalizedMessage());
                             Toast.makeText(context, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                         }
 
@@ -90,6 +93,7 @@ public class CreateInspectionActivity extends Activity {
             });
 
         } catch (PersistenceException e) {
+            Log.e(TAG, e.getLocalizedMessage());
             Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
         }
     }
