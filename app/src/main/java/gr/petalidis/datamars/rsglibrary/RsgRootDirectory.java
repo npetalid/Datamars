@@ -54,7 +54,7 @@ public class RsgRootDirectory {
         if (files != null) {
             for (File inFile : files) {
                 if (inFile.isDirectory() && inFile.canRead()) {
-                    if (inFile.getName().startsWith("Session")) {
+                    if (inFile.getName().toLowerCase().startsWith("session")) {
                         results.add(inFile.getAbsolutePath());
                         return results;
                     }

@@ -90,7 +90,7 @@ public class CalendarActivity extends AppCompatActivity {
                     startActivity(intent);
                     return true;
                 } catch (ParseException e) {
-                    log.error("Unable to parse date: " + e.getLocalizedMessage());
+                    log.error("Unable to parse date: " +date + ":" + e.getLocalizedMessage());
                 }
                 return false;
             }

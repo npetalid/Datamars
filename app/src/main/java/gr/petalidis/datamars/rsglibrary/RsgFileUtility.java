@@ -27,11 +27,10 @@ import gr.petalidis.datamars.SessionViewer;
 class RsgFileUtility {
 
     private static final Logger log = Log4jHelper.getLogger(RsgFileUtility.class.getName());
-    private final static int MINIMUM_YEAR = 2000;
+    private final static int MINIMUM_YEAR = 2009;
 
     private static final String VALID_SUFFIX = ".rsg";
     private static final String VALID_PREFIX = "session_";
-
 
     static boolean isValidYear(String year)
     {

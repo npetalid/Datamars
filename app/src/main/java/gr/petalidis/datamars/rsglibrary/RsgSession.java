@@ -26,18 +26,19 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import gr.petalidis.datamars.Log4jHelper;
+import gr.petalidis.datamars.Moo;
 import gr.petalidis.datamars.SessionViewer;
 
 public class RsgSession implements Comparable<RsgSession>, Serializable {
     private Date date;
     private String filepath;
-    final static private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
     private static final Logger log = Log4jHelper.getLogger(RsgSession.class.getName());
 
     RsgSession(String filename, String filepath) throws ParseException
     {
+
         String dateString = filename.replace(".csv","");
-        this.date = formatter.parse(dateString);
+        this.date = Moo.getFormatter().parse(dateString);
         this.filepath = filepath;
 
     }
@@ -63,7 +64,7 @@ public class RsgSession implements Comparable<RsgSession>, Serializable {
     }
 
     public String getCsvName() {
-        return formatter.format(date)+".csv";
+        return Moo.getFormatter().format(date)+".csv";
     }
 
     static boolean isValidRsgCsvSessionFile(String name)
@@ -71,7 +72,7 @@ public class RsgSession implements Comparable<RsgSession>, Serializable {
        boolean hasProperSuffix = name.endsWith(".csv");
        String nameWithoutSuffix = name.replace(".csv","");
         try {
-            Date date = formatter.parse(nameWithoutSuffix);
+            Date date = Moo.getFormatter().parse(nameWithoutSuffix);
             return hasProperSuffix;
         } catch (ParseException e) {
             log.error("Received not valid session file name: "  + name +", " + e.getLocalizedMessage());

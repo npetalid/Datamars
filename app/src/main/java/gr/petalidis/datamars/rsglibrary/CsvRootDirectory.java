@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import gr.petalidis.datamars.Log4jHelper;
+import gr.petalidis.datamars.Moo;
 import gr.petalidis.datamars.inspections.ui.InspectionStepTwoActivity;
 
 /**
@@ -21,11 +22,11 @@ public class CsvRootDirectory {
 
     private String directory;
     public CsvRootDirectory() {
-        this.directory = Environment.getExternalStorageDirectory()
+        this.directory =  Moo.getAppContext().getExternalFilesDir("")
                 .getAbsolutePath() + File.separator + "GES3S";
 
         if (!isExternalStorageReadable() || !isExternalStorageWritable()) {
-            log.error("Could not write to external storage");
+            log.error("Could not write to external storage: " + this.directory);
             throw new IllegalStateException("Could not write to external storage");
         }
     }

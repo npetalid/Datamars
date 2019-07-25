@@ -19,13 +19,12 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
 
 public class RsgSessionFiles implements Serializable {
-
-    final private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
     private List<RsgSession> sessions = new ArrayList<>();
 
@@ -50,6 +49,7 @@ public class RsgSessionFiles implements Serializable {
         for (RsgSession session: sessions) {
             dates.add(session.getDate());
         }
+        Collections.sort(dates,Comparator.naturalOrder());
         return dates;
     }
 

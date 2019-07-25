@@ -77,15 +77,19 @@ public class RsgCopier extends AsyncTask<Object, String, Integer> {
 
             publishProgress("Datamars located");
 
+            log.info("Found datamars under: " + rsgRootDirectory.rsgRoot());
 
             RsgSessionFiles rsgSessionFiles = RsgSessionScanner.scanDirectory(rsgRootDirectory.rsgRoot());
             numberOfSessionsLocated += rsgSessionFiles.getSessions().size();
             publishProgress(numberOfSessionsLocated + " sessions located");
+            log.info(numberOfSessionsLocated + " sessions located");
+
             for (RsgSession rsgSession : rsgSessionFiles.getSessions()) {
                 Set<Rsg> rsgs = RsgReader.readRsgFromScanner(rsgSession.getFilepath());
                 String filename = RsgExporter.export(rsgs, rsgRootDirectory.getCsvDirectory(), rsgSession.getCsvName());
                 if (!filename.equals("")) {
                     publishProgress("Wrote file " + filename);
+                    log.info("Wrote file: " + filename);
                     numberOfFilesWritter++;
                 }
             }
