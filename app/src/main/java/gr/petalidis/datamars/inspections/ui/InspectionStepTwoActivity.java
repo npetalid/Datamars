@@ -33,6 +33,8 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
+import org.apache.log4j.Logger;
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,7 +46,9 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import gr.petalidis.datamars.Log4jHelper;
 import gr.petalidis.datamars.R;
+import gr.petalidis.datamars.SessionViewer;
 import gr.petalidis.datamars.inspections.domain.Inspection;
 import gr.petalidis.datamars.inspections.dto.ThumbnailDto;
 import gr.petalidis.datamars.inspections.repository.DbHandler;
@@ -539,7 +543,7 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
     }
     private class InspectionStepTwoAsyncTask extends AsyncTask<String, String, Set<Rsg>> {
 
-        private final String TAG = InspectionStepTwoAsyncTask.class.getName();
+        private final Logger log = Log4jHelper.getLogger(InspectionStepTwoAsyncTask.class.getName());
         protected Set<Rsg> doInBackground(String... strings) {
 
             int count = strings.length;
@@ -564,7 +568,7 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
                 return rsgs;
 
             } catch (IOException | ParseException e) {
-                Log.e(TAG,"Received exception: " + e.getLocalizedMessage());
+                log.error("Received exception: " + e.getLocalizedMessage());
                 return new HashSet<>();
 
             }

@@ -23,6 +23,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.log4j.Logger;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -30,7 +32,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import gr.petalidis.datamars.Log4jHelper;
 import gr.petalidis.datamars.R;
+import gr.petalidis.datamars.SessionViewer;
 import gr.petalidis.datamars.inspections.dto.ThumbnailDto;
 
 public class InspectionStepPhotoActivity extends AppCompatActivity {
@@ -44,7 +48,7 @@ public class InspectionStepPhotoActivity extends AppCompatActivity {
 
     private Date inspectionDate;
 
-    private final String TAG = InspectionStepPhotoActivity.class.getName();
+    private static final Logger log = Log4jHelper.getLogger(InspectionStepPhotoActivity.class.getName());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +127,7 @@ public class InspectionStepPhotoActivity extends AppCompatActivity {
                 cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(cameraIntent, REQUEST_PICTURE_CAPTURE);
             } catch (IOException ex) {
-                Log.e(TAG, "Photo file can't be created, please try again:" + ex.getLocalizedMessage());
+                log.error( "Photo file can't be created, please try again:" + ex.getLocalizedMessage());
 
                 Toast.makeText(this,
                         "Photo file can't be created, please try again",

@@ -28,17 +28,21 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 
+import gr.petalidis.datamars.Log4jHelper;
 import gr.petalidis.datamars.R;
+import gr.petalidis.datamars.SessionViewer;
 import gr.petalidis.datamars.rsglibrary.Rsg;
 import gr.petalidis.datamars.rsglibrary.RsgReader;
 
 
 public class ViewRsgActivity extends AppCompatActivity {
 
-    private final static String TAG = ViewRsgActivity.class.getName();
+    private static final Logger log = Log4jHelper.getLogger(ViewRsgActivity.class.getName());
     private TextView mTextMessage;
     private String filename = "";
     private String date = "";
@@ -91,7 +95,7 @@ public class ViewRsgActivity extends AppCompatActivity {
             ListView gridView = (ListView) findViewById(R.id.rsglistId);
             gridView.setAdapter(adapter);
         } catch (Exception e) {
-            Log.e(TAG, "Unable to readRsgFromTablet: " + e.getLocalizedMessage());
+            log.error( "Unable to readRsgFromTablet: " + e.getLocalizedMessage());
         }
 
 

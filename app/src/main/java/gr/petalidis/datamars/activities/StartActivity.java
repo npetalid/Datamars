@@ -17,7 +17,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import org.apache.log4j.Logger;
+
+import gr.petalidis.datamars.Log4jHelper;
 import gr.petalidis.datamars.R;
+import gr.petalidis.datamars.SessionViewer;
 import gr.petalidis.datamars.fragments.AppStatusFragment;
 import gr.petalidis.datamars.fragments.ChooseDirectoryFragment;
 import gr.petalidis.datamars.inspections.ui.CreateInspectionActivity;
@@ -45,7 +49,7 @@ import gr.petalidis.datamars.rsglibrary.RsgRootDirectory;
 
 
 public class StartActivity extends AppCompatActivity implements AppStatusFragment.OnFragmentInteractionListener,  ChooseDirectoryFragment.OnFragmentInteractionListener {
-    private static final String TAG = StartActivity.class.getName();
+    private static final Logger log = Log4jHelper.getLogger(StartActivity.class.getName());
     private static final int PERMISSION_READWRITE_REQUEST_CODE =1;
 
     private static final String FRAGMENT_TAG = "gr.petalidis.datamars.status_fragment";
@@ -72,7 +76,7 @@ public class StartActivity extends AppCompatActivity implements AppStatusFragmen
             RsgRootDirectory rsgRootDirectory = new RsgRootDirectory();
             currentUsbName = rsgRootDirectory.getUsbName();
         } catch (IllegalStateException e) {
-            Log.w(TAG, "Unable to read RsgRootDirectory: " + e.getLocalizedMessage());
+            log.warn( "Unable to read RsgRootDirectory: " + e.getLocalizedMessage());
         }
 
         CsvRootDirectory csvRootDirectory = new CsvRootDirectory();
@@ -117,7 +121,7 @@ public class StartActivity extends AppCompatActivity implements AppStatusFragmen
             RsgRootDirectory rsgRootDirectory = new RsgRootDirectory();
             currentUsbName = rsgRootDirectory.getUsbName();
         } catch (IllegalStateException e) {
-            Log.w(TAG, "Unable to read RsgRootDirectory: " + e.getLocalizedMessage());
+            log.warn( "Unable to read RsgRootDirectory: " + e.getLocalizedMessage());
         }
 
         CsvRootDirectory csvRootDirectory = new CsvRootDirectory();

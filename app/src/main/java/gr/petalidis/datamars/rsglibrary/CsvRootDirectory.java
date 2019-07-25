@@ -2,16 +2,22 @@ package gr.petalidis.datamars.rsglibrary;
 
 import android.os.Environment;
 
+import org.apache.log4j.Logger;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
+
+import gr.petalidis.datamars.Log4jHelper;
+import gr.petalidis.datamars.inspections.ui.InspectionStepTwoActivity;
 
 /**
  * Created by npetalid on 19/11/17.
  */
 
 public class CsvRootDirectory {
+    private final Logger log = Log4jHelper.getLogger(CsvRootDirectory.class.getName());
 
     private String directory;
     public CsvRootDirectory() {
@@ -19,6 +25,7 @@ public class CsvRootDirectory {
                 .getAbsolutePath() + File.separator + "GES3S";
 
         if (!isExternalStorageReadable() || !isExternalStorageWritable()) {
+            log.error("Could not write to external storage");
             throw new IllegalStateException("Could not write to external storage");
         }
     }

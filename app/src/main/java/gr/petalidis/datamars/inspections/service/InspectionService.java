@@ -2,9 +2,13 @@ package gr.petalidis.datamars.inspections.service;
 
 import android.util.Log;
 
+import org.apache.log4j.Logger;
+
 import java.text.ParseException;
 import java.util.List;
 
+import gr.petalidis.datamars.Log4jHelper;
+import gr.petalidis.datamars.SessionViewer;
 import gr.petalidis.datamars.inspections.domain.Inspection;
 import gr.petalidis.datamars.inspections.domain.ScannedDocument;
 import gr.petalidis.datamars.inspections.dto.InspectionDateProducer;
@@ -15,14 +19,14 @@ import gr.petalidis.datamars.inspections.repository.InspectionRepository;
 import gr.petalidis.datamars.inspections.repository.ScannedDocumentRepository;
 
 public class InspectionService {
-    private static final String TAG = InspectionService.class.getName();
+    private static final Logger log = Log4jHelper.getLogger(InspectionService.class.getName());
 
     public static List<InspectionDateProducer> findAllInspections(DbHandler dbHandler) throws PersistenceException
     {
         try {
             return InspectionRepository.getAllInspections(dbHandler);
         } catch (ParseException e) {
-            Log.e(TAG,"findAllInspections(): Unable to get inspection: " + e.getLocalizedMessage());
+            log.error("findAllInspections(): Unable to get inspection: " + e.getLocalizedMessage());
             throw new PersistenceException(e.getLocalizedMessage());
         }
     }
@@ -31,7 +35,7 @@ public class InspectionService {
         try {
             return InspectionRepository.getInspectionFor(dbHandler,uuidString);
         } catch (ParseException e) {
-            Log.e(TAG,"findInspectionFor(): Unable to get inspection: " + e.getLocalizedMessage());
+            log.error("findInspectionFor(): Unable to get inspection: " + e.getLocalizedMessage());
             throw new PersistenceException(e.getLocalizedMessage());
         }
     }
@@ -56,7 +60,7 @@ public class InspectionService {
             Inspection inspection =  InspectionRepository.getInspectionFor(dbHandler,uuidString);
             return inspection.toStrings();
         } catch (ParseException e) {
-            Log.e(TAG,"getCsvString(): Unable to get inspection: " + e.getLocalizedMessage());
+            log.error("getCsvString(): Unable to get inspection: " + e.getLocalizedMessage());
             throw new PersistenceException(e.getLocalizedMessage());
         }
     }

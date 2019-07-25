@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.log4j.Logger;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -22,7 +24,9 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import gr.petalidis.datamars.Log4jHelper;
 import gr.petalidis.datamars.R;
+import gr.petalidis.datamars.SessionViewer;
 import gr.petalidis.datamars.activities.StartActivity;
 import gr.petalidis.datamars.inspections.domain.Inspection;
 import gr.petalidis.datamars.inspections.dto.InspectionDateProducer;
@@ -36,7 +40,7 @@ public class CreateInspectionAdapter extends ArrayAdapter<InspectionDateProducer
     private final List<InspectionDateProducer> objects;
     private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
     private final DbHandler dbHandler;
-    private final static String TAG = CreateInspectionAdapter.class.getName();
+    private static final Logger log = Log4jHelper.getLogger(CreateInspectionAdapter.class.getName());
 
     public CreateInspectionAdapter(Context context, int resource, List<InspectionDateProducer> objects) {
         super(context, resource, objects);
@@ -89,7 +93,7 @@ public class CreateInspectionAdapter extends ArrayAdapter<InspectionDateProducer
                 ((Activity)context).startActivity(intent);
                 return true;
             } catch (PersistenceException e) {
-                Log.e(TAG, e.getLocalizedMessage());
+                log.error( e.getLocalizedMessage());
                 Toast.makeText(context, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                 return false;
             }
@@ -102,7 +106,7 @@ public class CreateInspectionAdapter extends ArrayAdapter<InspectionDateProducer
                 ((Activity)context).startActivity(intent);
                 return true;
             } catch (PersistenceException e) {
-                Log.e(TAG, e.getLocalizedMessage());
+                log.error( e.getLocalizedMessage());
                 Toast.makeText(context, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                 return false;
             }

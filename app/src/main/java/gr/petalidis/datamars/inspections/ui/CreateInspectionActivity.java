@@ -10,9 +10,13 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.apache.log4j.Logger;
+
 import java.util.List;
 
+import gr.petalidis.datamars.Log4jHelper;
 import gr.petalidis.datamars.R;
+import gr.petalidis.datamars.SessionViewer;
 import gr.petalidis.datamars.inspections.domain.Inspection;
 import gr.petalidis.datamars.inspections.dto.InspectionDateProducer;
 import gr.petalidis.datamars.inspections.exceptions.PersistenceException;
@@ -26,7 +30,7 @@ public class CreateInspectionActivity extends Activity {
     private Context context;
     private RsgSessionFiles files = new RsgSessionFiles();
 
-    private final static String TAG = CreateInspectionActivity.class.getName();
+    private static final Logger log = Log4jHelper.getLogger(CreateInspectionActivity.class.getName());
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +87,7 @@ public class CreateInspectionActivity extends Activity {
                             intent.putExtra("inspection", inspection);
                             startActivity(intent);
                         } catch (PersistenceException e) {
-                            Log.e(TAG, e.getLocalizedMessage());
+                            log.error( e.getLocalizedMessage());
                             Toast.makeText(context, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                         }
 
@@ -93,7 +97,7 @@ public class CreateInspectionActivity extends Activity {
             });
 
         } catch (PersistenceException e) {
-            Log.e(TAG, e.getLocalizedMessage());
+            log.error( e.getLocalizedMessage());
             Toast.makeText(getApplicationContext(), e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
         }
     }

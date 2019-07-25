@@ -8,11 +8,15 @@ import android.util.Log;
 
 import com.squareup.timessquare.CalendarPickerView;
 
+import org.apache.log4j.Logger;
+
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
+import gr.petalidis.datamars.Log4jHelper;
 import gr.petalidis.datamars.R;
+import gr.petalidis.datamars.SessionViewer;
 import gr.petalidis.datamars.rsglibrary.RsgSessionFiles;
 
 
@@ -20,7 +24,7 @@ public class InspectionStepOneActivity extends AppCompatActivity {
 
     private RsgSessionFiles files = new RsgSessionFiles();
 
-    private final static String TAG = InspectionStepOneActivity.class.getName();
+    private static final Logger log = Log4jHelper.getLogger(InspectionStepOneActivity.class.getName());
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         final Context mContext = this;
@@ -73,7 +77,7 @@ public class InspectionStepOneActivity extends AppCompatActivity {
                     startActivity(intent);
                     return true;
                 } catch (ParseException e) {
-                    Log.e(TAG,"Received not valid name and/or date: " + e.getLocalizedMessage());
+                    log.error("Received not valid name and/or date: " + e.getLocalizedMessage());
                 }
                 return false;
             }

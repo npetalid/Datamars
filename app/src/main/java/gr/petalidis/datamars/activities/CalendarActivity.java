@@ -23,17 +23,21 @@ import android.util.Log;
 
 import com.squareup.timessquare.CalendarPickerView;
 
+import org.apache.log4j.Logger;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import gr.petalidis.datamars.Log4jHelper;
 import gr.petalidis.datamars.R;
+import gr.petalidis.datamars.SessionViewer;
 import gr.petalidis.datamars.rsglibrary.RsgSessionFiles;
 
 public class CalendarActivity extends AppCompatActivity {
     private RsgSessionFiles files = new RsgSessionFiles();
-    private final static String TAG = CalendarActivity.class.getName();
+    private static final Logger log = Log4jHelper.getLogger(CalendarActivity.class.getName());
     @Override
     protected void onCreate(Bundle savedInstanceState) {
          final Context mContext = this;
@@ -86,7 +90,7 @@ public class CalendarActivity extends AppCompatActivity {
                     startActivity(intent);
                     return true;
                 } catch (ParseException e) {
-                    Log.e(TAG,"Unable to parse date: " + e.getLocalizedMessage());
+                    log.error("Unable to parse date: " + e.getLocalizedMessage());
                 }
                 return false;
             }

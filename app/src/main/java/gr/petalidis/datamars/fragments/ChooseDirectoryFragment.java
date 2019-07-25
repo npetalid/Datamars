@@ -23,16 +23,19 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 
+import org.apache.log4j.Logger;
+
 import java.io.File;
 import java.util.ArrayList;
 
+import gr.petalidis.datamars.Log4jHelper;
 import gr.petalidis.datamars.R;
 import gr.petalidis.datamars.SessionViewer;
 import gr.petalidis.datamars.rsglibrary.CsvRootDirectory;
 
 
 public class ChooseDirectoryFragment extends DialogFragment {
-    private final static String TAG = ChooseDirectoryFragment.class.getName();
+    private static final Logger log = Log4jHelper.getLogger(ChooseDirectoryFragment.class.getName());
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
     }
@@ -61,7 +64,7 @@ public class ChooseDirectoryFragment extends DialogFragment {
                                 String fullPath = csvRootDirectory.getDirectory() + File.separator + usbs.get(which);
                                 sessionViewer.execute(fullPath);
                             } catch (IllegalStateException e) {
-                                Log.e(TAG, "Unable to read csv Root Directory: " + e.getLocalizedMessage());
+                                log.error( "Unable to read csv Root Directory: " + e.getLocalizedMessage());
                             }
                         }
                     });
