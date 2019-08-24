@@ -6,69 +6,77 @@
     <TextView
         android:id="@+id/textView"
         android:layout_width="0dp"
-        android:layout_weight="2"
         android:layout_height="match_parent"
+        android:layout_weight="2"
 
         android:ellipsize="marquee"
-        android:singleLine="true"
-        android:text="Description"
-        android:textSize="20sp"
-        android:padding="5dp"
         android:gravity="center"
-        />
+        android:padding="5dp"
+        android:singleLine="true"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/editText2"
         android:layout_width="0dp"
-        android:layout_weight="1"
         android:layout_height="match_parent"
-        android:textSize="20sp"
-        android:padding="5dp"
+        android:layout_weight="1"
         android:gravity="center"
-        />
+        android:padding="5dp"
+        android:textSize="18sp" />
 
     <Spinner
         android:id="@+id/spinner"
         android:layout_width="0dp"
-        android:layout_weight="2"
         android:layout_height="fill_parent"
-        android:textSize="20sp"
-        android:padding="5dp"
+        android:layout_weight="2"
         android:gravity="center"
+        android:padding="5dp"
         android:textAlignment="center"
+        android:textSize="18sp"
 
         />
+
+    <Spinner
+        android:id="@+id/biospinner"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:padding="5dp"
+        android:textAlignment="center"
+        android:textSize="18sp"
+
+        />
+
     <Spinner
         android:id="@+id/spinnerNames"
         android:layout_width="0dp"
-        android:layout_weight="3"
         android:layout_height="fill_parent"
-        android:textSize="20sp"
-        android:padding="5dp"
+        android:layout_weight="3"
         android:gravity="center"
+        android:padding="5dp"
         android:textAlignment="center"
+        android:textSize="18sp"
 
         />
+
     <CheckBox
         android:id="@+id/checkBox"
         android:layout_width="0dp"
+        android:layout_height="fill_parent"
         android:layout_weight="1"
-        android:layout_height="match_parent"
-        android:text=""
-        android:textSize="20sp"
-        android:padding="0dp"
         android:gravity="center"
-        android:scaleX="1.4"
-        android:scaleY="1.4"
-        />
+        android:padding="5dp"
+        android:text=""
+        android:textSize="18sp" />
+
     <Spinner
         android:id="@+id/viewCommments"
         android:layout_width="0dp"
-        android:layout_weight="2"
         android:layout_height="fill_parent"
-        android:textSize="20sp"
-        android:padding="5dp"
+        android:layout_weight="1"
         android:gravity="center"
+        android:padding="5dp"
         android:textAlignment="center"
-        />
+        android:textSize="18sp" />
 </LinearLayout>

@@ -19,6 +19,7 @@ public class Entry implements Serializable {
     private String producer = "";
     private String producerTin = "";
     private String animalType = Animals.SHEEP_ANIMAL;
+    private String animalGenre = AnimalGenre.NONE.getName();
     private String comment = "";
     public Entry()
     {
@@ -119,6 +120,14 @@ public class Entry implements Serializable {
     public boolean isDummy()
     {
         return this.getProducerTin().equals(Inspectee.getDummyInspectee().getTin());
+    }
+
+    public String getAnimalGenre() {
+        return animalGenre;
+    }
+
+    public void setAnimalGenre(String animalGenre) {
+        this.animalGenre = animalGenre;
     }
 
     @Override

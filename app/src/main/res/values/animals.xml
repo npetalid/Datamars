@@ -3,10 +3,44 @@
     <string-array name="animals_array">
         <item>@string/sheepAnimal</item>
         <item>@string/lambAnimal</item>
-        <item>@string/kidAnimal</item>
+        <item>@string/goatAnimal</item>
         <item>@string/kidAnimal</item>
         <item>@string/heGoatAnimal</item>
         <item>@string/ramAnimal</item>
         <item>@string/horseAnimal</item>
+    </string-array>
+    <string-array name="goat_genre">
+        <item>@string/notRareGenre</item>
+        <item>@string/skopelos</item>
+    </string-array>
+    <string-array name="sheep_genre">
+        <item>@string/notRareGenre</item>
+        <item>@string/katafygiou</item>
+        <item>@string/roumloukiou</item>
+        <item>@string/oreino_hpeirou</item>
+        <item>@string/ikarias</item>
+        <item>@string/leukimhs</item>
+        <item>@string/katsika</item>
+        <item>@string/argous</item>
+        <item>@string/zakynthou</item>
+        <item>@string/florinas</item>
+        <item>@string/sarakatsaniko</item>
+        <item>@string/glossasSkopelou</item>
+        <item>@string/kymhs</item>
+        <item>@string/agriniou</item>
+        <item>@string/dramas</item>
+        <item>@string/thrakis</item>
+        <item>@string/kalarrytiko</item>
+        <item>@string/phliou</item>
+        <item>@string/serron</item>
+    </string-array>
+    <string-array name="horse_genre">
+        <item>@string/notRareGenre</item>
+        <item>@string/hleias</item>
+        <item>@string/phneias</item>
+        <item>@string/thessalias</item>
+        <item>@string/skyrou</item>
+        <item>@string/pindou</item>
+        <item>@string/messaras</item>
     </string-array>
 </resources>

@@ -41,7 +41,7 @@ public class InspectionViewAdapter extends ArrayAdapter<Entry> {
         TextView textViewOwner = (TextView) rowView.findViewById(R.id.viewTagOwner);
         TextView textViewType = (TextView) rowView.findViewById(R.id.viewTagType);
         TextView textViewComment = (TextView) rowView.findViewById(R.id.viewCommments);
-
+        TextView textViewGenre = rowView.findViewById(R.id.viewTagBio);
         CheckBox textViewIsInRegister = (CheckBox) rowView.findViewById(R.id.viewIsInRegister);
 
         textViewTag.setText(TagFormatter.format(item.getTag()));
@@ -51,6 +51,7 @@ public class InspectionViewAdapter extends ArrayAdapter<Entry> {
         textViewIsInRegister.setChecked(item.isInRegister());
         textViewIsInRegister.setEnabled(false);
         textViewComment.setText(item.getComment());
+        textViewGenre.setText(item.getAnimalGenre());
         return rowView;
     }
 

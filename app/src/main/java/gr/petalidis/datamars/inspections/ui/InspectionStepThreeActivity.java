@@ -83,14 +83,6 @@ public class InspectionStepThreeActivity extends AppCompatActivity {
         }
     }
 
-    public void goToInspectionStepFourActivity(View view) {
-
-            Intent intent = new Intent(this, InspectionStepFourActivity.class);
-
-            intent.putExtra("inspection", inspection);
-
-            startActivity(intent);
-        }
     public void goToStepFourActivity(View view) {
         Intent intent = new Intent(this, InspectionStepFourActivity.class);
 
@@ -151,6 +143,17 @@ public class InspectionStepThreeActivity extends AppCompatActivity {
         button.setOnClickListener(v ->
         { inspectionStepThreeAdapter.sort(Comparator.comparing(Entry::isInRegister).reversed());
             button.setOnClickListener(y->sortGridEntriesByIsInRegister(y));
+        });
+    }
+
+    public void sortGridEntriesByGenre(View view) {
+        ListView gridView = (ListView) findViewById(R.id.editItemsList);
+        InspectionStepThreeAdapter inspectionStepThreeAdapter = (InspectionStepThreeAdapter) gridView.getAdapter();
+        inspectionStepThreeAdapter.sort(Comparator.comparing(Entry::getAnimalGenre));
+        Button button = (Button)findViewById(R.id.race);
+        button.setOnClickListener(v ->
+        { inspectionStepThreeAdapter.sort(Comparator.comparing(Entry::getAnimalGenre).reversed());
+            button.setOnClickListener(y->sortGridEntriesByGenre(y));
         });
     }
 

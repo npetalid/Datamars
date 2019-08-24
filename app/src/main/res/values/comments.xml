@@ -2,10 +2,10 @@
 <resources>
     <string-array name="comments_array">
         <item></item>
-        <item>Πώληση</item>
-        <item>Θάνατος</item>
-        <item>Σφαγή</item>
-        <item>Διπλό</item>
-        <item>Μονό ενώτιο</item>
+        <item>ΠΩΛ</item>
+        <item>ΘΑΝ</item>
+        <item>ΣΦΓ</item>
+        <item>ΔΠΛ</item>
+        <item>ΜΟΝ</item>
     </string-array>
 </resources>

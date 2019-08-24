@@ -7,7 +7,7 @@
     android:layout_marginStart="5dp"
     tools:context=".inspections.ui.InspectionViewActivity2">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -15,68 +15,79 @@
         <Button
             android:id="@+id/tag"
             android:layout_width="0dp"
-            android:layout_weight="2"
             android:layout_height="match_parent"
-            android:text="Ταυτότητα"
-            android:onClick="sortGridEntriesByTag"
+            android:layout_weight="2"
             android:background="#ffe238"
-            android:textSize="20sp"
-            android:padding="10dp" />
+            android:onClick="sortGridEntriesByTag"
+            android:padding="10dp"
+            android:text="Ταυτότητα"
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/age"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
-            android:text="Ώρα"
-            android:onClick="sortGridEntriesByTime"
+            android:layout_weight="1"
             android:background="#ffe238"
-            android:textSize="20sp"
-            android:padding="10dp" />
+            android:onClick="sortGridEntriesByTime"
+            android:padding="10dp"
+            android:text="Ώρα"
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/type"
             android:layout_width="0dp"
-            android:layout_weight="2"
             android:layout_height="match_parent"
-            android:text="Είδος"
-            android:onClick="sortGridEntriesByAnimalType"
+            android:layout_weight="2"
             android:background="#ffe238"
-            android:textSize="20sp"
-            android:padding="10dp" />
+            android:onClick="sortGridEntriesByAnimalType"
+            android:padding="10dp"
+            android:text="Είδος"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/race"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="#ffe238"
+            android:onClick="sortGridEntriesByGenre"
+            android:padding="10dp"
+            android:text="Φυλή"
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/names"
             android:layout_width="0dp"
-            android:layout_weight="3"
             android:layout_height="match_parent"
-            android:text="Παραγωγός"
-            android:onClick="sortGridEntriesByProducer"
+            android:layout_weight="3"
             android:background="#ffe238"
-            android:textSize="20sp"
-            android:padding="10dp" />
+            android:onClick="sortGridEntriesByProducer"
+            android:padding="10dp"
+            android:text="Παραγωγός"
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/ischecked"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
-            android:text="Στο μητρώο;"
-            android:onClick="sortGridEntriesByIsInRegister"
+            android:layout_weight="1"
             android:background="#ffe238"
-            android:textSize="20sp"
-            android:padding="10dp" />
+            android:onClick="sortGridEntriesByIsInRegister"
+            android:padding="10dp"
+            android:text="Στο μητρώο;"
+            android:textSize="18sp" />
 
         <Button
             android:id="@+id/viewCommentsButton"
             android:layout_width="0dp"
-            android:layout_weight="2"
             android:layout_height="match_parent"
-            android:text="Σχόλια"
-            android:onClick="sortGridEntriesByComments"
+            android:layout_weight="1"
             android:background="#ffe238"
-            android:textSize="20sp"
-            android:padding="10dp" />
+            android:onClick="sortGridEntriesByComments"
+            android:padding="10dp"
+            android:text="Σχόλια"
+            android:textSize="18sp" />
     </LinearLayout>
 
     <ListView

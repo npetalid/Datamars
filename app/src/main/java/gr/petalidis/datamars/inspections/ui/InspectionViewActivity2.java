@@ -118,6 +118,16 @@ public class InspectionViewActivity2 extends AppCompatActivity {
         });
     }
 
+    public void sortGridEntriesByGenre(View view) {
+        ListView gridView = (ListView) findViewById(R.id.customlist);
+        InspectionViewAdapter inspectionViewAdapter = (InspectionViewAdapter) gridView.getAdapter();
+        inspectionViewAdapter.sort(Comparator.comparing(Entry::getAnimalGenre));
+        Button button = (Button)findViewById(R.id.race);
+        button.setOnClickListener(v ->
+        { inspectionViewAdapter.sort(Comparator.comparing(Entry::getAnimalGenre).reversed());
+            button.setOnClickListener(y->sortGridEntriesByIsInRegister(y));
+        });
+    }
     public void sortGridEntriesByComments(View view) {
         ListView gridView = (ListView) findViewById(R.id.customlist);
         InspectionViewAdapter inspectionViewAdapter = (InspectionViewAdapter) gridView.getAdapter();
