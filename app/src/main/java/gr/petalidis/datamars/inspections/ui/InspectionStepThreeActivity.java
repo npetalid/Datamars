@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import java.util.Comparator;
 
@@ -20,6 +21,7 @@ import gr.petalidis.datamars.inspections.domain.Entry;
 import gr.petalidis.datamars.inspections.domain.Inspection;
 import gr.petalidis.datamars.inspections.repository.DbHandler;
 import gr.petalidis.datamars.inspections.service.InspectionService;
+import gr.petalidis.datamars.inspections.utilities.WGS84Converter;
 
 public class InspectionStepThreeActivity extends AppCompatActivity {
 
@@ -81,75 +83,20 @@ public class InspectionStepThreeActivity extends AppCompatActivity {
         }
     }
 
-    public void save(View view) {
-        AlertDialog.Builder preSaveBuilder = new AlertDialog.Builder(this);
+    public void goToInspectionStepFourActivity(View view) {
 
-        String msg = "Βρέθηκαν: \n" +
-                "Για τον παραγωγό " + inspection.getProducer1Name() + " \n" +
-                inspection.getValidEntriesCount(inspection.getProducer1Tin()) + " ζώα\t" +
-                inspection.getInRegisterCount(inspection.getProducer1Tin()) + " στο μητρώο\n" +
-                inspection.getLambCount(inspection.getProducer1Tin()) + " αρνιά\t" +
-                inspection.getSheepCount(inspection.getProducer1Tin()) + " προβατίνες\n" +
-                inspection.getKidCount(inspection.getProducer1Tin()) + " ερίφια\t" +
-                inspection.getGoatCount(inspection.getProducer1Tin()) + " γίδες\n" +
-                inspection.getRamCount(inspection.getProducer1Tin()) + " κριάρια\t" +
-                inspection.getHeGoatCount(inspection.getProducer1Tin()) + " τράγοι\n"+
-                inspection.getHorseCount(inspection.getProducer1Tin()) + " άλογα\n";
-        if (!inspection.getProducer2Tin().isEmpty()) {
-                   msg = msg + "\nΓια τον παραγωγό " + inspection.getProducer2Name() + "\n" +
-                            inspection.getValidEntriesCount(inspection.getProducer2Tin()) + " ζώα\t" +
-                            inspection.getInRegisterCount(inspection.getProducer2Tin()) + " στο μητρώο\n" +
-                            inspection.getLambCount(inspection.getProducer2Tin()) + " αρνιά\t" +
-                            inspection.getSheepCount(inspection.getProducer2Tin()) + " προβατίνες\n" +
-                            inspection.getKidCount(inspection.getProducer2Tin()) + " ερίφια\t" +
-                            inspection.getGoatCount(inspection.getProducer2Tin()) + " γίδες\n" +
-                            inspection.getRamCount(inspection.getProducer2Tin()) + " κριάρια\t" +
-                            inspection.getHeGoatCount(inspection.getProducer2Tin()) + " τράγοι\n"+
-                            inspection.getHorseCount(inspection.getProducer2Tin()) + " άλογα\n";
-                }
-         if (!inspection.getProducer3Tin().isEmpty()) {
-            msg = msg + "\nΓια τον παραγωγό " + inspection.getProducer3Name()  + "\n" +
-                    inspection.getValidEntriesCount(inspection.getProducer3Tin()) + " ζώα\t" +
-                    inspection.getInRegisterCount(inspection.getProducer3Tin()) + " στο μητρώο\n" +
-                    inspection.getLambCount(inspection.getProducer3Tin()) + " αρνιά\t" +
-                    inspection.getSheepCount(inspection.getProducer3Tin()) + " προβατίνες\n" +
-                    inspection.getKidCount(inspection.getProducer3Tin()) + " ερίφια\t" +
-                    inspection.getGoatCount(inspection.getProducer3Tin()) + " γίδες\n" +
-                    inspection.getRamCount(inspection.getProducer3Tin()) + " κριάρια\t" +
-                    inspection.getHeGoatCount(inspection.getProducer3Tin()) + " τράγοι\n" +
-                    inspection.getHorseCount(inspection.getProducer3Tin()) + " άλογα\n";
-        }
-        if (!inspection.getProducer4Tin().isEmpty()) {
-            msg = msg + "\nΓια τον παραγωγό " + inspection.getProducer4Name()  + "\n" +
-                    inspection.getValidEntriesCount(inspection.getProducer4Tin()) + " ζώα\t" +
-                    inspection.getInRegisterCount(inspection.getProducer4Tin()) + " στο μητρώο\n" +
-                    inspection.getLambCount(inspection.getProducer4Tin()) + " αρνιά\t" +
-                    inspection.getSheepCount(inspection.getProducer4Tin()) + " προβατίνες\n" +
-                    inspection.getKidCount(inspection.getProducer4Tin()) + " ερίφια\t" +
-                    inspection.getGoatCount(inspection.getProducer4Tin()) + " γίδες\n" +
-                    inspection.getRamCount(inspection.getProducer4Tin()) + " κριάρια\t" +
-                    inspection.getHeGoatCount(inspection.getProducer4Tin()) + " τράγοι\n"+
-                    inspection.getHorseCount(inspection.getProducer4Tin()) + " άλογα\n";
-        }
-             msg = msg+   "Να γίνει αποθήκευση;";
-        preSaveBuilder.setTitle("Αποθήκευση ελέγχου").setMessage(msg)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        InspectionService.save(dbHandler, inspection);
-                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                        builder.setTitle(R.string.success).setMessage(R.string.success);
-                        builder.show();
-                        Intent intent = new Intent(mContext,StartActivity.class);
-                        startActivity(intent);
-                    }
-                })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // do nothing
-                    }
-                });
-        preSaveBuilder.show();
+            Intent intent = new Intent(this, InspectionStepFourActivity.class);
 
+            intent.putExtra("inspection", inspection);
+
+            startActivity(intent);
+        }
+    public void goToStepFourActivity(View view) {
+        Intent intent = new Intent(this, InspectionStepFourActivity.class);
+
+        intent.putExtra("inspection", inspection);
+
+        startActivity(intent);
 
     }
 

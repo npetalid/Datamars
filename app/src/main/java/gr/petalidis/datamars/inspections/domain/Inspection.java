@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -29,6 +31,9 @@ public class Inspection implements Serializable {
     private String producer4Name = "";
 
     private List<Entry> entries = new ArrayList<>();
+
+    private Map<String,Integer> conventionalTags = new HashMap<>();
+    private Map<String,Integer> nonExistingTags = new HashMap<>();
 
     private List<ScannedDocument> scannedDocuments = new ArrayList<>();
 
@@ -121,10 +126,10 @@ public class Inspection implements Serializable {
         this.date = date;
     }
 
-
     public List<Entry> getEntries() {
         return entries;
     }
+
 
     public List<ScannedDocument> getScannedDocuments() {
         return scannedDocuments;
@@ -162,6 +167,35 @@ public class Inspection implements Serializable {
     public List<Entry> getValidEntries()
     {
         return this.entries.stream().filter(x->!x.getProducer().isEmpty() && !x.getProducer().equals("Άλλος") ).collect(Collectors.toList());
+    }
+
+    public Map<String, Integer> getConventionalTags() {
+        return conventionalTags;
+    }
+
+    public void setConventionalTags(Map<String, Integer> conventionalTags) {
+        this.conventionalTags = conventionalTags;
+    }
+
+    public Map<String, Integer> getNonExistingTags() {
+        return nonExistingTags;
+    }
+
+    public void setConventionalTagFor(String animal, int number) {
+        conventionalTags.put(animal,number);
+    }
+    public void setNonExistingTagFor(String animal, int number) {
+        nonExistingTags.put(animal,number);
+    }
+
+    public int getConventionalTagFor(String animal) {
+        return conventionalTags.containsKey(animal)?nonExistingTags.get(animal):0;
+    }
+    public int getNonExistingTagFor(String animal) {
+        return nonExistingTags.containsKey(animal)?nonExistingTags.get(animal):0;
+    }
+    public void setNonExistingTags(Map<String, Integer> nonExistingTags) {
+        this.nonExistingTags = nonExistingTags;
     }
 
     public List<Inspectee> getProducers()

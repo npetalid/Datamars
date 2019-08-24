@@ -89,6 +89,24 @@
                 android:value=".inspections.ui.InspectionStepTwoActivity" />
         </activity>
         <activity
+            android:name=".inspections.ui.InspectionStepFourActivity"
+            android:label="@string/title_activity_inspection_step_four"
+            android:launchMode="singleTop"
+            android:parentActivityName=".inspections.ui.InspectionStepThreeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".inspections.ui.InspectionStepThreeActivity" />
+        </activity>
+        <activity
+            android:name=".inspections.ui.InspectionStepFiveActivity"
+            android:label="@string/title_activity_inspection_step_five"
+            android:launchMode="singleTop"
+            android:parentActivityName=".inspections.ui.InspectionStepFourActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".inspections.ui.InspectionStepFourActivity" />
+        </activity>
+        <activity
             android:name=".inspections.ui.InspectionViewActivity"
             android:label="@string/title_activity_inspection_view"
             android:parentActivityName=".inspections.ui.CreateInspectionActivity"

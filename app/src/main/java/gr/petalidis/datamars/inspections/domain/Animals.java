@@ -7,6 +7,5 @@ public interface Animals {
     String SHEEP_ANIMAL ="Προβατίνα";
     String HEGOAT_ANIMAL ="Τράγος";
     String RAM_ANIMAL = "Κριάρι";
-    String HORSE_ANIMAL = "Άλογο";
-
+    String HORSE_ANIMAL = "Ιπποειδές";
 }

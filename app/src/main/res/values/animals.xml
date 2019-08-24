@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="animals_array">
-        <item>Ερίφιο</item>
-        <item>Γίδα</item>
-        <item>Αρνί</item>
-        <item>Προβατίνα</item>
-        <item>Τράγος</item>
-        <item>Κριάρι</item>
-        <item>Άλογο</item>
+        <item>@string/sheepAnimal</item>
+        <item>@string/lambAnimal</item>
+        <item>@string/kidAnimal</item>
+        <item>@string/kidAnimal</item>
+        <item>@string/heGoatAnimal</item>
+        <item>@string/ramAnimal</item>
+        <item>@string/horseAnimal</item>
     </string-array>
 </resources>

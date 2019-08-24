@@ -11,13 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         >
+
         <Button
             android:id="@+id/addFindingsButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="save"
-            android:text="@string/save_inspection"/>
+            android:onClick="goToStepFourActivity"
+            android:text="@string/step4Activity" />
     </LinearLayout>
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"

@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -60,6 +61,15 @@ public class StartActivity extends AppCompatActivity implements AppStatusFragmen
 
         ActivityCompat.requestPermissions(this,
                 new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, PERMISSION_READWRITE_REQUEST_CODE);
+
+        TextView version = (TextView)findViewById(R.id.version);
+        PackageManager packageManager = this.getPackageManager();
+        try {
+            PackageInfo packageInfo = packageManager.getPackageInfo("gr.petalidis.datamars", 0);
+            version.setText(packageInfo.versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            version.setText("Unable to read version");
+        }
 
     }
 

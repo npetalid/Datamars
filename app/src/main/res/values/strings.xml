@@ -10,6 +10,8 @@
     <string name="title_home">Αρχική Σελίδα</string>
     <string name="title_dashboard">Πίνακας Επιλογών</string>
     <string name="title_notifications">Ειδοποιήσεις</string>
+    <string name="step4Activity">Επόμενο βήμα: Καταχώρηση ζώων χωρίς ενώτια</string>
+    <string name="step5Activity">Επόμενο βήμα: Καταχώρηση ζώων με συμβατικά ενώτια</string>
     <string name="save_inspection">Αποθήκευση ελέγχου</string>
     <string name="cancel">Άκυρο</string>
     <string name="pickUsb">Διάλεξε συσκευή</string>
@@ -34,4 +36,6 @@
     <string name="title_activity_inspection_step_photo">Ψηφιοποιήση εγγράφου</string>
     <string name="title_activity_inspection_view2">Εμφάνιση ενωτίων ελέγχου</string>
     <string name="title_activity_inspection_viewPhotoActivity">Προβολή σκαναρισμένων εγγράφων</string>
+    <string name="title_activity_inspection_step_four">Καταχώρηση ζώων χωρίς ενώτια</string>
+    <string name="title_activity_inspection_step_five">Καταχώρηση ζώων με συμβατικά ενώτια</string>
 </resources>

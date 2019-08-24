@@ -89,5 +89,12 @@
             android:text="βλ. https://github.com/npetalid/Datamars"
             android:textSize="8sp"
             android:gravity="center"/>
+
+        <TextView
+            android:id="@+id/version"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="UNKNOWN" />
     </LinearLayout>
 </LinearLayout>

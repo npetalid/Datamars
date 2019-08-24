@@ -251,6 +251,9 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
             Spinner producer4TagSpinner = findViewById(R.id.producer4TagValue);
             String producer4Tag = (String) producer4TagSpinner.getSelectedItem();
 
+            Spinner animalTypeSpinner = findViewById(R.id.animalType);
+            String animalType = (String) animalTypeSpinner.getSelectedItem();
+
             Intent intent = new Intent(this, InspectionStepThreeActivity.class);
 
             inspection = new Inspection(inspectionDate, getProducer1Tin(), getProducer1Name());
@@ -275,6 +278,7 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
             inspection.getEntries().stream().filter(x -> x.getOwner().equals(producer1Tag)).forEach(x -> {
                 x.setProducerTin(inspection.getProducer1Tin());
                 x.setProducer(inspection.getProducer1Name());
+                x.setAnimalType(animalType);
             });
 
             if (!inspection.getProducer2Tin().isEmpty()) {
