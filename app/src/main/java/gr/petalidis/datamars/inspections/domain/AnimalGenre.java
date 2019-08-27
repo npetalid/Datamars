@@ -1,7 +1,7 @@
 package gr.petalidis.datamars.inspections.domain;
 
 enum AnimalGenre {
-    NONE("Εκτός βιολογικής"),
+    NONE("Όχι σπάνια"),
     BIO("Βιολογικής");
 
     private String name;

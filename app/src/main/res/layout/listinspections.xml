@@ -25,9 +25,9 @@
     <Button
         android:id="@+id/exportCsv"
         android:layout_width="0dp"
-        android:layout_weight="2"
         android:layout_height="match_parent"
-        android:text="Εξαγωγή σε csv"
-        android:textSize="20sp"/>
+        android:layout_weight="2"
+        android:text="Εξαγωγή σε xls"
+        android:textSize="20sp" />
 
 </LinearLayout>

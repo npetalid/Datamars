@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 import gr.petalidis.datamars.inspections.domain.Inspection;
+import gr.petalidis.datamars.inspections.domain.OtherEntryType;
 import gr.petalidis.datamars.inspections.dto.InspectionDateProducer;
 import gr.petalidis.datamars.inspections.exceptions.PersistenceException;
 
@@ -95,6 +96,9 @@ public class InspectionRepository {
             inspection.setLongitude(cursor.getFloat(11));
             inspection.setEntries(EntryRepository.getEntriesFor(dbHandler,inspection.getId()));
             inspection.setScannedDocuments(ScannedDocumentRepository.getScannedDocumentFor(dbHandler,inspection.getId()));
+            inspection.setConventionalTotal(OtherEntryRepository.getEntriesFor(dbHandler,inspection.getId(), OtherEntryType.CONVENTIONAL));
+            inspection.setConventionalInRegister(OtherEntryRepository.getEntriesFor(dbHandler,inspection.getId(), OtherEntryType.NO_EARRING));
+
             return inspection;
         }
     }

@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DbHandler extends SQLiteOpenHelper {
     // Database Version
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 3;
     // Database Name
     private static final String DATABASE_NAME = "bovscanner";
 
@@ -14,7 +14,11 @@ public class DbHandler extends SQLiteOpenHelper {
 
     public static final String TABLE_INSPECTION_ENTRIES = "ENTRIES";
 
+    public static final String TABLE_INSPECTION_OTHER_ENTRIES = "OTHER_ENTRIES";
+
     public static final String TABLE_INSPECTION_SCANNED_DOCUMENT = "SCANNED_DOCUMENT";
+
+    public static final String TABLE_USB_ALIAS = "USB_ALIAS";
 
     public DbHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -47,8 +51,20 @@ public class DbHandler extends SQLiteOpenHelper {
                 "producer TEXT, " +
                 "producerTin TEXT, " +
                 "animalType TEXT, " +
+                "animalGenre TEXT, " +
                 "comment TEXT" +
                 ") ";
+
+        String CREATE_TABLE_INSPECTION_OTHER_ENTRIES = "CREATE TABLE IF NOT EXISTS " + TABLE_INSPECTION_OTHER_ENTRIES +
+                " ( " +
+                "id TEXT PRIMARY KEY, " +
+                "type TEXT, " +
+                "inspectionId TEXT, " +
+                "producerTin TEXT, " +
+                "producerName TEXT, " +
+                "animal TEXT, " +
+                "value INTEGER" +
+                ")";
 
         String CREATE_TABLE_INSPECTION_IMAGES = "CREATE TABLE IF NOT EXISTS " + TABLE_INSPECTION_SCANNED_DOCUMENT +
                 " ( " +
@@ -56,15 +72,23 @@ public class DbHandler extends SQLiteOpenHelper {
                 "inspectionId TEXT, " +
                 "imagePath TEXT " +
                 ") ";
+
+        String CREATE_TABLE_USB_ALIAS = "CREATE TABLE IF NOT EXISTS " + TABLE_USB_ALIAS +
+                " ( " +
+                "usb TEXT PRIMARY KEY, " +
+                "alias TEXT " +
+                ") ";
         sqLiteDatabase.execSQL(CREATE_TABLE_INSPECTIONS);
         sqLiteDatabase.execSQL(CREATE_TABLE_INSPECTION_ENTRIES);
+        sqLiteDatabase.execSQL(CREATE_TABLE_INSPECTION_OTHER_ENTRIES);
         sqLiteDatabase.execSQL(CREATE_TABLE_INSPECTION_IMAGES);
+        sqLiteDatabase.execSQL(CREATE_TABLE_USB_ALIAS);
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-
+        onCreate(sqLiteDatabase);
     }
 
 }

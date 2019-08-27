@@ -29,6 +29,7 @@ public class EntryRepository {
                 values.put("country", e.getCountry());
                 values.put("tagDate", dateFormat.format(e.getTagDate()));
                 values.put("animalType", e.getAnimalType());
+                values.put("animalGenre", e.getAnimalGenre());
                 values.put("producer", e.getProducer());
                 values.put("producerTin", e.getProducerTin());
                 values.put("isInRegister", e.isInRegister() == true ? 1 : 0);
@@ -81,6 +82,7 @@ public class EntryRepository {
                 "country," +
                 "tagDate," +
                 "animalType," +
+                "animalGenre," +
                 "producer," +
                 "producerTin,"+
                 "isInRegister, " +
@@ -99,10 +101,11 @@ public class EntryRepository {
                     entry.setCountry(cursor.getString(3));
                     entry.setTagDate(dateFormat.parse(cursor.getString(4)));
                     entry.setAnimalType(cursor.getString(5));
-                    entry.setProducer(cursor.getString(6));
-                    entry.setProducerTin(cursor.getString(7));
-                    entry.setInRegister(cursor.getInt(8)==1?true:false);
-                    entry.setComment(cursor.getString(9));
+                    entry.setAnimalGenre(cursor.getString(6));
+                    entry.setProducer(cursor.getString(7));
+                    entry.setProducerTin(cursor.getString(8));
+                    entry.setInRegister(cursor.getInt(9)==1?true:false);
+                    entry.setComment(cursor.getString(10));
                     entries.add(entry);
                 } while (cursor.moveToNext());
             }

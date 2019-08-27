@@ -133,6 +133,6 @@ public class Entry implements Serializable {
     @Override
     public String toString()
     {
-        return country+","+tag+","+format.format(tagDate)+","+(isInRegister==true?"ΝΑΙ":"ΟΧΙ")+","+producer+","+producerTin+","+animalType+","+comment;
+        return country+","+tag+","+format.format(tagDate)+","+(isInRegister==true?"ΝΑΙ":"ΟΧΙ")+","+producer+","+producerTin+","+animalType+","+animalGenre+","+comment;
     }
 }

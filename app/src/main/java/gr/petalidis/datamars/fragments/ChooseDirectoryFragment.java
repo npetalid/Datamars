@@ -21,16 +21,21 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 
 import org.apache.log4j.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import gr.petalidis.datamars.Log4jHelper;
 import gr.petalidis.datamars.R;
 import gr.petalidis.datamars.SessionViewer;
+import gr.petalidis.datamars.inspections.domain.UsbAlias;
+import gr.petalidis.datamars.inspections.repository.DbHandler;
+import gr.petalidis.datamars.inspections.service.UsbAliasService;
 import gr.petalidis.datamars.rsglibrary.CsvRootDirectory;
 
 
@@ -46,6 +51,8 @@ public class ChooseDirectoryFragment extends DialogFragment {
         Bundle args = getArguments();
         final ArrayList<String> usbs = (ArrayList<String>) args.getSerializable("usbList");
         final String nextClassName = args.getString("nextClassName");
+        DbHandler dbHandler = new DbHandler(getContext().getApplicationContext());
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -53,21 +60,39 @@ public class ChooseDirectoryFragment extends DialogFragment {
                 // User cancelled the dialog
             }
         });
-        if (usbs != null && !usbs.isEmpty()) {
+        List<UsbAlias> andUpdateAllUsbs = UsbAliasService.findAndUpdateAllUsbs(dbHandler, usbs);
+        if (!andUpdateAllUsbs.isEmpty()) {
 
-            builder.setTitle(R.string.pickUsb)
-                    .setItems(usbs.toArray(new String[usbs.size()]), new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            try {
-                                SessionViewer sessionViewer = new SessionViewer(getContext(),nextClassName);
-                                CsvRootDirectory csvRootDirectory = new CsvRootDirectory();
-                                String fullPath = csvRootDirectory.getDirectory() + File.separator + usbs.get(which);
-                                sessionViewer.execute(fullPath);
-                            } catch (IllegalStateException e) {
-                                log.error( "Unable to read csv Root Directory: " + e.getLocalizedMessage());
-                            }
-                        }
-                    });
+            builder.setTitle(R.string.pickUsb);
+            UsbListView usbListView = new UsbListView(getContext(),andUpdateAllUsbs);
+            usbListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int which, long l) {
+                    try {
+                        SessionViewer sessionViewer = new SessionViewer(getContext(), nextClassName);
+                        CsvRootDirectory csvRootDirectory = new CsvRootDirectory();
+                        String fullPath = csvRootDirectory.getDirectory() + File.separator + andUpdateAllUsbs.get(which).getUsb();
+                        sessionViewer.execute(fullPath);
+                    } catch (IllegalStateException e) {
+                        log.error("Unable to read csv Root Directory: " + e.getLocalizedMessage());
+                    }
+                }
+            });
+            usbListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> adapterView, View view, int which, long l) {
+                    try {
+                        EditListItemDialog editListItemDialog = new EditListItemDialog(getContext(), andUpdateAllUsbs.get(which),usbListView, dbHandler);
+                        editListItemDialog.show();
+                        return true;
+                    } catch (IllegalStateException e) {
+                        log.error("Unable to read csv Root Directory: " + e.getLocalizedMessage());
+                        return false;
+                    }
+                }
+            });
+
+            builder.setView(usbListView);
         }
         return builder.create();
 

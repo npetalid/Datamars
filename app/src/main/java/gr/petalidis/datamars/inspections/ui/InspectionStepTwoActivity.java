@@ -285,6 +285,7 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
                 inspection.getEntries().stream().filter(x -> x.getOwner().equals(producer2Tag)).forEach(x -> {
                     x.setProducerTin(inspection.getProducer2Tin());
                     x.setProducer(inspection.getProducer2Name());
+                    x.setAnimalType(animalType);
                 });
             }
 
@@ -292,12 +293,14 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
                 inspection.getEntries().stream().filter(x -> x.getOwner().equals(producer3Tag)).forEach(x -> {
                     x.setProducerTin(inspection.getProducer3Tin());
                     x.setProducer(inspection.getProducer3Name());
+                    x.setAnimalType(animalType);
                 });
             }
             if (!inspection.getProducer4Tin().isEmpty()) {
                 inspection.getEntries().stream().filter(x -> x.getOwner().equals(producer4Tag)).forEach(x -> {
                     x.setProducerTin(inspection.getProducer4Tin());
                     x.setProducer(inspection.getProducer4Name());
+                    x.setAnimalType(animalType);
                 });
             }
             intent.putExtra("inspection", inspection);

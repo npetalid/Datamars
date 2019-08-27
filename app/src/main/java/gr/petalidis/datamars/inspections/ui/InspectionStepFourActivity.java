@@ -1,8 +1,6 @@
 package gr.petalidis.datamars.inspections.ui;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
@@ -11,28 +9,25 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ListView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import gr.petalidis.datamars.R;
-import gr.petalidis.datamars.activities.StartActivity;
-import gr.petalidis.datamars.inspections.domain.Entry;
+import gr.petalidis.datamars.inspections.domain.Inspectee;
 import gr.petalidis.datamars.inspections.domain.Inspection;
 import gr.petalidis.datamars.inspections.repository.DbHandler;
-import gr.petalidis.datamars.inspections.service.InspectionService;
 
 public class InspectionStepFourActivity extends AppCompatActivity {
 
     private Inspection inspection;
     private DbHandler dbHandler;
     private Context mContext;
+    private Map<Integer,Integer> valuesToLabels = new HashMap<>();
+
+    private int index = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         this.mContext = this;
@@ -43,12 +38,12 @@ public class InspectionStepFourActivity extends AppCompatActivity {
         } else {
             inspection = (Inspection) getIntent().getExtras().getSerializable("inspection");
         }
+
         dbHandler = new DbHandler(this.getApplicationContext());
         setContentView(R.layout.activity_inspection_step_four);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Map<Integer,Integer> valuesToLabels = new HashMap<>();
         valuesToLabels.put(R.id.noEarringGoatValue,R.id.noEarringGoatLabel);
         valuesToLabels.put(R.id.noEarringHegoatValue,R.id.noEarringHegoatLabel);
         valuesToLabels.put(R.id.noEarringHorseValue,R.id.noEarringHorseLabel);
@@ -76,11 +71,15 @@ public class InspectionStepFourActivity extends AppCompatActivity {
 
                 @Override
                 public void afterTextChanged(Editable editable) {
-                    inspection.setNonExistingTagFor(animal.toString(),Integer.parseInt(editable.toString()));
+                    if (!editable.toString().isEmpty()) {
+                        inspection.setConventionalInRegisterFor(
+                                inspection.getProducersWithNoDummy().get(index), animal.toString(),
+                                Integer.parseInt(editable.toString()));
+                    }
                 }
             });
         });
-
+       updateButtons();
     }
 
     @Override
@@ -110,5 +109,54 @@ public class InspectionStepFourActivity extends AppCompatActivity {
 
         startActivity(intent);
     }
+    public void goToPreviousProducer(View view) {
+        if (index>0) {
+            index--;
+        }
+        updateButtons();
+    }
 
+    public void goToNextProducer(View view) {
+        if (index<inspection.getProducersWithNoDummy().size()-1) {
+            index++;
+        }
+
+        updateButtons();
+    }
+
+    private void updateButtons()
+    {
+        TextView noEarringTin = findViewById(R.id.noEarringTin);
+        Inspectee inspectee = inspection.getProducersWithNoDummy().get(index);
+
+        noEarringTin.setText(inspectee.getTin() + " " +
+                inspectee.getName());
+
+        valuesToLabels.keySet().forEach(key->
+        {
+            TextView label = findViewById(valuesToLabels.get(key));
+            CharSequence animal = label.getText();
+
+            TextView value = findViewById(key);
+            value.setText(inspection.getConventionalInRegisterFor(inspectee,animal.toString())+"");
+        });
+        ImageButton previousProducerButton = findViewById(R.id.previousProducer);
+        ImageButton nextProducerButton = findViewById(R.id.nextProducer);
+
+        if (inspection.getProducersWithNoDummy().isEmpty() || inspection.getProducersWithNoDummy().size()==1) {
+            previousProducerButton.setClickable(false);
+            nextProducerButton.setClickable(false);
+        } else {
+            if (index == 0) {
+                previousProducerButton.setClickable(false);
+                nextProducerButton.setClickable(true);
+            } else if (index == inspection.getProducersWithNoDummy().size() - 1) {
+                nextProducerButton.setClickable(false);
+                previousProducerButton.setClickable(true);
+            } else {
+                previousProducerButton.setClickable(true);
+                nextProducerButton.setClickable(true);
+            }
+        }
+    }
 }

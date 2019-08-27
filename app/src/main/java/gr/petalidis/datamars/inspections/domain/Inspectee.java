@@ -1,6 +1,8 @@
 package gr.petalidis.datamars.inspections.domain;
 
-public class Inspectee {
+import java.io.Serializable;
+
+public class Inspectee implements Serializable {
 
     private String tin  = "";
     private String name = "";

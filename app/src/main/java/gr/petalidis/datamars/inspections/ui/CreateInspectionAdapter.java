@@ -32,6 +32,7 @@ import gr.petalidis.datamars.inspections.domain.Inspection;
 import gr.petalidis.datamars.inspections.dto.InspectionDateProducer;
 import gr.petalidis.datamars.inspections.exceptions.PersistenceException;
 import gr.petalidis.datamars.inspections.repository.DbHandler;
+import gr.petalidis.datamars.inspections.service.ExcelService;
 import gr.petalidis.datamars.inspections.service.FileService;
 import gr.petalidis.datamars.inspections.service.InspectionService;
 
@@ -67,11 +68,14 @@ public class CreateInspectionAdapter extends ArrayAdapter<InspectionDateProducer
         { try {
             File downloads = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
             Inspection inspection = InspectionService.findInspectionFor(dbHandler,item.getId());
-            FileService.export(inspection.toStrings(),downloads.getAbsolutePath(),inspection.getProducer1Tin()+"-"+simpleDateFormat.format(inspection.getDate())+".csv");
-            FileService.copyFilesToDirectory(inspection.getScannedDocuments().stream().map(y->y.getImagePath()).collect(Collectors.toList()), downloads.getAbsolutePath()+"/"+inspection.getProducer1Tin()+"-"+UUID.randomUUID().toString());
+            String randomString = inspection.getProducer1Tin()+"-"+UUID.randomUUID().toString();
+            String directory = downloads.getAbsolutePath()+File.separator+randomString;
+           // FileService.export(inspection.toStrings(),downloads.getAbsolutePath(),inspection.getProducer1Tin()+"-"+simpleDateFormat.format(inspection.getDate())+".csv");
+            FileService.copyFilesToDirectory(inspection.getScannedDocuments().stream().map(y->y.getImagePath()).collect(Collectors.toList()), directory);
+            ExcelService.export(inspection,directory,inspection.getProducer1Tin()+"-"+simpleDateFormat.format(inspection.getDate())+".xls");
             AlertDialog.Builder preSaveBuilder = new AlertDialog.Builder(this.context);
 
-            String msg = "Τα στοιχεία αποθηκεύθηκαν στη θέση " + downloads.getCanonicalPath();
+            String msg = "Τα στοιχεία αποθηκεύθηκαν στη θέση " + downloads.getName()+File.separator+randomString;
             preSaveBuilder.setTitle("Αποθήκευση ελέγχου").setMessage(msg)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
