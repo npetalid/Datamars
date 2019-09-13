@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BovScanner</string>
+    <string name="app_name">RECAP Livestock</string>
     <string name="title_activity_create_inspection">Δημιουργία Ελέγχου</string>
     <string name="title_activity_inspection_step_one">Καταχώρηση ημ/νιας ελέγχου</string>
     <string name="title_activity_inspection_step_two">Καταχώρηση ελεγχομένων</string>

@@ -7,7 +7,7 @@ android {
         minSdkVersion 24
         targetSdkVersion 26
         versionCode 1
-        versionName "moo-v3.0.0RC"
+        versionName "moo-v3.1.0RC"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
