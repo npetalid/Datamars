@@ -275,7 +275,10 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
             inspection.setLongitude(coordinates[1]);
             inspection.initEntries(rsgs);
             inspection.initScannedDocuments(thumbnails);
-            inspection.getEntries().stream().filter(x -> x.getOwner().equals(producer1Tag)).forEach(x -> {
+            inspection.getEntries()
+                    //.stream()
+                    //.filter(x -> x.getOwner().equals(producer1Tag))
+                    .forEach(x -> {
                 x.setProducerTin(inspection.getProducer1Tin());
                 x.setProducer(inspection.getProducer1Name());
                 x.setAnimalType(animalType);
