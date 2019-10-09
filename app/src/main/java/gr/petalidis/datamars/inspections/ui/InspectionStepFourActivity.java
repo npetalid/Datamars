@@ -12,9 +12,11 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+import gr.petalidis.datamars.Moo;
 import gr.petalidis.datamars.R;
 import gr.petalidis.datamars.inspections.domain.Inspectee;
 import gr.petalidis.datamars.inspections.domain.Inspection;
@@ -22,10 +24,48 @@ import gr.petalidis.datamars.inspections.repository.DbHandler;
 
 public class InspectionStepFourActivity extends AppCompatActivity {
 
+    private enum ConventionalEntryTag {
+        SHEEP_ENTRY(R.string.sheepAnimal,R.id.sheepLegalConventionalTag,R.id.sheepConventionalOutOfRegistry,R.id.sheepSingleConventionalTag,R.id.sheepIllegalConventionalTag),
+        GOAT_ENTRY(R.string.goatAnimal,R.id.goatLegalConventionalTag,R.id.goatConventionalOutOfRegistry,R.id.goatSingleConventionalTag,R.id.goatIllegalConventionalTag),
+        HEGOAT_ENTRY(R.string.heGoatAnimal,R.id.heGoatLegalConventionalTag,R.id.heGoatConventionalOutOfRegistry,R.id.heGoatSingleConventionalTag,R.id.heGoatIllegalConventionalTag),
+        RAM_ENTRY(R.string.ramAnimal,R.id.ramLegalConventionalTag,R.id.ramConventionalOutOfRegistry,R.id.ramSingleConventionalTag,R.id.ramIllegalConventionalTag);
+
+         String animal;
+         int conventionalTag;
+         int outOfRegistryTag;
+         int singleTag;
+         int illegalTag;
+
+         ConventionalEntryTag(int animalStringId,int conventionalTag, int outOfRegistryTag, int singleTag, int illegalTag) {
+             this.conventionalTag = conventionalTag;
+             this.singleTag = singleTag;
+             this.illegalTag = illegalTag;
+             this.animal = Moo.getAppContext().getResources().getString(animalStringId);
+             this.outOfRegistryTag = outOfRegistryTag;
+        }
+
+        public String getAnimal()
+        {
+            return animal;
+        }
+
+        public int getConventionalTag() {
+            return conventionalTag;
+        }
+
+        public int getSingleTag() {
+            return singleTag;
+        }
+
+        public int getIllegalTag() {
+            return illegalTag;
+        }
+    }
     private Inspection inspection;
     private DbHandler dbHandler;
     private Context mContext;
-    private Map<Integer,Integer> valuesToLabels = new HashMap<>();
+    private Map<Integer,ConventionalEntryTag> valuesToLegalConventionalLabels = new HashMap<>();
+
 
     private int index = 0;
     @Override
@@ -44,22 +84,10 @@ public class InspectionStepFourActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        valuesToLabels.put(R.id.noEarringGoatValue,R.id.noEarringGoatLabel);
-        valuesToLabels.put(R.id.noEarringHegoatValue,R.id.noEarringHegoatLabel);
-        valuesToLabels.put(R.id.noEarringHorseValue,R.id.noEarringHorseLabel);
-        valuesToLabels.put(R.id.noEarringSheepValue,R.id.noEarringSheepLabel);
-        valuesToLabels.put(R.id.noEarringRamValue,R.id.noEarringRamLabel);
-        valuesToLabels.put(R.id.noEarringLambValue,R.id.noEarringLambLabel);
-        valuesToLabels.put(R.id.noEarringKidValue,R.id.noEarringKidLabel);
+        EnumSet.allOf(ConventionalEntryTag.class).forEach(entryTag-> {
 
-
-        valuesToLabels.keySet().forEach(key->
-        {
-            TextView label = findViewById(valuesToLabels.get(key));
-            CharSequence animal = label.getText();
-
-            TextView value = findViewById(key);
-            value.addTextChangedListener(new TextWatcher() {
+            TextView conventionalTagValue = findViewById(entryTag.conventionalTag);
+            conventionalTagValue.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -72,8 +100,70 @@ public class InspectionStepFourActivity extends AppCompatActivity {
                 @Override
                 public void afterTextChanged(Editable editable) {
                     if (!editable.toString().isEmpty()) {
-                        inspection.setConventionalInRegisterFor(
-                                inspection.getProducersWithNoDummy().get(index), animal.toString(),
+                        inspection.setLegalConventionalTag(
+                                inspection.getProducersWithNoDummy().get(index), entryTag.animal,
+                                Integer.parseInt(editable.toString()));
+                    }
+                }
+            });
+
+            TextView singleTagValue = findViewById(entryTag.singleTag);
+            singleTagValue.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    if (!editable.toString().isEmpty()) {
+                        inspection.setSingleConventionalTag(
+                                inspection.getProducersWithNoDummy().get(index), entryTag.animal,
+                                Integer.parseInt(editable.toString()));
+                    }
+                }
+            });
+            TextView outOfRegistryValue = findViewById(entryTag.outOfRegistryTag);
+            outOfRegistryValue.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    if (!editable.toString().isEmpty()) {
+                        inspection.setConventionalOutOfRegistry(
+                                inspection.getProducersWithNoDummy().get(index), entryTag.animal,
+                                Integer.parseInt(editable.toString()));
+                    }
+                }
+            });
+            TextView conventionalIllegalTagValue = findViewById(entryTag.illegalTag);
+
+            conventionalIllegalTagValue.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    if (!editable.toString().isEmpty()) {
+                        inspection.setIllegalConventionalTag(
+                                inspection.getProducersWithNoDummy().get(index), entryTag.animal,
                                 Integer.parseInt(editable.toString()));
                     }
                 }
@@ -132,13 +222,16 @@ public class InspectionStepFourActivity extends AppCompatActivity {
         noEarringTin.setText(inspectee.getTin() + " " +
                 inspectee.getName());
 
-        valuesToLabels.keySet().forEach(key->
+        EnumSet.allOf(ConventionalEntryTag.class).forEach(conventionalEntryTag ->
         {
-            TextView label = findViewById(valuesToLabels.get(key));
-            CharSequence animal = label.getText();
-
-            TextView value = findViewById(key);
-            value.setText(inspection.getConventionalInRegisterFor(inspectee,animal.toString())+"");
+            TextView conventionalTag = findViewById(conventionalEntryTag.conventionalTag);
+            conventionalTag.setText(inspection.getLegalConventionalTagFor(inspectee,conventionalEntryTag.animal)+"");
+            TextView singleTag = findViewById(conventionalEntryTag.singleTag);
+            singleTag.setText(inspection.getSingleConventionalTagFor(inspectee,conventionalEntryTag.animal)+"");
+            TextView illegalTag = findViewById(conventionalEntryTag.illegalTag);
+            illegalTag.setText(inspection.getIllegalConventionalTagFor(inspectee,conventionalEntryTag.animal)+"");
+            TextView outOfRegistryTag = findViewById(conventionalEntryTag.outOfRegistryTag);
+            outOfRegistryTag.setText(inspection.getOutOfRegistryTagFor(inspectee,conventionalEntryTag.animal)+"");
         });
         ImageButton previousProducerButton = findViewById(R.id.previousProducer);
         ImageButton nextProducerButton = findViewById(R.id.nextProducer);

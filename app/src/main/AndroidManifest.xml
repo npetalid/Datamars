@@ -83,7 +83,9 @@
             android:name=".inspections.ui.InspectionStepThreeActivity"
             android:label="@string/title_activity_inspection_step_three"
             android:launchMode="singleTop"
-            android:parentActivityName=".inspections.ui.InspectionStepTwoActivity">
+            android:parentActivityName=".inspections.ui.InspectionStepTwoActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".inspections.ui.InspectionStepTwoActivity" />
@@ -92,7 +94,8 @@
             android:name=".inspections.ui.InspectionStepFourActivity"
             android:label="@string/title_activity_inspection_step_four"
             android:launchMode="singleTop"
-            android:parentActivityName=".inspections.ui.InspectionStepThreeActivity">
+            android:parentActivityName=".inspections.ui.InspectionStepThreeActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".inspections.ui.InspectionStepThreeActivity" />
@@ -101,7 +104,8 @@
             android:name=".inspections.ui.InspectionStepFiveActivity"
             android:label="@string/title_activity_inspection_step_five"
             android:launchMode="singleTop"
-            android:parentActivityName=".inspections.ui.InspectionStepFourActivity">
+            android:parentActivityName=".inspections.ui.InspectionStepFourActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".inspections.ui.InspectionStepFourActivity" />
@@ -110,7 +114,8 @@
             android:name=".inspections.ui.InspectionViewActivity"
             android:label="@string/title_activity_inspection_view"
             android:parentActivityName=".inspections.ui.CreateInspectionActivity"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="stateVisible|adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".inspections.ui.CreateInspectionActivity" />
@@ -119,7 +124,8 @@
             android:name=".inspections.ui.InspectionViewActivity2"
             android:label="@string/title_activity_inspection_view2"
             android:parentActivityName=".inspections.ui.InspectionViewActivity"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="stateVisible|adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="gr.petalidis.datamars.inspections.ui.InspectionViewActivity" />
@@ -128,7 +134,8 @@
             android:name=".inspections.ui.InspectionViewPhotoActivity"
             android:label="@string/title_activity_inspection_viewPhotoActivity"
             android:parentActivityName=".inspections.ui.InspectionViewActivity"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="stateVisible|adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="gr.petalidis.datamars.inspections.ui.InspectionViewActivity" />

@@ -1,30 +1,34 @@
 package gr.petalidis.datamars.inspections.ui;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.Comparator;
+import org.apache.log4j.Logger;
 
+import java.util.Map;
+
+import gr.petalidis.datamars.Log4jHelper;
 import gr.petalidis.datamars.R;
-import gr.petalidis.datamars.inspections.domain.Animals;
-import gr.petalidis.datamars.inspections.domain.Entry;
+import gr.petalidis.datamars.SessionViewer;
+import gr.petalidis.datamars.inspections.domain.AnimalType;
 import gr.petalidis.datamars.inspections.domain.Inspectee;
 import gr.petalidis.datamars.inspections.domain.Inspection;
+import gr.petalidis.datamars.inspections.domain.Report;
 
 public class InspectionViewActivity extends AppCompatActivity {
 
     private final static SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
     private Inspection inspection;
     private int index = 0;
+    private static final Logger log = Log4jHelper.getLogger(SessionViewer.class.getName());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,85 +77,7 @@ public class InspectionViewActivity extends AppCompatActivity {
             coordinatesTextView.setText(inspection.getLatitude() +", " + inspection.getLongitude());
     }
 
-    private void setTotalValue(String tin) {
-        TextView stats = (TextView) findViewById(R.id.statsTotalValue);
-        long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.getProducerTin().equals(tin)).count();
-        if (inspection != null)
-            stats.setText(validEntries+"");
-    }
 
-    private void setInRegisterValue(String tin) {
-        TextView stats = (TextView) findViewById(R.id.statsInRegisterValue);
-        long validEntries = inspection.getEntries().stream().filter(x->!x.isDummy() && x.isInRegister()==true && x.getProducerTin().equals(tin)).count();
-        if (inspection != null)
-            stats.setText(validEntries+"");
-    }
-
-    private void lambValue(String tin) {
-        TextView countValue = (TextView) findViewById(R.id.lambsTotalValue);
-        TextView isInRegisterValue = (TextView) findViewById(R.id.lambsInRegisterValue);
-
-        if (inspection != null) {
-            countValue.setText(inspection.getCount(tin,Animals.LAMB_ANIMAL)+"");
-            isInRegisterValue.setText(inspection.getInRegisterCount(tin,Animals.LAMB_ANIMAL)+"");
-        }
-    }
-    private void sheepValue(String tin) {
-        TextView countValue = (TextView) findViewById(R.id.sheepTotalValue);
-        TextView isInRegisterValue = (TextView) findViewById(R.id.sheepIsInRegisterValue);
-        if (inspection != null) {
-            countValue.setText(inspection.getCount(tin,Animals.SHEEP_ANIMAL)+"");
-            isInRegisterValue.setText(inspection.getInRegisterCount(tin,Animals.SHEEP_ANIMAL)+"");
-        }
-    }
-    private void kidValue(String tin) {
-        TextView countValue = (TextView) findViewById(R.id.kidTotalValue);
-        TextView isInRegisterValue = (TextView) findViewById(R.id.kidIsInRegisterValue);
-        if (inspection != null) {
-            countValue.setText(inspection.getCount(tin,Animals.KID_ANIMAL)+"");
-            isInRegisterValue.setText(inspection.getInRegisterCount(tin,Animals.KID_ANIMAL)+"");
-        }
-    }
-    private void goatValue(String tin) {
-        TextView countValue = (TextView) findViewById(R.id.goatTotalValue);
-        TextView isInRegisterValue = (TextView) findViewById(R.id.goatIsInRegisterValue);
-        if (inspection != null) {
-            countValue.setText(inspection.getCount(tin,Animals.GOAT_ANIMAL)+"");
-            isInRegisterValue.setText(inspection.getInRegisterCount(tin,Animals.GOAT_ANIMAL)+"");
-        }
-    }
-    private void ramValue(String tin) {
-        TextView countValue = (TextView) findViewById(R.id.ramTotalValue);
-        TextView isInRegisterValue = (TextView) findViewById(R.id.ramIsInRegisterValue);
-        if (inspection != null) {
-            countValue.setText(inspection.getCount(tin,Animals.RAM_ANIMAL)+"");
-            isInRegisterValue.setText(inspection.getInRegisterCount(tin,Animals.RAM_ANIMAL)+"");
-        }
-    }
-    private void horseValue(String tin) {
-        TextView countValue = (TextView) findViewById(R.id.horseTotalValue);
-        TextView isInRegisterValue = (TextView) findViewById(R.id.horseIsInRegisterValue);
-        if (inspection != null) {
-            countValue.setText(inspection.getCount(tin,Animals.HORSE_ANIMAL)+"");
-            isInRegisterValue.setText(inspection.getInRegisterCount(tin,Animals.HORSE_ANIMAL)+"");
-        }
-    }
-
-    private void heGoatValue(String tin) {
-        TextView countValue = (TextView) findViewById(R.id.heGoatTotalValue);
-        TextView isInRegisterValue = (TextView) findViewById(R.id.heGoatIsInRegister);
-        if (inspection != null) {
-            countValue.setText(inspection.getCount(tin,Animals.HEGOAT_ANIMAL)+"");
-            isInRegisterValue.setText(inspection.getInRegisterCount(tin,Animals.HEGOAT_ANIMAL)+"");
-        }
-    }
-
-    private void singleTagValue(String tin) {
-        TextView countValue = (TextView) findViewById(R.id.singleTagValue);
-        if (inspection != null) {
-            countValue.setText(inspection.getUniqueTag(tin)+"");
-        }
-    }
     public void goToViewActivityStep2(View view) {
         Intent intent = new Intent(this, InspectionViewActivity2.class);
         intent.putExtra("inspection",inspection);
@@ -181,39 +107,77 @@ public class InspectionViewActivity extends AppCompatActivity {
 
     private void updateButtons()
     {
-        TextView noEarringTin = findViewById(R.id.viewProducerTin);
-        Inspectee inspectee = inspection.getProducersWithNoDummy().get(index);
+        if (inspection!=null) {
+            Inspectee inspectee = inspection.getProducersWithNoDummy().get(index);
 
-        noEarringTin.setText(inspectee.getTin() + " " +
-                inspectee.getName());
-        setTotalValue(inspectee.getTin());
-        setInRegisterValue(inspectee.getTin());
-        lambValue(inspectee.getTin());
-        sheepValue(inspectee.getTin());
-        kidValue(inspectee.getTin());
-        goatValue(inspectee.getTin());
-        ramValue(inspectee.getTin());
-        heGoatValue(inspectee.getTin());
-        horseValue(inspectee.getTin());
-        singleTagValue(inspectee.getTin());
+            if (inspectee!=null) {
+                Report report = inspection.generateReportFor(inspectee);
+                TextView totalValue = (TextView) findViewById(R.id.total);
+                totalValue.setText(report.getTotal() + "");
 
-        ImageButton previousProducerButton = findViewById(R.id.previousProducer3);
-        ImageButton nextProducerButton = findViewById(R.id.nextProducer3);
+                TextView noTag = (TextView) findViewById(R.id.noTag);
+                noTag.setText(report.getNoTag() + "");
 
-        if (inspection.getProducersWithNoDummy().isEmpty() || inspection.getProducersWithNoDummy().size()==1) {
-            previousProducerButton.setClickable(false);
-            nextProducerButton.setClickable(false);
-        } else {
-            if (index == 0) {
-                previousProducerButton.setClickable(false);
-                nextProducerButton.setClickable(true);
-            } else if (index == inspection.getProducersWithNoDummy().size() - 1) {
-                nextProducerButton.setClickable(false);
-                previousProducerButton.setClickable(true);
-            } else {
-                previousProducerButton.setClickable(true);
-                nextProducerButton.setClickable(true);
+                TextView noTagUnder6 = (TextView) findViewById(R.id.noTagUnder6);
+                noTagUnder6.setText(report.getNoTagUnder6() + "");
+
+                TextView noElectronicTag = (TextView) findViewById(R.id.noElectronicTag);
+                noElectronicTag.setText(report.getNoElectronicTag() + "");
+
+                TextView singleTag = (TextView) findViewById(R.id.singleTag);
+                singleTag.setText(report.getSingleTag() + "");
+
+                TextView countedButNotInRegistry = (TextView) findViewById(R.id.countedButNotInRegistry);
+                countedButNotInRegistry.setText(report.getCountedButNotInRegistry() + "");
+
+                Map<AnimalType, Long> selectable = report.getSelectable();
+                TextView sheepTotalValue = (TextView) findViewById(R.id.sheepTotalValue);
+                sheepTotalValue.setText(selectable.get(AnimalType.SHEEP_ANIMAL) + "");
+                TextView goatTotalValue = (TextView) findViewById(R.id.goatTotalValue);
+                goatTotalValue.setText(selectable.get(AnimalType.GOAT_ANIMAL) + "");
+
+                TextView ramTotalValue = (TextView) findViewById(R.id.ramTotalValue);
+                ramTotalValue.setText(selectable.get(AnimalType.RAM_ANIMAL) + "");
+
+                TextView heGoatTotalValue = (TextView) findViewById(R.id.heGoatTotalValue);
+                heGoatTotalValue.setText(selectable.get(AnimalType.HEGOAT_ANIMAL) + "");
+
+                TextView kidTotalValue = (TextView) findViewById(R.id.kidTotalValue);
+                kidTotalValue.setText(selectable.get(AnimalType.KID_ANIMAL) + "");
+
+                TextView lambsTotalValue = (TextView) findViewById(R.id.lambsTotalValue);
+                lambsTotalValue.setText(selectable.get(AnimalType.LAMB_ANIMAL) + "");
+
+                TextView horseTotalValue = (TextView) findViewById(R.id.horseTotalValue);
+                horseTotalValue.setText(selectable.get(AnimalType.HORSE_ANIMAL) + "");
+
+
+                ImageButton previousProducerButton = findViewById(R.id.previousProducer3);
+                ImageButton nextProducerButton = findViewById(R.id.nextProducer3);
+
+                if (inspection.getProducersWithNoDummy().isEmpty() || inspection.getProducersWithNoDummy().size() == 1) {
+                    previousProducerButton.setClickable(false);
+                    nextProducerButton.setClickable(false);
+                } else {
+                    if (index == 0) {
+                        previousProducerButton.setClickable(false);
+                        nextProducerButton.setClickable(true);
+                    } else if (index == inspection.getProducersWithNoDummy().size() - 1) {
+                        nextProducerButton.setClickable(false);
+                        previousProducerButton.setClickable(true);
+                    } else {
+                        previousProducerButton.setClickable(true);
+                        nextProducerButton.setClickable(true);
+                    }
+                }
             }
+            else {
+                log.error("InspectionViewActivity: Tried to get inspectee with index " + index +
+                        " for inspection " + inspection.getId() + " but was null");
+
+            }
+        } else {
+            log.error("InspectionViewActivity: Tried to get inspection but was null");
         }
     }
 }

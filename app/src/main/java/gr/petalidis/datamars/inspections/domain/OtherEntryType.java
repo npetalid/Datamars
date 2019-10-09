@@ -4,8 +4,10 @@ import java.io.Serializable;
 
 public enum OtherEntryType implements Serializable {
     CONVENTIONAL("CONVENTIONAL"),
-    NO_EARRING("NO_EARRING");
-
+    SINGLE("SINGLE"),
+    ILLEGAL("ILLEGAL"),
+    NO_EARRING("NO_EARRING"),
+    OUT_OF_REGISTRY("OUT_OF_REGISTRY");
     private String name;
 
     OtherEntryType(String name) {

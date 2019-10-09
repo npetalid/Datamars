@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import gr.petalidis.datamars.inspections.domain.CommentType;
 import gr.petalidis.datamars.inspections.domain.Entry;
 import gr.petalidis.datamars.rsglibrary.Rsg;
 
@@ -33,7 +34,7 @@ public class EntryRepository {
                 values.put("producer", e.getProducer());
                 values.put("producerTin", e.getProducerTin());
                 values.put("isInRegister", e.isInRegister() == true ? 1 : 0);
-                values.put("comment", e.getComment());
+                values.put("comment", e.getComment().getTitle());
 
                 db.insert(DbHandler.TABLE_INSPECTION_ENTRIES, null, values);
             });
@@ -105,7 +106,7 @@ public class EntryRepository {
                     entry.setProducer(cursor.getString(7));
                     entry.setProducerTin(cursor.getString(8));
                     entry.setInRegister(cursor.getInt(9)==1?true:false);
-                    entry.setComment(cursor.getString(10));
+                    entry.setComment(CommentType.fromString(cursor.getString(10)));
                     entries.add(entry);
                 } while (cursor.moveToNext());
             }

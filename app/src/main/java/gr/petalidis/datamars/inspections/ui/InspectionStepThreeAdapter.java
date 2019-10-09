@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 import gr.petalidis.datamars.R;
+import gr.petalidis.datamars.inspections.domain.CommentType;
 import gr.petalidis.datamars.inspections.domain.Entry;
 import gr.petalidis.datamars.inspections.domain.Inspectee;
 import gr.petalidis.datamars.inspections.utilities.TagFormatter;
@@ -111,7 +112,7 @@ public class InspectionStepThreeAdapter extends ArrayAdapter<Entry> {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long l) {
             String selectedItem = (String) parent.getItemAtPosition(pos);
-            item.setComment(selectedItem);
+            item.setComment(CommentType.fromString(selectedItem));
         }
 
         @Override
@@ -193,10 +194,10 @@ public class InspectionStepThreeAdapter extends ArrayAdapter<Entry> {
         spinnerNames.setOnItemSelectedListener(new SpinnerNamesListener(item));
         spinnerNames.setSelection(spinnerNamesAdapter.getPosition(new Inspectee(item.getProducerTin(), item.getProducer())));
 
-        Spinner spinnerComments = (Spinner) rowView.findViewById(R.id.viewCommments);
+        Spinner spinnerComments = (Spinner) rowView.findViewById(R.id.viewComments);
         spinnerComments.setAdapter(adapterComments);
         spinnerComments.setOnItemSelectedListener(new SpinnerCommentsListener(item));
-        spinnerComments.setSelection(adapterComments.getPosition(item.getComment()));
+        spinnerComments.setSelection(adapterComments.getPosition(item.getComment().getTitle()));
 //
 //        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 //            @Override

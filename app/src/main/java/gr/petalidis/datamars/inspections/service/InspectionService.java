@@ -42,8 +42,7 @@ public class InspectionService {
     {
         InspectionRepository.save(dbHandler, inspection);
         EntryRepository.save(dbHandler,inspection.getValidEntries());
-        OtherEntryRepository.save(dbHandler,inspection.getConventionalTotal());
-        OtherEntryRepository.save(dbHandler,inspection.getConventionalInRegister());
+        OtherEntryRepository.save(dbHandler,inspection.getConventionalTags());
         ScannedDocumentRepository.save(dbHandler,inspection.getScannedDocuments());
         return inspection;
     }

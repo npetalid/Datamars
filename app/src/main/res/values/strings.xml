@@ -10,7 +10,7 @@
     <string name="title_home">Αρχική Σελίδα</string>
     <string name="title_dashboard">Πίνακας Επιλογών</string>
     <string name="title_notifications">Ειδοποιήσεις</string>
-    <string name="step4Activity">Επόμενο βήμα: Ζώα χωρίς ηλ. σήμανση</string>
+    <string name="step4Activity">Επόμενο βήμα: Ζώα με συμβατική σήμανση</string>
     <string name="step5Activity">Επόμενο βήμα: Ζώα χωρίς ηλ. σήμανση που καταγράφονται εν ζωή</string>
     <string name="save_inspection">Αποθήκευση ελέγχου</string>
     <string name="cancel">Άκυρο</string>
@@ -26,6 +26,10 @@
     <string name="inspectionFunctions">Διαχείριση Ελέγχων</string>
     <string name="inspectionFunctionsDescription">Εμφάνιση και δημιουργία νέων ελέγχων</string>
     <string name="success">Επιτυχία!</string>
+    <string name="species">Είδος</string>
+    <string name="historicalPeriod">Πριν το 2010</string>
+    <string name="notHistoricalPeriod">Μετά το 2010</string>
+    <string name="single">Μονό</string>
     <string name="kidAnimal">Ερίφιο</string>
     <string name="youngKidAnimal">Ερίφιο$lt$6μ</string>
     <string name="goatAnimal">Γίδα</string>
@@ -61,9 +65,20 @@
     <string name="skyrou">Σκύρου</string>
     <string name="pindou">Πίνδου</string>
     <string name="messaras">Μεσσαράς</string>
+    <string name="commentEmpty"></string>
+    <string name="commentSale">ΠΩΛ</string>
+    <string name="commentDeath">ΘΑΝ</string>
+    <string name="commentSlaughtered">ΣΦΓ</string>
+    <string name="commentDouble">ΔΠΛ</string>
+    <string name="commentSingle">ΜΟΝ</string>
+    <string name="commentError">ΛΘΣ</string>
     <string name="title_activity_inspection_step_photo">Ψηφιοποιήση εγγράφου</string>
     <string name="title_activity_inspection_view2">Εμφάνιση ενωτίων ελέγχου</string>
     <string name="title_activity_inspection_viewPhotoActivity">Προβολή σκαναρισμένων εγγράφων</string>
-    <string name="title_activity_inspection_step_four">Καταχώρηση ζώων χωρίς ηλ. σήμανση που καταμετρήθηκαν</string>
-    <string name="title_activity_inspection_step_five">Ζώα χωρίς ηλ. σήμανση που καταγράφονται εν ζωή στο μητρώο</string>
+    <string name="title_activity_inspection_step_four">Καταχώρηση ζώων με συμβατικά ενώτια</string>
+    <string name="title_activity_inspection_step_five">Ζώα χωρίς σήμανση</string>
+    <string name="nextProducer">Επόμενος παραγωγός</string>
+    <string name="previousProducer">Προηγούμενος Παραγωγός</string>
+    <string name="conventionalTagScreenLabel">Ζώα με συμβατικά ενώτια</string>
+    <string name="outOfRegistry">Εκτός μητρώου</string>
 </resources>

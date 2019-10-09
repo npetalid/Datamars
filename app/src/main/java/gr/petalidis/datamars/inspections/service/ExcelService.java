@@ -12,13 +12,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import gr.petalidis.datamars.Log4jHelper;
-import gr.petalidis.datamars.inspections.domain.Animals;
+import gr.petalidis.datamars.inspections.domain.AnimalType;
 import gr.petalidis.datamars.inspections.domain.Entry;
 import gr.petalidis.datamars.inspections.domain.Inspectee;
 import gr.petalidis.datamars.inspections.domain.Inspection;
-import gr.petalidis.datamars.inspections.domain.OtherEntry;
+import gr.petalidis.datamars.inspections.domain.Report;
 
 public class ExcelService {
     private static final Logger log = Log4jHelper.getLogger(ExcelService.class.getName());
@@ -69,103 +70,59 @@ public class ExcelService {
                 cell = entryRow.createCell(5);
                 cell.setCellValue(entry.getAnimalGenre());
                 cell = entryRow.createCell(6);
-                cell.setCellValue(entry.getComment());
+                cell.setCellValue(entry.getComment().getTitle());
             }
             j++;
+            Report report = inspection.generateReportFor(inspectee);
             Row entryRow = sheet.createRow(j++);
             cell = entryRow.createCell(0);
-            cell.setCellValue("Καταμετρημένα ζώα χωρίς ηλ. σήμανση");
-            for (OtherEntry otherEntry: inspection.getConventionalTotalFor(inspectee)) {
-                entryRow = sheet.createRow(j++);
-                cell = entryRow.createCell(0);
-                cell.setCellValue(otherEntry.getAnimal());
-                cell = entryRow.createCell(1);
-                cell.setCellValue(otherEntry.getCount());
-            }
-            j++;
-            entryRow = sheet.createRow(j++);
-            cell = entryRow.createCell(0);
-            cell.setCellValue("Καταμετρημένα ζώα εν ζωή χωρίς ηλ. σήμανση που βρέθηκαν στο μητρώο");
-            for (OtherEntry otherEntry: inspection.getConventionalInRegisterFor(inspectee)) {
-                entryRow = sheet.createRow(j++);
-                cell = entryRow.createCell(0);
-                cell.setCellValue(otherEntry.getAnimal());
-                cell = entryRow.createCell(1);
-                cell.setCellValue(otherEntry.getCount());
-            }
-            j++;
-            entryRow = sheet.createRow(j++);
-            cell = entryRow.createCell(0);
-            cell.setCellValue("Συνολικά αποτελέσματα");
-            headerRow = sheet.createRow(j++);
-            cell = headerRow.createCell(0);
-            cell.setCellValue("Είδος");
-            cell = headerRow.createCell(1);
-            cell.setCellValue("Καταμετρηθέντα");
-            cell = headerRow.createCell(2);
-            cell.setCellValue("Αναγραφόμενα στο μητρώο");
-            headerRow = sheet.createRow(j++);
-            cell = headerRow.createCell(0);
-            cell.setCellValue(Animals.SHEEP_ANIMAL);
-            cell = headerRow.createCell(1);
-            cell.setCellValue(inspection.getCount(inspectee.getTin(),Animals.SHEEP_ANIMAL));
-            cell = headerRow.createCell(2);
-            cell.setCellValue(inspection.getInRegisterCount(inspectee.getTin(),Animals.SHEEP_ANIMAL));
-            headerRow = sheet.createRow(j++);
-            cell = headerRow.createCell(0);
-            cell.setCellValue(Animals.LAMB_ANIMAL);
-            cell = headerRow.createCell(1);
-            cell.setCellValue(inspection.getCount(inspectee.getTin(),Animals.LAMB_ANIMAL));
-            cell = headerRow.createCell(2);
-            cell.setCellValue(inspection.getInRegisterCount(inspectee.getTin(),Animals.LAMB_ANIMAL));
-            headerRow = sheet.createRow(j++);
-            cell = headerRow.createCell(0);
-            cell.setCellValue(Animals.RAM_ANIMAL);
-            cell = headerRow.createCell(1);
-            cell.setCellValue(inspection.getCount(inspectee.getTin(),Animals.RAM_ANIMAL));
-            cell = headerRow.createCell(2);
-            cell.setCellValue(inspection.getInRegisterCount(inspectee.getTin(),Animals.RAM_ANIMAL));
-            headerRow = sheet.createRow(j++);
-            cell = headerRow.createCell(0);
-            cell.setCellValue(Animals.GOAT_ANIMAL);
-            cell = headerRow.createCell(1);
-            cell.setCellValue(inspection.getCount(inspectee.getTin(),Animals.GOAT_ANIMAL));
-            cell = headerRow.createCell(2);
-            cell.setCellValue(inspection.getInRegisterCount(inspectee.getTin(),Animals.GOAT_ANIMAL));
-            headerRow = sheet.createRow(j++);
-            cell = headerRow.createCell(0);
-            cell.setCellValue(Animals.KID_ANIMAL);
-            cell = headerRow.createCell(1);
-            cell.setCellValue(inspection.getCount(inspectee.getTin(),Animals.KID_ANIMAL));
-            cell = headerRow.createCell(2);
-            cell.setCellValue(inspection.getInRegisterCount(inspectee.getTin(),Animals.KID_ANIMAL));
-            headerRow = sheet.createRow(j++);
-            cell = headerRow.createCell(0);
-            cell.setCellValue(Animals.HEGOAT_ANIMAL);
-            cell = headerRow.createCell(1);
-            cell.setCellValue(inspection.getCount(inspectee.getTin(),Animals.HEGOAT_ANIMAL));
-            cell = headerRow.createCell(2);
-            cell.setCellValue(inspection.getInRegisterCount(inspectee.getTin(),Animals.HEGOAT_ANIMAL));
-            headerRow = sheet.createRow(j++);
-            cell = headerRow.createCell(0);
-            cell.setCellValue("Σύνολο");
-            cell = headerRow.createCell(1);
-            cell.setCellValue(inspection.getCount(inspectee.getTin()));
-            cell = headerRow.createCell(2);
-            cell.setCellValue(inspection.getInRegisterCount(inspectee.getTin()));
-            headerRow = sheet.createRow(j++);
-            cell = headerRow.createCell(0);
-            cell.setCellValue(Animals.HORSE_ANIMAL);
-            cell = headerRow.createCell(1);
-            cell.setCellValue(inspection.getCount(inspectee.getTin(),Animals.HORSE_ANIMAL));
-            cell = headerRow.createCell(2);
-            cell.setCellValue(inspection.getInRegisterCount(inspectee.getTin(),Animals.HORSE_ANIMAL));
+            cell.setCellValue("Καταμετρημένα ζώα");
+            cell = entryRow.createCell(1);
+            cell.setCellValue(report.getTotal());
 
             entryRow = sheet.createRow(j++);
             cell = entryRow.createCell(0);
-            cell.setCellValue("Ζώα με μονό ενώτιο:");
+            cell.setCellValue("Zώα χωρίς σήμανση");
             cell = entryRow.createCell(1);
-            cell.setCellValue(inspection.getUniqueTag(inspectee.getTin()));
+            cell.setCellValue(report.getNoTag());
+
+            entryRow = sheet.createRow(j++);
+            cell = entryRow.createCell(0);
+            cell.setCellValue("Zώα χωρίς σήμανση κάτω των 6 μηνών");
+            cell = entryRow.createCell(1);
+            cell.setCellValue(report.getNoTagUnder6());
+
+            entryRow = sheet.createRow(j++);
+            cell = entryRow.createCell(0);
+            cell.setCellValue("Zώα χωρίς ηλ. σήμανση");
+            cell = entryRow.createCell(1);
+            cell.setCellValue(report.getNoElectronicTag());
+
+            entryRow = sheet.createRow(j++);
+            cell = entryRow.createCell(0);
+            cell.setCellValue("Zώα με ένα ενώτιο");
+            cell = entryRow.createCell(1);
+            cell.setCellValue(report.getSingleTag());
+
+            entryRow = sheet.createRow(j++);
+            cell = entryRow.createCell(0);
+            cell.setCellValue("Καταμετρηθέντα ζώα με σήμανση που δεν αναγράφονται στο μητρώο");
+            cell = entryRow.createCell(1);
+            cell.setCellValue(report.getCountedButNotInRegistry());
+
+            entryRow = sheet.createRow(j++);
+            cell = entryRow.createCell(0);
+            cell.setCellValue("Επιλέξιμα ζώα:");
+            Map<AnimalType, Long> selectables = report.getSelectable();
+            for (AnimalType animalType: selectables.keySet())
+            {
+                entryRow = sheet.createRow(j++);
+                cell = entryRow.createCell(0);
+                cell.setCellValue(animalType.getTitle());
+                cell = entryRow.createCell(1);
+                cell.setCellValue(selectables.get(animalType));
+            }
+
 //            sheet.autoSizeColumn(0);
 //            sheet.autoSizeColumn(1);
 //            sheet.autoSizeColumn(2);

@@ -18,9 +18,9 @@ public class Entry implements Serializable {
     private boolean isInRegister = true;
     private String producer = "";
     private String producerTin = "";
-    private String animalType = Animals.SHEEP_ANIMAL;
+    private String animalType = AnimalType.SHEEP_ANIMAL.title;
     private String animalGenre = AnimalGenre.NONE.getName();
-    private String comment = "";
+    private CommentType comment = CommentType.EMPTY;
     public Entry()
     {
 
@@ -109,11 +109,11 @@ public class Entry implements Serializable {
         return producerTin;
     }
 
-    public String getComment() {
+    public CommentType getComment() {
         return comment;
     }
 
-    public void setComment(String comment) {
+    public void setComment(CommentType comment) {
         this.comment = comment;
     }
 
@@ -133,6 +133,6 @@ public class Entry implements Serializable {
     @Override
     public String toString()
     {
-        return country+","+tag+","+format.format(tagDate)+","+(isInRegister==true?"ΝΑΙ":"ΟΧΙ")+","+producer+","+producerTin+","+animalType+","+animalGenre+","+comment;
+        return country+","+tag+","+format.format(tagDate)+","+(isInRegister==true?"ΝΑΙ":"ΟΧΙ")+","+producer+","+producerTin+","+animalType+","+animalGenre+","+ comment.title;
     }
 }

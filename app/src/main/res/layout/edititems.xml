@@ -71,7 +71,7 @@
         android:textSize="18sp" />
 
     <Spinner
-        android:id="@+id/viewCommments"
+        android:id="@+id/viewComments"
         android:layout_width="0dp"
         android:layout_height="fill_parent"
         android:layout_weight="1"

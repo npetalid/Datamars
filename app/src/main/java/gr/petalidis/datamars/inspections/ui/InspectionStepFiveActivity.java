@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 import gr.petalidis.datamars.R;
 import gr.petalidis.datamars.activities.StartActivity;
-import gr.petalidis.datamars.inspections.domain.Animals;
+import gr.petalidis.datamars.inspections.domain.AnimalType;
 import gr.petalidis.datamars.inspections.domain.Inspectee;
 import gr.petalidis.datamars.inspections.domain.Inspection;
 import gr.petalidis.datamars.inspections.repository.DbHandler;
@@ -47,40 +47,43 @@ public class InspectionStepFiveActivity extends AppCompatActivity {
         dbHandler = new DbHandler(this.getApplicationContext());
         setContentView(R.layout.activity_inspection_step_five);
 
-        valuesToLabels.put(R.id.conventionalEarringGoatValue,R.id.conventionalEarringGoatLabel);
-        valuesToLabels.put(R.id.conventionalEarringHegoatValue,R.id.conventionalEarringHegoatLabel);
-        valuesToLabels.put(R.id.conventionalEarringHorseValue,R.id.conventionalEarringHegoatLabel);
-        valuesToLabels.put(R.id.conventionalEarringSheepValue,R.id.conventionalEarringSheepLabel);
-        valuesToLabels.put(R.id.conventionalEarringRamValue,R.id.conventionalEarringRamLabel);
-        valuesToLabels.put(R.id.conventionalEarringLambValue,R.id.conventionalEarringLambLabel);
-        valuesToLabels.put(R.id.conventionalEarringKidValue,R.id.conventionalEarringKidLabel);
+        TextView value = findViewById(R.id.noTagUnder6MonthValue);
+        value.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+            }
 
-        valuesToLabels.keySet().forEach(key->
-        {
-            TextView label = findViewById(valuesToLabels.get(key));
-            CharSequence animal = label.getText();
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
-            TextView value = findViewById(key);
-            value.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (!editable.toString().isEmpty()) {
+                    inspection.setNoTagUnder6Month(inspection.getProducers().get(index),
+                            Integer.parseInt(editable.toString()));
                 }
+            }
+        });
+        value = findViewById(R.id.noTagOver6MonthValue);
+        value.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                @Override
-                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                }
+            }
 
-                @Override
-                public void afterTextChanged(Editable editable) {
-                    if (!editable.toString().isEmpty()) {
-                        inspection.setConventionalTotalFor(inspection.getProducers().get(index),
-                                animal.toString(),
-                                Integer.parseInt(editable.toString()));
-                    }
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (!editable.toString().isEmpty()) {
+                    inspection.setNoTagOver6Month(inspection.getProducers().get(index),
+                            Integer.parseInt(editable.toString()));
                 }
-            });
+            }
         });
 
         updateButtons();
@@ -115,28 +118,10 @@ public class InspectionStepFiveActivity extends AppCompatActivity {
         String msg = "Βρέθηκαν: \n";
 
         String totalResult = inspection.getProducersWithNoDummy().stream().map(
-                inspectee ->
-                        "Για τον παραγωγό " + inspectee.getName() + " \n" +
-                                inspection.getCount(inspectee.getTin()) + " καταμετρηθέντα ζώα και " +
-                                inspection.getInRegisterCount(inspectee.getTin()) + " αναγραφόμενα στο μητρώο\n" +
-                                inspection.getUniqueTag(inspectee.getTin()) + " ζώα > 6 μηνών με μόνο ένα μέσο σήμανσης\n" +
-                                inspection.getCount(inspectee.getTin(), Animals.LAMB_ANIMAL) + " καταμετρηθέντα αρνιά και " +
-                                inspection.getInRegisterCount(inspectee.getTin(), Animals.LAMB_ANIMAL) + " καταγεγραμμένα στο μητρώο\n" +
-                                inspection.getCount(inspectee.getTin(), Animals.SHEEP_ANIMAL) + " καταμετρηθέντα πρόβατα και " +
-                                inspection.getInRegisterCount(inspectee.getTin(), Animals.SHEEP_ANIMAL) + " καταγεγραμμένα στο μητρώο\n" +
-                                inspection.getCount(inspectee.getTin(), Animals.KID_ANIMAL) + " καταμετρηθέντα ερίφια και " +
-                                inspection.getInRegisterCount(inspectee.getTin(), Animals.KID_ANIMAL) + " καταγεγραμμένα στο μητρώο\n" +
-                                inspection.getCount(inspectee.getTin(), Animals.GOAT_ANIMAL) + " καταμετρηθέντα γίδια και " +
-                                inspection.getInRegisterCount(inspectee.getTin(), Animals.GOAT_ANIMAL) + " καταγεγραμμένα στο μητρώο\n" +
-                                inspection.getCount(inspectee.getTin(), Animals.RAM_ANIMAL) + " καταμετρηθέντα κριάρια και" +
-                                inspection.getInRegisterCount(inspectee.getTin(), Animals.RAM_ANIMAL) + " καταγεγραμμένα στο μητρώο\n" +
-                                inspection.getCount(inspectee.getTin(), Animals.HEGOAT_ANIMAL) + " καταμετρηθέντες τράγοι και " +
-                                inspection.getInRegisterCount(inspectee.getTin(), Animals.HEGOAT_ANIMAL) + " καταγεγραμμένοι στο μητρώο\n" +
-                                inspection.getCount(inspectee.getTin(), Animals.HORSE_ANIMAL) + " καταμετρηθέντα ιπποειδή και " +
-                                inspection.getInRegisterCount(inspectee.getTin(), Animals.HORSE_ANIMAL) + " καταγεγραμμένα στο μητρώο\n"
+                inspectee -> inspection.generateReportFor(inspectee).toString()
         ).collect(Collectors.joining("\n"));
 
-        msg = msg + totalResult +   "Να γίνει αποθήκευση;";
+        msg = msg + totalResult +   "\nΝα γίνει αποθήκευση;";
         preSaveBuilder.setTitle("Αποθήκευση ελέγχου").setMessage(msg)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
@@ -180,15 +165,11 @@ public class InspectionStepFiveActivity extends AppCompatActivity {
 
         conventionalTin.setText(inspectee.getTin() + " " +
                 inspectee.getName());
+        TextView noTagOver6MonthOld = findViewById(R.id.noTagOver6MonthValue);
+        noTagOver6MonthOld.setText(inspection.getNoTagOver6MonthOld(inspectee)+"");
+        TextView noTagUnder6MonthOld = findViewById(R.id.noTagUnder6MonthValue);
+        noTagUnder6MonthOld.setText(inspection.getNoTagUnder6MonthOld(inspectee)+"");
 
-        valuesToLabels.keySet().forEach(key->
-        {
-            TextView label = findViewById(valuesToLabels.get(key));
-            CharSequence animal = label.getText();
-
-            TextView value = findViewById(key);
-            value.setText(inspection.getConventionalTotalFor(inspectee,animal.toString())+"");
-        });
         ImageButton previousProducerButton = findViewById(R.id.previousProducer2);
         ImageButton nextProducerButton = findViewById(R.id.nextProducer2);
 

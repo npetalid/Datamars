@@ -86,61 +86,20 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/statsTotalLabel4"
+            android:id="@+id/totalLabel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Είδος"
+            android:text="Σύνολο καταμετρηθέντων"
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/statsTotalLabel"
+            android:id="@+id/total"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Καταμετρηθέντα"
             android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/statsInRegisterLabel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Αναγραφόμενα στο μητρώο"
-            android:textSize="20sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/statsTotalLabel5"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Σύνολο"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/statsTotalValue"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text=""
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/statsInRegisterValue"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text=""
-            android:textSize="20sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -150,28 +109,164 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/lambsTotalLabel"
+            android:id="@+id/noTagLabel"
+            android:layout_height="match_parent"
+            android:text="Χωρίς σήμανση"
+            android:textSize="18sp"
+            android:layout_weight="1"
+            android:layout_width="0dp" />
+
+        <TextView
+            android:id="@+id/noTag"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/noTagUnder6Label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Αρνιά"
-            android:textSize="20sp" />
+            android:text="μικρότερα των 6 μηνών:"
+            android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/lambsTotalValue"
+            android:id="@+id/noTagUnder6"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text=""
-            android:textSize="20sp" />
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/lambsInRegisterValue"
+            android:id="@+id/noElectronicTagLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Χωρίς ηλεκτρονική σήμανση:"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/noElectronicTag"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text=""
-            android:textSize="20sp" />
+            android:textSize="18sp" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/singleTagLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Με ένα ενώτιο:"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/singleTag"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text=""
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/countedButNotInRegistryLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Καταμετρηθέντα εκτός μητρώου:"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/countedButNotInRegistry"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text=""
+            android:textSize="18sp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/selectableLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Επιλέξιμα"
+            android:textSize="18sp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/sheepTotalLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Προβατίνες"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/sheepTotalValue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text=""
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/goatTotalLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Κατσίκες"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/goatTotalValue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text=""
+            android:textSize="18sp" />
 
     </LinearLayout>
 
@@ -187,7 +282,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Κριάρια"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/ramTotalValue"
@@ -195,23 +290,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text=""
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/ramIsInRegisterValue"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text=""
-            android:textSize="20sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/heGoatTotalLabel"
@@ -219,7 +298,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Τράγοι"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/heGoatTotalValue"
@@ -227,15 +306,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text=""
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/heGoatIsInRegister"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text=""
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
     </LinearLayout>
 
@@ -246,69 +317,20 @@
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/goatTotalLabel"
+            android:id="@+id/lambsTotalLabel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Κατσίκες"
-            android:textSize="20sp" />
+            android:text="Αρνιά"
+            android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/goatTotalValue"
+            android:id="@+id/lambsTotalValue"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text=""
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/goatIsInRegisterValue"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text=""
-            android:textSize="20sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/sheepTotalLabel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Προβατίνες"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/sheepTotalValue"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text=""
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/sheepIsInRegisterValue"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text=""
-            android:textSize="20sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/kidTotalLabel"
@@ -316,7 +338,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Ερίφια"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/kidTotalValue"
@@ -324,15 +346,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text=""
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/kidIsInRegisterValue"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text=""
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
     </LinearLayout>
 
@@ -340,7 +354,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_weight="1"
         android:orientation="horizontal">
 
         <TextView
@@ -349,7 +362,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Ιπποειδή"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/horseTotalValue"
@@ -357,42 +370,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text=""
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/horseIsInRegisterValue"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text=""
-            android:textSize="20sp" />
+            android:textSize="18sp" />
 
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/singleTagLabel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Με μονό ενώτιο > 6 μηνών:"
-            android:textSize="20sp" />
-
-        <TextView
-            android:id="@+id/singleTagValue"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text=""
-            android:textSize="20sp" />
-
-    </LinearLayout>
-
 
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -409,7 +389,7 @@
             android:layout_weight="1"
             android:onClick="goToViewActivityStep2"
             android:text="Προβολή ενωτίων"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
     </LinearLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -426,7 +406,7 @@
             android:layout_weight="1"
             android:onClick="viewPhotos"
             android:text="Προβολή σκαναρισμένων εγγράφων"
-            android:textSize="20sp" />
+            android:textSize="18sp" />
     </LinearLayout>
 
 </LinearLayout>

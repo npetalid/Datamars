@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="comments_array">
-        <item></item>
-        <item>ΠΩΛ</item>
-        <item>ΘΑΝ</item>
-        <item>ΣΦΓ</item>
-        <item>ΔΠΛ</item>
-        <item>ΜΟΝ</item>
+        <item>@string/commentEmpty</item>
+        <item>@string/commentSale</item>
+        <item>@string/commentDeath</item>
+        <item>@string/commentSlaughtered</item>
+        <item>@string/commentDouble</item>
+        <item>@string/commentSingle</item>
+        <item>@string/commentError</item>
     </string-array>
 </resources>

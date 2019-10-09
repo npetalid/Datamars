@@ -4,14 +4,19 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import gr.petalidis.datamars.inspections.dto.ThumbnailDto;
 import gr.petalidis.datamars.rsglibrary.Rsg;
+
+import static java.util.stream.Collectors.groupingBy;
 
 public class Inspection implements Serializable {
     private final static SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
@@ -31,8 +36,7 @@ public class Inspection implements Serializable {
 
     private List<Entry> entries = new ArrayList<>();
 
-    private Set<OtherEntry> conventionalTotal = new HashSet<>();
-    private Set<OtherEntry> conventionalInRegister = new HashSet<>();
+    private Set<OtherEntry> conventionalTags = new HashSet<>();
 
     private List<ScannedDocument> scannedDocuments = new ArrayList<>();
 
@@ -171,53 +175,23 @@ public class Inspection implements Serializable {
                         && !x.getProducer().equals("Άλλος") ).collect(Collectors.toList());
     }
 
-    public Set<OtherEntry> getConventionalTotal() {
-        return conventionalTotal;
+    public Set<OtherEntry> getConventionalTags() {
+        return conventionalTags;
     }
 
-    public void setConventionalTotal(Set<OtherEntry> conventionalTotal) {
-        this.conventionalTotal = conventionalTotal;
+    public void setLegalConventionalTag(Inspectee inspectee, String animal, int number) {
+        conventionalTags.remove(new OtherEntry(inspectee,animal,number, OtherEntryType.CONVENTIONAL,id));
+        conventionalTags.add(new OtherEntry(inspectee,animal,number, OtherEntryType.CONVENTIONAL,id));
     }
 
-    public Set<OtherEntry> getConventionalInRegister() {
-        return conventionalInRegister;
-    }
-
-    public void setConventionalTotalFor(Inspectee inspectee, String animal, int number) {
-        conventionalTotal.remove(new OtherEntry(inspectee,animal,number, OtherEntryType.CONVENTIONAL,id));
-        conventionalTotal.add(new OtherEntry(inspectee,animal,number, OtherEntryType.CONVENTIONAL,id));
-    }
-    public void setConventionalInRegisterFor(Inspectee inspectee, String animal, int number) {
-        conventionalInRegister.remove(new OtherEntry(inspectee,animal,number, OtherEntryType.NO_EARRING,id));
-        conventionalInRegister.add(new OtherEntry(inspectee,animal,number, OtherEntryType.NO_EARRING,id));
-    }
-
-    public int getConventionalTotalFor(Inspectee inspectee, String animal) {
-        OtherEntry otherEntry = new OtherEntry(inspectee,animal,0,OtherEntryType.CONVENTIONAL,id);
-        OtherEntry result = conventionalTotal.stream()
-                .filter(x -> x.equals(otherEntry)).findAny().orElse(otherEntry);
-
-        return result.getCount();
-    }
-
-    public List<OtherEntry> getConventionalTotalFor(Inspectee inspectee) {
-        return conventionalTotal.stream()
-                .filter(x -> x.getInspectee().equals(inspectee)).collect(Collectors.toList());
-    }
 
     public List<OtherEntry> getConventionalInRegisterFor(Inspectee inspectee) {
-        return conventionalInRegister.stream()
+        return conventionalTags.stream()
                 .filter(x -> x.getInspectee().equals(inspectee)).collect(Collectors.toList());
     }
-    public int getConventionalInRegisterFor(Inspectee inspectee, String animal) {
-        OtherEntry otherEntry = new OtherEntry(inspectee,animal,0,OtherEntryType.NO_EARRING,id);
-        OtherEntry result = conventionalInRegister.stream()
-                .filter(x -> x.equals(otherEntry)).findAny().orElse(otherEntry);
 
-        return result.getCount();
-    }
-    public void setConventionalInRegister(Set<OtherEntry> conventionalInRegister) {
-        this.conventionalInRegister = conventionalInRegister;
+    public void setConventionalTags(Set<OtherEntry> conventionalTags) {
+        this.conventionalTags = conventionalTags;
     }
 
     public List<Inspectee> getProducers()
@@ -246,62 +220,137 @@ public class Inspection implements Serializable {
         names.add(Inspectee.getDummyInspectee().getName());
         return names;
     }
-    //Καταμετρηθέντα + Οσα σκαναρίστηκαν εκτός των διπλών πλην αλόγων + όσα με συμβατικά ενώτια
+
+    //Καταμετρηθέντα + Οσα σκαναρίστηκαν εκτός των FALSE και αλόγων + όσα με συμβατικά ενώτια
     public long getCount(String producer1Tin) {
         long allCountElectronicTag = getEntries().stream().filter(x -> !x.isDummy()
-                && x.getProducerTin().equals(producer1Tin)).count();
+                && x.getProducerTin().equals(producer1Tin) && !x.getComment().equals(CommentType.FAULT)).count();
+
         long allCountElectronicTagWithoutHorses = allCountElectronicTag -
-                getCount(producer1Tin,Animals.HORSE_ANIMAL);
+                getCount(producer1Tin, AnimalType.HORSE_ANIMAL);
         long conventionalTagCount =
-                conventionalTotal.stream().filter(x->x.getInspectee().getTin().equals(producer1Tin)
-                    && !x.getAnimal().equals(Animals.HORSE_ANIMAL)).count();
+                conventionalTags.stream().filter(x->x.getInspectee().getTin().equals(producer1Tin)).count();
         return allCountElectronicTagWithoutHorses+conventionalTagCount;
     }
 
-    //Όσα είναι στο μητρώο
-    public long getInRegisterCount(String producer1Tin) {
+    //Καταμετρηθέντα
+    public long getCount(String producer1Tin, AnimalType animalType) {
+        return getEntries().stream().filter(x->!x.isDummy()
+                && x.getAnimalType().trim().equals(animalType.title) && x.getProducerTin()
+                .equals(producer1Tin)).count()
+                + conventionalTags.stream().filter(x->x.getInspectee().getTin().equals(producer1Tin)
+                && x.getAnimal().equals(animalType.title)).map(x->x.getCount()).reduce(0,Integer::sum);
+    }
+
+    //Επιλέξιμα: Όσα είναι στο μητρώο + όσα είναι νομιμα συμβατικα  (ανά είδος)
+    public long getSelectableCount(String producer1Tin) {
         return getEntries().stream()
                 .filter(x->!x.isDummy()
                         && x.isInRegister()==true
                         && x.getProducerTin().equals(producer1Tin)
-                        && !x.getAnimalType().equals(Animals.HORSE_ANIMAL)
+                        && !x.getAnimalType().equals(AnimalType.HORSE_ANIMAL.title)
                         && !x.getComment().equals(CommentType.DOUBLE)
-                        && !x.getComment().equals(CommentType.CUT)
+                        && !x.getComment().equals(CommentType.SLAUGHTERED)
                         && !x.getComment().equals(CommentType.SOLD)
                         && !x.getComment().equals(CommentType.DEAD)).count()
-                + conventionalInRegister.stream().filter(x->x.getInspectee().getTin().equals(producer1Tin)
-                && !x.getAnimal().equals(Animals.HORSE_ANIMAL)).count();
+                + conventionalTags.stream().filter(x->x.getInspectee().getTin().equals(producer1Tin)
+                && !x.getAnimal().equals(AnimalType.HORSE_ANIMAL.title)).count();
     }
+
+    //Επιλέξιμα: Όσα είναι στο μητρώο + όσα είναι νομιμα συμβατικα  (ανά είδος)
+    public long getSelectableCount(String producer1Tin, String animals) {
+        return getEntries().stream().filter(x -> !x.isDummy()
+                && x.isInRegister() == true
+                && !x.getComment().equals(CommentType.SLAUGHTERED)
+                && !x.getComment().equals(CommentType.SOLD)
+                && !x.getComment().equals(CommentType.DEAD)
+                && !x.getComment().equals(CommentType.DOUBLE)
+                && !x.getComment().equals(CommentType.FAULT)
+                && x.getAnimalType().trim().equals(animals) && x.getProducerTin()
+                .equals(producer1Tin)).count()
+                +
+                conventionalTags.stream().filter(x -> x.getInspectee().getTin().equals(producer1Tin)
+                        && x.getAnimal().equals(animals) && x.getEntryType()==OtherEntryType.CONVENTIONAL).map(x->x.getCount()).reduce(0,Integer::sum);
+    }
+
+    //Ζώα χωρίς σήμανση (Συνολο ανεξαρτήτου είδους):
+    //Εκτός ιστορικής περιόδου συμβατικά + μονά συμβατικά + νούμερο που εισάγει ο χρήστης + όσα έχουν χαρακτηριστεί διπλά
+
+    public long getUntagged(String producer1Tin) {
+        long doubles = getEntries().stream().filter(x -> !x.isDummy()
+                && x.getComment().equals(CommentType.DOUBLE)
+                && x.getProducerTin()
+                .equals(producer1Tin)).count();
+
+        Integer untagged = conventionalTags.stream().filter(x -> x.getInspectee().getTin().equals(producer1Tin)
+                && (x.getEntryType() == OtherEntryType.ILLEGAL //Παράνομα συμβατικά
+                || x.getEntryType() == OtherEntryType.SINGLE //Μονά συμβατικά
+                || (x.getEntryType() == OtherEntryType.NO_EARRING //Χωρίς ενώτιο και άνω των 6 μηνών
+                && x.getAnimal().equals("Over6")))).map(x -> x.getCount()).reduce(0, Integer::sum);
+        return doubles + untagged;
+    }
+    //Ζώα χωρίς ενώτια ούτε ηλ. σήμανση:Εκτός ιστορικής περιόδου συμβατικά + νούμερο που εισάγει ο χρήστης + όσα έχουν χαρακτηριστεί διπλά
+    public long getNoTag(String producerTin)
+    {
+        long doubles = getEntries().stream().filter(x -> !x.isDummy()
+                && x.getComment().equals(CommentType.DOUBLE)
+                && x.getProducerTin()
+                .equals(producerTin)).count();
+
+        Integer untagged = conventionalTags.stream().filter(x -> x.getInspectee().getTin().equals(producerTin)
+                && (x.getEntryType() == OtherEntryType.ILLEGAL //Παράνομα συμβατικά
+                || (x.getEntryType() == OtherEntryType.NO_EARRING //Χωρίς ενώτιο και άνω των 6 μηνών
+                && x.getAnimal().equals("Over6")))).map(x -> x.getCount()).reduce(0, Integer::sum);
+        return doubles+untagged;
+    }
+
+    //Ζώα κάτω των 6 μηνών (χωρίς σήμανση)
+    public long getUntaggedUnder6(String producer1Tin) {
+
+        Integer untagged = conventionalTags.stream().filter(x -> x.getInspectee().getTin().equals(producer1Tin)
+                && x.getEntryType() == OtherEntryType.NO_EARRING //Χωρίς ενώτιο και άνω των 6 μηνών
+                && x.getAnimal().equals("Under6")).map(x -> x.getCount()).reduce(0, Integer::sum);
+        return untagged;
+
+    }
+
+    //Πολλαπλή:
+    //Χωρίς ηλ. σήμανση: συμβατικά παράνομα
+    public long getNoElectronicTag(String producerTin)
+    {
+        return  conventionalTags.stream().filter(x->x.getInspectee().getTin().equals(producer1Tin)
+                && x.getEntryType()==OtherEntryType.ILLEGAL).map(x->x.getCount()).reduce(0,Integer::sum);
+    }
+
+    //Ζώα με ένα ένωτιο: Είτε συμβατικό είτε ηλεκτρονικό
     public long getUniqueTag(String producer1Tin) {
         return getEntries().stream()
                 .filter(x->!x.isDummy()
                         && x.isInRegister()==true
                         && x.getProducerTin().equals(producer1Tin)
                         && x.getComment().equals(CommentType.SINGLE)).count()
-                ;
-    }
-    //Καταμετρηθέντα
-    public long getCount(String producer1Tin, String animals) {
-        return getEntries().stream().filter(x->!x.isDummy()
-                && x.getAnimalType().trim().equals(animals) && x.getProducerTin()
-                .equals(producer1Tin)).count()
-                + conventionalTotal.stream().filter(x->x.getInspectee().getTin().equals(producer1Tin)
-                && x.getAnimal().equals(animals)).count();
-    }
-    //Στο μητρώο
-    public long getInRegisterCount(String producer1Tin, String animals) {
-        return getEntries().stream().filter(x->!x.isDummy()
-                && x.isInRegister()==true
-                && !x.getComment().equals(CommentType.CUT)
-                && !x.getComment().equals(CommentType.SOLD)
-                && !x.getComment().equals(CommentType.DEAD)
-                && !x.getComment().equals(CommentType.DOUBLE)
-                && x.getAnimalType().trim().equals(animals) && x.getProducerTin()
-                .equals(producer1Tin)).count()
-                + conventionalTotal.stream().filter(x->x.getInspectee().getTin().equals(producer1Tin)
-                && x.getAnimal().equals(animals)).count();
+                + conventionalTags.stream().filter(x->x.getInspectee().getTin().equals(producer1Tin)
+               && x.getEntryType()==OtherEntryType.SINGLE).map(x->x.getCount()).reduce(0,Integer::sum);
     }
 
+
+
+    //Καταμετρηθέντα ζώα με σήμανση που δεν αναγράφονται στο μητρώο: Όσα δεν έχουν τσεκ στο μητρώο (απο ηλεκτρονικά)
+    //+ νόμιμα συμβατικά που δεν είναι στο μητρώο
+    public long getOutOfRegistryTagged(String producer1Tin) {
+        long outOfRegistry = getEntries().stream().filter(x -> !x.isDummy()
+                && !x.isInRegister()
+                && !x.getComment().equals(CommentType.DOUBLE)
+                && !x.getComment().equals(CommentType.FAULT)
+                && x.getProducerTin()
+                .equals(producer1Tin)).count();
+
+        Integer outOfRegistryUntagged = conventionalTags.stream().filter(x -> x.getInspectee().getTin().equals(producer1Tin)
+                && x.getEntryType() == OtherEntryType.OUT_OF_REGISTRY //Χωρίς ενώτιο και άνω των 6 μηνών
+                ).map(x -> x.getCount()).reduce(0, Integer::sum);
+        return outOfRegistry+outOfRegistryUntagged;
+
+    }
     public double getLatitude() {
         return latitude;
     }
@@ -339,5 +388,96 @@ public class Inspection implements Serializable {
         strings.add(header);
         strings.addAll(entries.stream().filter(x->!x.isDummy()).map(x->x.toString()).collect(Collectors.toList()));
         return strings;
+    }
+
+    public void setSingleConventionalTag(Inspectee inspectee, String animal, int number) {
+        conventionalTags.remove(new OtherEntry(inspectee,animal,number, OtherEntryType.SINGLE,id));
+        conventionalTags.add(new OtherEntry(inspectee,animal,number, OtherEntryType.SINGLE,id));
+    }
+
+    public void setIllegalConventionalTag(Inspectee inspectee, String animal, int number) {
+        conventionalTags.remove(new OtherEntry(inspectee,animal,number, OtherEntryType.ILLEGAL,id));
+        conventionalTags.add(new OtherEntry(inspectee,animal,number, OtherEntryType.ILLEGAL,id));
+    }
+
+    public void setConventionalOutOfRegistry(Inspectee inspectee, String animal, int number) {
+        conventionalTags.remove(new OtherEntry(inspectee,animal,number, OtherEntryType.OUT_OF_REGISTRY,id));
+        conventionalTags.add(new OtherEntry(inspectee,animal,number, OtherEntryType.OUT_OF_REGISTRY,id));
+    }
+
+    public int getLegalConventionalTagFor(Inspectee inspectee, String animal) {
+        OtherEntry otherEntry = new OtherEntry(inspectee,animal,0,OtherEntryType.CONVENTIONAL,id);
+        OtherEntry result = conventionalTags.stream()
+                .filter(x -> x.equals(otherEntry)).findAny().orElse(otherEntry);
+
+        return result.getCount();
+    }
+
+    public int getSingleConventionalTagFor(Inspectee inspectee, String animal) {
+        OtherEntry otherEntry = new OtherEntry(inspectee,animal,0,OtherEntryType.SINGLE,id);
+        OtherEntry result = conventionalTags.stream()
+                .filter(x -> x.equals(otherEntry)).findAny().orElse(otherEntry);
+
+        return result.getCount();
+    }
+
+    public int getIllegalConventionalTagFor(Inspectee inspectee, String animal) {
+        OtherEntry otherEntry = new OtherEntry(inspectee,animal,0,OtherEntryType.ILLEGAL,id);
+        OtherEntry result = conventionalTags.stream()
+                .filter(x -> x.equals(otherEntry)).findAny().orElse(otherEntry);
+
+        return result.getCount();
+    }
+
+    public int getOutOfRegistryTagFor(Inspectee inspectee, String animal) {
+        OtherEntry otherEntry = new OtherEntry(inspectee,animal,0,OtherEntryType.OUT_OF_REGISTRY,id);
+        OtherEntry result = conventionalTags.stream()
+                .filter(x -> x.equals(otherEntry)).findAny().orElse(otherEntry);
+
+        return result.getCount();
+
+    }
+
+    public void setNoTagUnder6Month(Inspectee inspectee, int number) {
+        conventionalTags.remove(new OtherEntry(inspectee,"Under6",number, OtherEntryType.NO_EARRING,id));
+        conventionalTags.add(new OtherEntry(inspectee,"Under6",number, OtherEntryType.NO_EARRING,id));
+    }
+
+    public void setNoTagOver6Month(Inspectee inspectee, int number) {
+        conventionalTags.remove(new OtherEntry(inspectee,"Over6",number, OtherEntryType.NO_EARRING,id));
+        conventionalTags.add(new OtherEntry(inspectee,"Over6",number, OtherEntryType.NO_EARRING,id));
+    }
+
+    public int getNoTagOver6MonthOld(Inspectee inspectee) {
+        OtherEntry otherEntry = new OtherEntry(inspectee,"Over6",0,OtherEntryType.NO_EARRING,id);
+        OtherEntry result = conventionalTags.stream()
+                .filter(x -> x.equals(otherEntry)).findAny().orElse(otherEntry);
+
+        return result.getCount();
+    }
+
+    public int getNoTagUnder6MonthOld(Inspectee inspectee) {
+            OtherEntry otherEntry = new OtherEntry(inspectee,"Under6",0,OtherEntryType.NO_EARRING,id);
+            OtherEntry result = conventionalTags.stream()
+                    .filter(x -> x.equals(otherEntry)).findAny().orElse(otherEntry);
+
+            return result.getCount();
+    }
+
+    public Report generateReportFor(Inspectee inspectee)
+    {
+        Map<AnimalType,Long> selectablesMap = new HashMap<>();
+        EnumSet.allOf(AnimalType.class).forEach(animal->
+                selectablesMap.put(animal,getSelectableCount(inspectee.getTin(),  animal.getTitle())));
+        return new Report(inspectee,
+                getCount(inspectee.getTin()),
+                getNoTag(inspectee.getTin()),
+                getNoTagUnder6MonthOld(inspectee),
+                getNoElectronicTag(inspectee.getTin()),
+                getUniqueTag(inspectee.getTin()),
+                getOutOfRegistryTagged(inspectee.getTin()),
+                selectablesMap
+                );
+
     }
 }

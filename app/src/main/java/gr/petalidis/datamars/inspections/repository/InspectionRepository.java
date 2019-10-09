@@ -96,8 +96,7 @@ public class InspectionRepository {
             inspection.setLongitude(cursor.getFloat(11));
             inspection.setEntries(EntryRepository.getEntriesFor(dbHandler,inspection.getId()));
             inspection.setScannedDocuments(ScannedDocumentRepository.getScannedDocumentFor(dbHandler,inspection.getId()));
-            inspection.setConventionalTotal(OtherEntryRepository.getEntriesFor(dbHandler,inspection.getId(), OtherEntryType.CONVENTIONAL));
-            inspection.setConventionalInRegister(OtherEntryRepository.getEntriesFor(dbHandler,inspection.getId(), OtherEntryType.NO_EARRING));
+            inspection.setConventionalTags(OtherEntryRepository.getEntriesFor(dbHandler,inspection.getId(), OtherEntryType.NO_EARRING));
 
             return inspection;
         }
