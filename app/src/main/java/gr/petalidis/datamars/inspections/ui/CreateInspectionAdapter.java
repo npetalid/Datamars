@@ -1,6 +1,5 @@
 package gr.petalidis.datamars.inspections.ui;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,13 +20,12 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
 import gr.petalidis.datamars.Log4jHelper;
 import gr.petalidis.datamars.R;
-import gr.petalidis.datamars.SessionViewer;
-import gr.petalidis.datamars.activities.StartActivity;
 import gr.petalidis.datamars.inspections.domain.Inspection;
 import gr.petalidis.datamars.inspections.dto.InspectionDateProducer;
 import gr.petalidis.datamars.inspections.exceptions.PersistenceException;
@@ -36,7 +34,7 @@ import gr.petalidis.datamars.inspections.service.ExcelService;
 import gr.petalidis.datamars.inspections.service.FileService;
 import gr.petalidis.datamars.inspections.service.InspectionService;
 
-public class CreateInspectionAdapter extends ArrayAdapter<InspectionDateProducer> {
+class CreateInspectionAdapter extends ArrayAdapter<InspectionDateProducer> {
     private final Context context;
     private final List<InspectionDateProducer> objects;
     private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -55,13 +53,13 @@ public class CreateInspectionAdapter extends ArrayAdapter<InspectionDateProducer
         if (rowView == null) {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        rowView = inflater.inflate(R.layout.listinspections, parent, false);
+        rowView = Objects.requireNonNull(inflater).inflate(R.layout.listinspections, parent, false);
      }
         final InspectionDateProducer item = objects.get(position);
 
-        TextView inspectionDateText = (TextView) rowView.findViewById(R.id.inspectionDate);
-        TextView inspectionProducer = (TextView) rowView.findViewById(R.id.inspectionProducer);
-        Button exportCsvButton = (Button) rowView.findViewById(R.id.exportCsv);
+        TextView inspectionDateText = rowView.findViewById(R.id.inspectionDate);
+        TextView inspectionProducer = rowView.findViewById(R.id.inspectionProducer);
+        Button exportCsvButton = rowView.findViewById(R.id.exportCsv);
 
 
         exportCsvButton.setOnClickListener(x->
@@ -94,7 +92,7 @@ public class CreateInspectionAdapter extends ArrayAdapter<InspectionDateProducer
                 Inspection inspection = InspectionService.findInspectionFor(dbHandler, item.getId());
                 Intent intent = new Intent(context, InspectionViewActivity.class);
                 intent.putExtra("inspection", inspection);
-                ((Activity)context).startActivity(intent);
+                context.startActivity(intent);
                 return true;
             } catch (PersistenceException e) {
                 log.error( e.getLocalizedMessage());
@@ -107,7 +105,7 @@ public class CreateInspectionAdapter extends ArrayAdapter<InspectionDateProducer
                 Inspection inspection = InspectionService.findInspectionFor(dbHandler, item.getId());
                 Intent intent = new Intent(context, InspectionViewActivity.class);
                 intent.putExtra("inspection", inspection);
-                ((Activity)context).startActivity(intent);
+                context.startActivity(intent);
                 return true;
             } catch (PersistenceException e) {
                 log.error( e.getLocalizedMessage());

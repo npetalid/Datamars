@@ -17,21 +17,24 @@ package gr.petalidis.datamars;
 import android.app.Application;
 import android.content.Context;
 
+import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
+import java.util.Objects;
 
 public class Moo extends Application {
 
-    private static Context context;
+    private static WeakReference<Context> weakReference;
     final static private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
     public void onCreate() {
         super.onCreate();
-        Moo.context = getApplicationContext();
+        Moo.weakReference = new WeakReference<>(getApplicationContext());
     }
 
     public static Context getAppContext()
     {
-        return Moo.context;
+        Context context = Objects.requireNonNull(weakReference.get());
+        return context;
     }
 
     public static SimpleDateFormat getFormatter() {

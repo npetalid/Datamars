@@ -41,7 +41,7 @@ public class InspectionRepository {
         return inspection;
     }
 
-    public static List<InspectionDateProducer> getAllInspections(DbHandler dbHandler) throws ParseException {
+    public static List<InspectionDateProducer> getAllInspections(DbHandler dbHandler) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
 
         List<InspectionDateProducer> inspectionDateProducerArrayList = new ArrayList<>();

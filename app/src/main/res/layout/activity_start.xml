@@ -17,11 +17,12 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:contentDescription="Μεταφέρει Sessions από το Scanner"
+        android:contentDescription="@string/scanner_sync_description"
         android:onClick="showExternalStorage"
         android:text="@string/synchronizeText"
         android:textSize="20sp"
         android:gravity="center"
+        style="?android:attr/borderlessButtonStyle"
         />
 
     <Button
@@ -35,6 +36,7 @@
         android:text="@string/showSessionsText"
         android:textSize="20sp"
         android:gravity="center"
+        style="?android:attr/borderlessButtonStyle"
         />
 
     <Button
@@ -49,6 +51,7 @@
         android:text="@string/inspectionFunctions"
         android:textSize="20sp"
         android:gravity="center"
+        style="?android:attr/borderlessButtonStyle"
 
         />
     </LinearLayout>

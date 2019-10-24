@@ -18,24 +18,23 @@ package gr.petalidis.datamars.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.BottomNavigationView;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 
 import gr.petalidis.datamars.Log4jHelper;
 import gr.petalidis.datamars.R;
-import gr.petalidis.datamars.SessionViewer;
 import gr.petalidis.datamars.rsglibrary.Rsg;
 import gr.petalidis.datamars.rsglibrary.RsgReader;
 
@@ -88,11 +87,11 @@ public class ViewRsgActivity extends AppCompatActivity {
             }
         }
         try {
-            TextView dateField = (TextView)findViewById(R.id.rsgDate);
+            TextView dateField = findViewById(R.id.rsgDate);
             dateField.setText(date);
             ArrayList<Rsg> rsgs = RsgReader.readRsgFromTablet(filename);
             RsgAdapter adapter = new RsgAdapter(this, rsgs);
-            ListView gridView = (ListView) findViewById(R.id.rsglistId);
+            ListView gridView = findViewById(R.id.rsglistId);
             gridView.setAdapter(adapter);
         } catch (Exception e) {
             log.error( "Unable to readRsgFromTablet: " + e.getLocalizedMessage());
@@ -102,115 +101,61 @@ public class ViewRsgActivity extends AppCompatActivity {
     }
 
     public void sortGridEntriesByCountry(View view) {
-        ListView gridView = (ListView) findViewById(R.id.rsglistId);
+        ListView gridView = findViewById(R.id.rsglistId);
         RsgAdapter rsgAdapter = (RsgAdapter) gridView.getAdapter();
-        rsgAdapter.sort(new Comparator<Rsg>() {
-            @Override
-            public int compare(Rsg first, Rsg second) {
-                return first.getCountryCode().compareTo(second.getCountryCode());
-            }
-        });
+        rsgAdapter.sort((first, second) -> first.getCountryCode().compareTo(second.getCountryCode()));
 
-        Button button = (Button)findViewById(R.id.countryButton);
-        button.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
-                sortGridEntriesByCountryReverse(v);
-            }
-        });
+        Button button = findViewById(R.id.countryButton);
+        button.setOnClickListener(this::sortGridEntriesByCountryReverse);
 
     }
 
-    public void sortGridEntriesByCountryReverse(View view) {
-        ListView gridView = (ListView) findViewById(R.id.rsglistId);
+    private void sortGridEntriesByCountryReverse(View view) {
+        ListView gridView = findViewById(R.id.rsglistId);
         RsgAdapter rsgAdapter = (RsgAdapter) gridView.getAdapter();
-        rsgAdapter.sort(new Comparator<Rsg>() {
-            @Override
-            public int compare(Rsg first, Rsg second) {
-                return second.getCountryCode().compareTo(first.getCountryCode());
-            }
-        });
+        rsgAdapter.sort((first, second) -> second.getCountryCode().compareTo(first.getCountryCode()));
 
-        Button button = (Button)findViewById(R.id.countryButton);
-        button.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
-                sortGridEntriesByCountry(v);
-            }
-        });
+        Button button = findViewById(R.id.countryButton);
+        button.setOnClickListener(this::sortGridEntriesByCountry);
     }
     public void sortGridEntriesById(View view) {
-        ListView gridView = (ListView) findViewById(R.id.rsglistId);
+        ListView gridView = findViewById(R.id.rsglistId);
         RsgAdapter rsgAdapter = (RsgAdapter) gridView.getAdapter();
-        rsgAdapter.sort(new Comparator<Rsg>() {
-            @Override
-            public int compare(Rsg first, Rsg second) {
-                return first.getIdentificationCode().compareTo(second.getIdentificationCode());
-            }
-        });
-        Button button = (Button)findViewById(R.id.idButton);
-        button.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
-                sortGridEntriesByIdReverse(v);
-            }
-        });
+        rsgAdapter.sort((first, second) -> first.getIdentificationCode().compareTo(second.getIdentificationCode()));
+        Button button = findViewById(R.id.idButton);
+        button.setOnClickListener(this::sortGridEntriesByIdReverse);
 
 
     }
 
-    public void sortGridEntriesByIdReverse(View view) {
-        ListView gridView = (ListView) findViewById(R.id.rsglistId);
+    private void sortGridEntriesByIdReverse(View view) {
+        ListView gridView = findViewById(R.id.rsglistId);
         RsgAdapter rsgAdapter = (RsgAdapter) gridView.getAdapter();
-        rsgAdapter.sort(new Comparator<Rsg>() {
-            @Override
-            public int compare(Rsg first, Rsg second) {
-                return second.getIdentificationCode().compareTo(first.getIdentificationCode());
-            }
-        });
-        Button button = (Button)findViewById(R.id.idButton);
-        button.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
-                sortGridEntriesById(v);
-            }
-        });
+        rsgAdapter.sort((first, second) -> second.getIdentificationCode().compareTo(first.getIdentificationCode()));
+        Button button = findViewById(R.id.idButton);
+        button.setOnClickListener(this::sortGridEntriesById);
     }
 
     public void sortGridEntriesByTime(View view) {
-        ListView gridView = (ListView) findViewById(R.id.rsglistId);
+        ListView gridView = findViewById(R.id.rsglistId);
         RsgAdapter rsgAdapter = (RsgAdapter) gridView.getAdapter();
-        rsgAdapter.sort(new Comparator<Rsg>() {
-            @Override
-            public int compare(Rsg first, Rsg second) {
-                return first.getDate().compareTo(second.getDate());
-            }
-        });
-        Button button = (Button)findViewById(R.id.timeButton);
-        button.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
-                sortGridEntriesByTimeReverse(v);
-            }
-        });
+        rsgAdapter.sort((first, second) -> first.getDate().compareTo(second.getDate()));
+        Button button = findViewById(R.id.timeButton);
+        button.setOnClickListener(this::sortGridEntriesByTimeReverse);
 
     }
 
-    public void sortGridEntriesByTimeReverse(View view) {
-        ListView gridView = (ListView) findViewById(R.id.rsglistId);
+    private void sortGridEntriesByTimeReverse(View view) {
+        ListView gridView = findViewById(R.id.rsglistId);
         RsgAdapter rsgAdapter = (RsgAdapter) gridView.getAdapter();
-        rsgAdapter.sort(new Comparator<Rsg>() {
-            @Override
-            public int compare(Rsg first, Rsg second) {
-                return second.getDate().compareTo(first.getDate());
-            }
-        });
-        Button button = (Button)findViewById(R.id.timeButton);
-        button.setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
-                sortGridEntriesByTime(v);
-            }
-        });
+        rsgAdapter.sort((first, second) -> second.getDate().compareTo(first.getDate()));
+        Button button = findViewById(R.id.timeButton);
+        button.setOnClickListener(this::sortGridEntriesByTime);
 
     }
 
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
+    public void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
 
         savedInstanceState.putString("filename", filename);
@@ -218,15 +163,13 @@ public class ViewRsgActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
+    public void onRestoreInstanceState(@NonNull  Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        if (savedInstanceState != null) {
             filename = savedInstanceState.getString("filename");
             if (filename == null) {
                 filename = "";
             }
             date = savedInstanceState.getString("date");
-        }
     }
 
 }

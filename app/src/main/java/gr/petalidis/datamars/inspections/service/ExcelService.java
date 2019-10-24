@@ -145,7 +145,7 @@ public class ExcelService {
         }
         if (file.createNewFile()) {
             try (
-                    FileOutputStream fOut = new FileOutputStream(file);
+                    FileOutputStream fOut = new FileOutputStream(file)
             ) {
                 workbook.write(fOut);
             }

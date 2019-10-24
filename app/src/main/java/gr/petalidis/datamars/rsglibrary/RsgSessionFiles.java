@@ -15,8 +15,6 @@
 package gr.petalidis.datamars.rsglibrary;
 
 import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -33,7 +31,7 @@ public class RsgSessionFiles implements Serializable {
             //do nothing
 
     }
-    public RsgSessionFiles(List<RsgSession> sessions) throws ParseException {
+    public RsgSessionFiles(List<RsgSession> sessions) {
         this.sessions = sessions;
 
         Collections.sort(sessions);
@@ -53,8 +51,7 @@ public class RsgSessionFiles implements Serializable {
         return dates;
     }
 
-    public String getFilename(Date date) throws ParseException
-    {
+    public String getFilename(Date date) {
         for (RsgSession session: sessions) {
             if (session.getDate().equals(date)) {
                 return session.getFilepath();

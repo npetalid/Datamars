@@ -4,7 +4,7 @@ enum AnimalGenre {
     NONE("Όχι σπάνια"),
     BIO("Βιολογικής");
 
-    private String name;
+    private final String name;
 
     AnimalGenre(String name) {
         this.name = name;

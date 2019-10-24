@@ -15,14 +15,11 @@
 
 package gr.petalidis.datamars.rsglibrary;
 
-import android.util.Log;
-
 import org.apache.log4j.Logger;
 
 import java.util.Calendar;
 
 import gr.petalidis.datamars.Log4jHelper;
-import gr.petalidis.datamars.SessionViewer;
 
 class RsgFileUtility {
 

@@ -26,10 +26,10 @@
     <string name="inspectionFunctions">Διαχείριση Ελέγχων</string>
     <string name="inspectionFunctionsDescription">Εμφάνιση και δημιουργία νέων ελέγχων</string>
     <string name="success">Επιτυχία!</string>
-    <string name="species">Είδος</string>
     <string name="historicalPeriod">Πριν το 2010</string>
     <string name="notHistoricalPeriod">Μετά το 2010</string>
     <string name="single">Μονό</string>
+    <string name="singleTitleBefore10">Μονό ενώτιο (&lt; 2010)</string>
     <string name="kidAnimal">Ερίφιο</string>
     <string name="youngKidAnimal">Ερίφιο$lt$6μ</string>
     <string name="goatAnimal">Γίδα</string>
@@ -81,4 +81,13 @@
     <string name="previousProducer">Προηγούμενος Παραγωγός</string>
     <string name="conventionalTagScreenLabel">Ζώα με συμβατικά ενώτια</string>
     <string name="outOfRegistry">Εκτός μητρώου</string>
+    <string name="scanner_sync_description">Μεταφέρει Sessions από το Scanner</string>
+    <string name="numberOfSyncedFiles">Synced %1$d files</string>
+    <string name="tagId">Ταυτότητα</string>
+    <string name="timestamp">Ώρα</string>
+    <string name="species">Είδος</string>
+    <string name="genre">Φυλή</string>
+    <string name="producer">Παραγωγός</string>
+    <string name="inRegister">Στο μητρώο;</string>
+    <string name="comments">Σχόλια</string>
 </resources>

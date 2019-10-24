@@ -15,8 +15,8 @@ import gr.petalidis.datamars.rsglibrary.Rsg;
 
 
 public class StubRsgService implements RsgService {
-    private Set<Rsg> rsgs = new HashSet<>();
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    private final Set<Rsg> rsgs = new HashSet<>();
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     public StubRsgService() {
         List<Calendar> calendars = new ArrayList<>();
@@ -32,7 +32,7 @@ public class StubRsgService implements RsgService {
         );
     }
 
-    protected String getSaltString() {
+    private String getSaltString() {
         String SALTCHARS = "1234567890";
         StringBuilder salt = new StringBuilder();
         Random rnd = new Random();
@@ -40,8 +40,7 @@ public class StubRsgService implements RsgService {
             int index = (int) (rnd.nextFloat() * SALTCHARS.length());
             salt.append(SALTCHARS.charAt(index));
         }
-        String saltStr = salt.toString();
-        return saltStr;
+        return salt.toString();
 
     }
 

@@ -19,7 +19,6 @@ package gr.petalidis.datamars;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Environment;
-import android.util.Log;
 import android.widget.TextView;
 
 import org.apache.log4j.Logger;
@@ -40,13 +39,9 @@ import gr.petalidis.datamars.rsglibrary.RsgSessionScanner;
 public class RsgCopier extends AsyncTask<Object, String, Integer> {
     private static final Logger log = Log4jHelper.getLogger(RsgCopier.class.getName());
 
-    private WeakReference<TextView> textView;
+    private final WeakReference<TextView> textView;
 
-    private WeakReference<Context> context;
-
-    private RsgSessionFiles sessions = new RsgSessionFiles();
-
-      /* Checks if external storage is available to at least read */
+    /* Checks if external storage is available to at least read */
 
     private boolean isExternalStorageReadable() {
         String state = Environment.getExternalStorageState();
@@ -61,7 +56,7 @@ public class RsgCopier extends AsyncTask<Object, String, Integer> {
 
     public RsgCopier(Context context, TextView textView) {
         this.textView = new WeakReference<>(textView);
-        this.context = new WeakReference<>(context);
+        WeakReference<Context> context1 = new WeakReference<>(context);
 
     }
 
@@ -94,7 +89,7 @@ public class RsgCopier extends AsyncTask<Object, String, Integer> {
                 }
             }
 
-            sessions = RsgSessionScanner.scanUsbDirectory(rsgRootDirectory.getCsvDirectory());
+            RsgSessionFiles sessions = RsgSessionScanner.scanUsbDirectory(rsgRootDirectory.getCsvDirectory());
         } catch (IllegalStateException  | IOException | ParseException e) {
             log.error("Unable to scan Usb Directory: " + e.getLocalizedMessage());
             publishProgress("Unable to scan Directory: " + e.getLocalizedMessage());
@@ -123,7 +118,7 @@ public class RsgCopier extends AsyncTask<Object, String, Integer> {
             if (numberOfFilesWritten == 0) {
                 actualView.setText(R.string.msg_failed_sync);
             } else {
-                actualView.setText("Synced " + numberOfFilesWritten + " files \n");
+                actualView.setText(Moo.getAppContext().getString(R.string.numberOfSyncedFiles,numberOfFilesWritten));
             }
         }
 

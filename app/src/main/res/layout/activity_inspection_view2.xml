@@ -20,8 +20,9 @@
             android:background="#ffe238"
             android:onClick="sortGridEntriesByTag"
             android:padding="10dp"
-            android:text="Ταυτότητα"
-            android:textSize="18sp" />
+            android:text="@string/tagId"
+            android:textSize="18sp"
+            style="?android:attr/borderlessButtonStyle"/>
 
         <Button
             android:id="@+id/age"
@@ -31,8 +32,9 @@
             android:background="#ffe238"
             android:onClick="sortGridEntriesByTime"
             android:padding="10dp"
-            android:text="Ώρα"
-            android:textSize="18sp" />
+            android:text="@string/timestamp"
+            android:textSize="18sp"
+            style="?android:attr/borderlessButtonStyle"/>
 
         <Button
             android:id="@+id/type"
@@ -42,8 +44,9 @@
             android:background="#ffe238"
             android:onClick="sortGridEntriesByAnimalType"
             android:padding="10dp"
-            android:text="Είδος"
-            android:textSize="18sp" />
+            android:text="@string/species"
+            android:textSize="18sp"
+            style="?android:attr/borderlessButtonStyle"/>
 
         <Button
             android:id="@+id/race"
@@ -53,8 +56,9 @@
             android:background="#ffe238"
             android:onClick="sortGridEntriesByGenre"
             android:padding="10dp"
-            android:text="Φυλή"
-            android:textSize="18sp" />
+            android:text="@string/genre"
+            android:textSize="18sp"
+            style="?android:attr/borderlessButtonStyle"/>
 
         <Button
             android:id="@+id/names"
@@ -64,8 +68,9 @@
             android:background="#ffe238"
             android:onClick="sortGridEntriesByProducer"
             android:padding="10dp"
-            android:text="Παραγωγός"
-            android:textSize="18sp" />
+            android:text="@string/producer"
+            android:textSize="18sp"
+            style="?android:attr/borderlessButtonStyle"/>
 
         <Button
             android:id="@+id/ischecked"
@@ -75,8 +80,9 @@
             android:background="#ffe238"
             android:onClick="sortGridEntriesByIsInRegister"
             android:padding="10dp"
-            android:text="Στο μητρώο;"
-            android:textSize="18sp" />
+            android:text="@string/inRegister"
+            android:textSize="18sp"
+            style="?android:attr/borderlessButtonStyle"/>
 
         <Button
             android:id="@+id/viewCommentsButton"
@@ -86,15 +92,17 @@
             android:background="#ffe238"
             android:onClick="sortGridEntriesByComments"
             android:padding="10dp"
-            android:text="Σχόλια"
-            android:textSize="18sp" />
+            android:text="@string/comments"
+            android:textSize="18sp"
+            style="?android:attr/borderlessButtonStyle"/>
     </LinearLayout>
 
     <ListView
         android:id="@+id/customlist"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_marginTop="5dp" />
+        android:layout_marginTop="5dp"
+        style="?android:attr/borderlessButtonStyle"/>
 
 
 </LinearLayout>

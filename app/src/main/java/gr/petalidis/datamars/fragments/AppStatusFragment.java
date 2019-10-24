@@ -24,6 +24,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.Objects;
+
 import gr.petalidis.datamars.R;
 import gr.petalidis.datamars.RsgCopier;
 
@@ -41,13 +43,8 @@ public class AppStatusFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private OnFragmentInteractionListener mListener;
 
-    private RsgCopier status;
     public AppStatusFragment() {
         // Required empty public constructor
     }
@@ -74,8 +71,9 @@ public class AppStatusFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            // TODO: Rename and change types of parameters
+            String mParam1 = getArguments().getString(ARG_PARAM1);
+            String mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -110,11 +108,11 @@ public class AppStatusFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        TextView textView = (TextView)getView().findViewById(R.id.status_text_view);
+        TextView textView = Objects.requireNonNull(getView()).findViewById(R.id.status_text_view);
         if (textView!=null) {
             textView.clearComposingText();
             textView.setText("");
-            status = new RsgCopier(getContext(), textView);
+            RsgCopier status = new RsgCopier(getContext(), textView);
             status.execute();
         }
     }

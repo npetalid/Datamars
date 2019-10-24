@@ -80,11 +80,12 @@ public class OtherEntry implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         OtherEntry that = (OtherEntry) o;
         return inspectee.equals(that.inspectee) &&
-                animal.equals(that.animal);
+                animal.equals(that.animal) &&
+                entryType.equals(that.entryType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(inspectee, animal);
+        return Objects.hash(inspectee, animal, entryType);
     }
 }

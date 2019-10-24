@@ -19,7 +19,6 @@ package gr.petalidis.datamars;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.apache.log4j.Logger;
 
@@ -33,8 +32,8 @@ import gr.petalidis.datamars.rsglibrary.RsgSessionScanner;
 public class SessionViewer extends AsyncTask<String, String, RsgSessionFiles> {
     private static final Logger log = Log4jHelper.getLogger(SessionViewer.class.getName());
 
-    private WeakReference<Context> context;
-    private WeakReference<String> nextActivityName;
+    private final WeakReference<Context> context;
+    private final WeakReference<String> nextActivityName;
 
     public SessionViewer(Context context, String nextActivityName) {
         this.context = new WeakReference<>(context);
@@ -63,7 +62,7 @@ public class SessionViewer extends AsyncTask<String, String, RsgSessionFiles> {
         super.onPostExecute(sessions);
 
         Context actualContext = context.get();
-        Class nextActivity = null;
+        Class nextActivity;
         try {
               nextActivity = Class.forName(nextActivityName.get());
         } catch (ClassNotFoundException e) {

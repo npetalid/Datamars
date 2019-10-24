@@ -14,11 +14,10 @@
  */
 package gr.petalidis.datamars;
 
-import android.os.Environment;
-
 import org.apache.log4j.Level;
 
 import java.io.File;
+import java.util.Objects;
 
 import de.mindpipe.android.logging.log4j.LogConfigurator;
 
@@ -30,18 +29,17 @@ public class Log4jHelper {
     }
 
     private static void configureLog4j() {
+        if (Moo.getAppContext()!=null) {
+            File dataDirectory = Moo.getAppContext().getExternalFilesDir("");
 
-        File dataDirectory =  Moo.getAppContext().getExternalFilesDir("");
+            String fileName = Objects.requireNonNull(dataDirectory).getAbsolutePath() + File.separator + "log4j.log";
 
+            String filePattern = "%d - [%c] - %p : %m%n";
+            int maxBackupSize = 10;
+            long maxFileSize = 1024 * 1024;
 
-        //  File file = new File(Moo.getAppContext().getFilesDir(),"log4j.log");
-        String fileName = dataDirectory.getAbsolutePath()+File.separator + "log4j.log";
-
-        String filePattern = "%d - [%c] - %p : %m%n";
-        int maxBackupSize = 10;
-        long maxFileSize = 1024 * 1024;
-
-        configure( fileName, filePattern, maxBackupSize, maxFileSize );
+            configure(fileName, filePattern, maxBackupSize, maxFileSize);
+        }
     }
 
     private static void configure( String fileName, String filePattern, int maxBackupSize, long maxFileSize ) {
@@ -57,7 +55,6 @@ public class Log4jHelper {
     }
 
     public static org.apache.log4j.Logger getLogger( String name ) {
-        org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger( name );
-        return logger;
+        return org.apache.log4j.Logger.getLogger( name );
     }
 }

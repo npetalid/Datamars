@@ -3,39 +3,35 @@ package gr.petalidis.datamars.inspections.ui;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NavUtils;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NavUtils;
+import androidx.core.content.ContextCompat;
+
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -43,12 +39,13 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import gr.petalidis.datamars.Log4jHelper;
+import gr.petalidis.datamars.Moo;
 import gr.petalidis.datamars.R;
-import gr.petalidis.datamars.SessionViewer;
 import gr.petalidis.datamars.inspections.domain.Inspection;
 import gr.petalidis.datamars.inspections.dto.ThumbnailDto;
 import gr.petalidis.datamars.inspections.repository.DbHandler;
@@ -68,10 +65,9 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
     private Date inspectionDate;
     private Set<Rsg> rsgs = new HashSet<>();
 
-    Set<String> owners = new HashSet<>();
+    private Set<String> owners = new HashSet<>();
 
     private Location gpsLocation = null;
-    private DbHandler dbHandler;
 
     private Activity mContext;
 
@@ -80,28 +76,6 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
     private LocationCallback mLocationCallback;
 
     private FusedLocationProviderClient mFusedLocationClient;
-    private class SpinnerListener implements AdapterView.OnItemSelectedListener {
-        private String producerTag;
-
-        public SpinnerListener(String producerTag) {
-            this.producerTag = producerTag;
-        }
-
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int pos, long l) {
-            producerTag = (String) parent.getItemAtPosition(pos);
-
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> adapterView) {
-            //do Nothing
-        }
-
-        public String getSelection() {
-            return producerTag;
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +91,7 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
             thumbnails = (ArrayList<ThumbnailDto>) savedInstanceState.getSerializable("thumbnails");
             requestLocationUpdates = savedInstanceState.getBoolean("requestLocationUpdates");
         } else {
-            inspectionDate = (Date) getIntent().getExtras().getSerializable("inspectionDate");
+            inspectionDate = (Date) Objects.requireNonNull(getIntent().getExtras()).getSerializable("inspectionDate");
             filename = getIntent().getExtras().getString("rsgFilename");
             thumbnails = (ArrayList<ThumbnailDto>) getIntent().getExtras().getSerializable("thumbnails");
         }
@@ -133,13 +107,13 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
                 for (Location location : locationResult.getLocations()) {
                     setGpsLocation(location);
                 }
-            };
+            }
         };
         // recovering the instance state
         checkLocationPermission();
 
 
-        InspectionStepTwoAsyncTask inspectionStepTwoActivityAsyncTask = new InspectionStepTwoAsyncTask();
+        InspectionStepTwoAsyncTask inspectionStepTwoActivityAsyncTask = new InspectionStepTwoAsyncTask(this);
 
         inspectionStepTwoActivityAsyncTask.execute(filename,new SimpleDateFormat("dd-MM-yyyy hh:mm:ss").format(inspectionDate));
 
@@ -164,7 +138,7 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
         tin.addTextChangedListener(new TinWatcher(new TinValidator(), tin));
 
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
     }
 
@@ -179,22 +153,33 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
+    private Set<String> getOwners() {
+        return owners;
+    }
+
+    private void setOwners(Set<String> owners) {
+        this.owners = owners;
+    }
+
+    private void setRsgs(Set<Rsg> rsgs) {
+        this.rsgs = rsgs;
+    }
     private boolean formHasErrors() {
         boolean hasErrors = false;
         TinValidator validator = new TinValidator();
-        EditText tin = (EditText) findViewById(R.id.producer1TinText);
+        EditText tin = findViewById(R.id.producer1TinText);
         String tinString = tin.getText().toString();
-        EditText producer1Name = (EditText) findViewById(R.id.producer1NameText);
+        EditText producer1Name = findViewById(R.id.producer1NameText);
         String producer1NameString = producer1Name.getText().toString();
 
-        EditText tin2 = (EditText) findViewById(R.id.producer2TinText);
+        EditText tin2 = findViewById(R.id.producer2TinText);
         String tinString2 = tin2.getText().toString();
 
 
-        EditText tin3 = (EditText) findViewById(R.id.producer3TinText);
+        EditText tin3 = findViewById(R.id.producer3TinText);
         String tinString3 = tin3.getText().toString();
 
-        EditText tin4 = (EditText) findViewById(R.id.producer4TinText);
+        EditText tin4 = findViewById(R.id.producer4TinText);
         String tinString4 = tin4.getText().toString();
 
         if (!validator.isValid(tinString)) {
@@ -228,7 +213,7 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
     public void gpsToggle(View view) {
         Button button = findViewById(R.id.gpsButton);
 
-        if (requestLocationUpdates == true) {
+        if (requestLocationUpdates) {
             stopLocationUpdates();
             requestLocationUpdates=false;
             button.setText("Έναρξη ενημέρωσης συν/γμένων");
@@ -326,108 +311,83 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
     }
 
     private String getProducer1Name() {
-        EditText name = (EditText) findViewById(R.id.producer1NameText);
+        EditText name = findViewById(R.id.producer1NameText);
         return name.getText().toString().trim();
     }
 
     private String getProducer1Tin() {
-        EditText tin = (EditText) findViewById(R.id.producer1TinText);
+        EditText tin = findViewById(R.id.producer1TinText);
         return tin.getText().toString().trim();
     }
 
     private String getProducer2Name() {
-        EditText name = (EditText) findViewById(R.id.producer2NameText);
+        EditText name = findViewById(R.id.producer2NameText);
         return name.getText().toString().trim();
     }
 
     private String getProducer2Tin() {
-        EditText tin = (EditText) findViewById(R.id.producer2TinText);
+        EditText tin = findViewById(R.id.producer2TinText);
         return tin.getText().toString().trim();
     }
 
     private String getProducer3Name() {
-        EditText name = (EditText) findViewById(R.id.producer3NameText);
+        EditText name = findViewById(R.id.producer3NameText);
         return name.getText().toString().trim();
     }
 
     private String getProducer3Tin() {
-        EditText tin = (EditText) findViewById(R.id.producer3TinText);
+        EditText tin = findViewById(R.id.producer3TinText);
         return tin.getText().toString().trim();
     }
 
     private String getProducer4Name() {
-        EditText name = (EditText) findViewById(R.id.producer4NameText);
+        EditText name = findViewById(R.id.producer4NameText);
         return name.getText().toString().trim();
     }
 
     private String getProducer4Tin() {
-        EditText tin = (EditText) findViewById(R.id.producer4TinText);
+        EditText tin = findViewById(R.id.producer4TinText);
         return tin.getText().toString().trim();
     }
 
     private void setProducer1Name() {
-        EditText name = (EditText) findViewById(R.id.producer1NameText);
+        EditText name = findViewById(R.id.producer1NameText);
         if (inspection != null) name.setText(inspection.getProducer1Name());
     }
 
     private void setProducer1Tin() {
-        EditText tin = (EditText) findViewById(R.id.producer1TinText);
+        EditText tin = findViewById(R.id.producer1TinText);
         if (inspection != null) tin.setText(inspection.getProducer1Tin());
     }
 
     private void setProducer2Name() {
-        EditText name = (EditText) findViewById(R.id.producer2NameText);
+        EditText name = findViewById(R.id.producer2NameText);
         if (inspection != null) name.setText(inspection.getProducer2Name());
     }
 
     private void setProducer2Tin() {
-        EditText tin = (EditText) findViewById(R.id.producer2TinText);
+        EditText tin = findViewById(R.id.producer2TinText);
         if (inspection != null) tin.setText(inspection.getProducer2Tin());
     }
 
     private void setProducer3Name() {
-        EditText name = (EditText) findViewById(R.id.producer3NameText);
+        EditText name = findViewById(R.id.producer3NameText);
         if (inspection != null) name.setText(inspection.getProducer3Name());
     }
 
     private void setProducer3Tin() {
-        EditText tin = (EditText) findViewById(R.id.producer3TinText);
+        EditText tin = findViewById(R.id.producer3TinText);
         if (inspection != null) tin.setText(inspection.getProducer3Tin());
     }
 
     private void setProducer4Name() {
-        EditText name = (EditText) findViewById(R.id.producer4NameText);
+        EditText name = findViewById(R.id.producer4NameText);
         if (inspection != null) name.setText(inspection.getProducer4Name());
     }
 
-    private void setProducer1Tag() {
-        Spinner producer1TagSpinner = findViewById(R.id.producer1TagValue);
-        producer1TagSpinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, owners.toArray(new String[]{})));
-    }
-
-    private void setProducer2Tag() {
-        Spinner producer2TagSpinner = findViewById(R.id.producer2TagValue);
-        producer2TagSpinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, owners.toArray(new String[]{})));
-    }
-
-    private void setProducer3Tag() {
-        Spinner producer3TagSpinner = findViewById(R.id.producer3TagValue);
-        producer3TagSpinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, owners.toArray(new String[]{})));
-    }
-
-    private void setProducer4Tag() {
-        Spinner producer4TagSpinner = findViewById(R.id.producer4TagValue);
-        producer4TagSpinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, owners.toArray(new String[]{})));
-    }
-
     private void setProducer4Tin() {
-        EditText tin = (EditText) findViewById(R.id.producer4TinText);
+        EditText tin = findViewById(R.id.producer4TinText);
         if (inspection != null) tin.setText(inspection.getProducer4Tin());
-    }
-
-    private void setAnimalCount(int value) {
-        TextView animalCountValue = (TextView) findViewById(R.id.animalCountValue);
-        animalCountValue.setText(value + "");
     }
 
 
@@ -437,19 +397,19 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
                 (gpsLocation==null || location.distanceTo(gpsLocation)>1 || location.getAccuracy()<gpsLocation.getAccuracy())) {
             gpsLocation = location;
 
-            double[] coordinates = {0.0, 0.0};
+            double[] coordinates;
 
             coordinates = WGS84Converter.toGGRS87(gpsLocation.getLatitude(), gpsLocation.getLongitude());
 
-            TextView gpsLocation = (TextView) findViewById(R.id.gpsValue);
-            float accuracy = location == null ? 1000.0f : location.getAccuracy();
+            TextView gpsLocation = findViewById(R.id.gpsValue);
+            float accuracy = location.getAccuracy();
             gpsLocation.setText(String.format(Locale.forLanguageTag("el"), "%.2f", coordinates[0])
                     + ", " + String.format(Locale.forLanguageTag("el"), "%.2f", coordinates[1]) + "\n (ακρίβεια 68% εντός:"
                     + String.format(Locale.forLanguageTag("el"), "%.2f", accuracy) + "μ)");
         }
     }
 
-    public boolean checkLocationPermission() {
+    private void checkLocationPermission() {
 
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
@@ -461,16 +421,13 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
                 // TODO: Show an explanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
-                new android.support.v7.app.AlertDialog.Builder(this)
+                new AlertDialog.Builder(this)
                         .setTitle("Αίτημα χρήσης υπηρεσιών τοποθεσίας")
                         .setMessage("Η τοποθεσία χρησιμοποιείται για την τοποθέτηση του στάβλου όταν καταχωρείτε έλεγχο")
-                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                //Prompt the user once explanation has been shown
-                                ActivityCompat.requestPermissions(mContext,
-                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_GPS_REQUEST_CODE);
-                            }
+                        .setPositiveButton(android.R.string.ok, (dialogInterface, i) -> {
+                            //Prompt the user once explanation has been shown
+                            ActivityCompat.requestPermissions(mContext,
+                                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_GPS_REQUEST_CODE);
                         })
                         .create()
                         .show();
@@ -481,17 +438,11 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         PERMISSION_GPS_REQUEST_CODE);
             }
-            return false;
         } else {
             mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
             mFusedLocationClient.getLastLocation()
-                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                        @Override
-                        public void onSuccess(Location location) {
-                            setGpsLocation(location);
-                        }
-                    });
+                    .addOnSuccessListener(this, this::setGpsLocation);
             if (requestLocationUpdates) {
                 LocationRequest currentLocationRequest = new LocationRequest();
                 currentLocationRequest.setInterval(500)
@@ -505,7 +456,6 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
             } else {
                 stopLocationUpdates();
             }
-            return true;
         }
     }
 
@@ -513,16 +463,14 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
         AlertDialog.Builder gpsAlertDialog = new AlertDialog.Builder(this);
         String msg = "Δεν ήταν δυνατή η ανάγνωση της τοποθεσίας. Δοκιμάσετε αργότερα";
         gpsAlertDialog.setTitle("Αδυναμία πρόσβασης στις υπηρεσίες τοποθεσίας").setMessage(msg)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
+                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
 
-                    }
                 });
         gpsAlertDialog.show();
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case PERMISSION_GPS_REQUEST_CODE:
                 if (!(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
@@ -551,7 +499,13 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
         super.onResume();
         checkLocationPermission();
     }
-    private class InspectionStepTwoAsyncTask extends AsyncTask<String, String, Set<Rsg>> {
+    private static class InspectionStepTwoAsyncTask extends AsyncTask<String, String, Set<Rsg>> {
+
+        final WeakReference<InspectionStepTwoActivity> parent;
+
+        InspectionStepTwoAsyncTask(InspectionStepTwoActivity parent) {
+            this.parent = new WeakReference<>(parent);
+        }
 
         private final Logger log = Log4jHelper.getLogger(InspectionStepTwoAsyncTask.class.getName());
         protected Set<Rsg> doInBackground(String... strings) {
@@ -567,15 +521,14 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
                 String dateString = strings[1];
                 inspectionDate = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss").parse(dateString);
 
-                DbHandler dbHandler = new DbHandler(mContext.getApplicationContext());
+                DbHandler dbHandler = new DbHandler(Moo.getAppContext());
 
                 List<Rsg> alreadyCheckedRsgs = EntryRepository.getAlreadyCheckedRsgsFor(dbHandler, inspectionDate);
 
-                rsgs = RsgReader.readRsgFromTablet(filename)
+                return RsgReader.readRsgFromTablet(filename)
                         .stream()
                         .filter(rsg -> alreadyCheckedRsgs.stream().noneMatch(seenRsg -> seenRsg.equals(rsg)))
                         .collect(Collectors.toSet());
-                return rsgs;
 
             } catch (IOException | ParseException e) {
                 log.error("Received exception: " + e.getLocalizedMessage());
@@ -587,21 +540,28 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
 
         protected void onPostExecute(Set<Rsg> rsgs) {
             if (rsgs.isEmpty()) {
-                Notifier.notify(mContext, "Δεν υπάρχουν σκαναρισμένα ενώτια για τον έλεγχο αυτό!", Notifier.NOTIFICATION_MESSAGE_TYPE.INFO_MESSAGE);
+                Notifier.notify(Moo.getAppContext(), "Δεν υπάρχουν σκαναρισμένα ενώτια για τον έλεγχο αυτό!", Notifier.NOTIFICATION_MESSAGE_TYPE.INFO_MESSAGE);
             }
-            owners = rsgs.stream().map(x -> x.getOwner()).collect(Collectors.toSet());
-            setAnimalCount(rsgs.size());
-            setProducer1Tag();
-            setProducer2Tag();
-            setProducer3Tag();
-            setProducer4Tag();
+            InspectionStepTwoActivity activity = parent.get();
+            if (activity==null || activity.isFinishing()) {
+                return;
+            }
+            activity.setOwners(rsgs.stream().map(Rsg::getOwner).collect(Collectors.toSet()));
+            TextView animalCountValue = activity.findViewById(R.id.animalCountValue);
+            animalCountValue.setText(rsgs.size() + "");
+            activity.setRsgs(rsgs);
+            Spinner producer1TagSpinner = activity.findViewById(R.id.producer1TagValue);
+            producer1TagSpinner.setAdapter(new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, activity.getOwners().toArray(new String[]{})));
 
-//            // Got last known location. In some rare situations this can be null.
-//            if (gpsLocation != null) {
-//                setGpsLocation(gpsLocation);
-//            } else {
-//                showGpsFailure();
-//            }
+            Spinner producer2TagSpinner = activity.findViewById(R.id.producer2TagValue);
+            producer2TagSpinner.setAdapter(new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, activity.getOwners().toArray(new String[]{})));
+
+            Spinner producer3TagSpinner = activity.findViewById(R.id.producer3TagValue);
+            producer3TagSpinner.setAdapter(new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, activity.getOwners().toArray(new String[]{})));
+
+            Spinner producer4TagSpinner = activity.findViewById(R.id.producer4TagValue);
+            producer4TagSpinner.setAdapter(new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, activity.getOwners().toArray(new String[]{})));
+
         }
 
     }

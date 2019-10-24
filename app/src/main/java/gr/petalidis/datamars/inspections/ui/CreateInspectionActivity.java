@@ -4,11 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import org.apache.log4j.Logger;
 
@@ -16,7 +17,6 @@ import java.util.List;
 
 import gr.petalidis.datamars.Log4jHelper;
 import gr.petalidis.datamars.R;
-import gr.petalidis.datamars.SessionViewer;
 import gr.petalidis.datamars.inspections.domain.Inspection;
 import gr.petalidis.datamars.inspections.dto.InspectionDateProducer;
 import gr.petalidis.datamars.inspections.exceptions.PersistenceException;
@@ -59,7 +59,7 @@ public class CreateInspectionActivity extends Activity {
         try {
             List<InspectionDateProducer> inspectionDateProducerList = InspectionService.findAllInspections(dbHandler);
 
-            final ListView listview = (ListView) findViewById(R.id.inspectionList);
+            final ListView listview = findViewById(R.id.inspectionList);
 
             final CreateInspectionAdapter adapter = new CreateInspectionAdapter(this,
                     android.R.layout.simple_list_item_1, inspectionDateProducerList);
@@ -110,13 +110,11 @@ public class CreateInspectionActivity extends Activity {
     }
 
     @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
+    public void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        if (savedInstanceState != null) {
             files = (RsgSessionFiles) savedInstanceState.getSerializable("dates");
             if (files == null) {
                 files = new RsgSessionFiles();
-            }
         }
     }
     public void goToInspectionStepOneActivity(View view) {

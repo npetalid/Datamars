@@ -6,9 +6,9 @@ import android.widget.TextView;
 
 import gr.petalidis.datamars.inspections.validators.Validator;
 
-public class TinWatcher implements TextWatcher {
+class TinWatcher implements TextWatcher {
 
-    private Validator validator;
+    private final Validator validator;
     private final TextView textView;
 
     public TinWatcher(Validator validator, TextView textView) {

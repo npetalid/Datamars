@@ -25,9 +25,9 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DirectoryScanner extends AsyncTask<Void,Void,List<String>> {
+class DirectoryScanner extends AsyncTask<Void,Void,List<String>> {
 
-    private WeakReference<TextView> textView;
+    private final WeakReference<TextView> textView;
 
     public DirectoryScanner(TextView textView) {
         this.textView = new WeakReference<>(textView);
@@ -47,7 +47,7 @@ public class DirectoryScanner extends AsyncTask<Void,Void,List<String>> {
 
     private List<String> recurseIntoFilePath(List<String> results, String path)
     {
-        File f = new File(path.toString());
+        File f = new File(path);
         File [] files = f.listFiles();
         if (files != null) {
             for (File inFile : files) {

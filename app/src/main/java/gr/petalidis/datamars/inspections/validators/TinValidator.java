@@ -17,10 +17,7 @@ public class TinValidator implements Validator<String> {
 
         Double btRem = iSum % 11;
 
-        int lastDigit = Integer.parseInt(tin.substring(tin.length() - 1, tin.length()));
-        if (lastDigit == btRem || (btRem == 10 && lastDigit == 0)) {
-            return true;
-        }
-        return false;
+        int lastDigit = Integer.parseInt(tin.substring(tin.length() - 1));
+        return lastDigit == btRem || (btRem == 10 && lastDigit == 0);
     }
 }

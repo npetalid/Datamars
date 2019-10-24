@@ -4,20 +4,13 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import gr.petalidis.datamars.inspections.domain.Entry;
 import gr.petalidis.datamars.inspections.domain.Inspectee;
 import gr.petalidis.datamars.inspections.domain.OtherEntry;
 import gr.petalidis.datamars.inspections.domain.OtherEntryType;
-import gr.petalidis.datamars.rsglibrary.Rsg;
 
 public class OtherEntryRepository {
 
@@ -38,11 +31,9 @@ public class OtherEntryRepository {
             });
 
         }
-        return;
     }
 
-    public static Set<OtherEntry> getEntriesFor(DbHandler dbHandler, UUID inspectionId, OtherEntryType type) throws ParseException
-    {
+    public static Set<OtherEntry> getEntriesFor(DbHandler dbHandler, UUID inspectionId, OtherEntryType type) {
         Set<OtherEntry> entries = new HashSet<>();
 
         String selectDateProducerQuery = "SELECT " +

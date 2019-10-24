@@ -1,7 +1,5 @@
 package gr.petalidis.datamars.inspections.service;
 
-import android.util.Log;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
@@ -12,7 +10,6 @@ import java.io.OutputStreamWriter;
 import java.util.List;
 
 import gr.petalidis.datamars.Log4jHelper;
-import gr.petalidis.datamars.SessionViewer;
 
 public class FileService {
     private static final Logger log = Log4jHelper.getLogger(FileService.class.getName());

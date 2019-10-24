@@ -8,15 +8,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="inspections.ui.InspectionStepTwoActivity">
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp">
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/gotoStep2Screen"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -28,7 +27,8 @@
     <ImageView
         android:id="@+id/picture"
         android:layout_width="wrap_content"
-        android:layout_height="400dp"/>
+        android:layout_height="400dp"
+        android:contentDescription="TODO" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -39,7 +39,7 @@
             android:id="@+id/capture"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dp"
+            android:layout_marginEnd="10dp"
             android:text="Λήψη φωτογραφίας"/>
 
 

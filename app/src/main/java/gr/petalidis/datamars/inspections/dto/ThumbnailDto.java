@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class ThumbnailDto implements Serializable {
     private final String imagePath;
-   private String name;
+   private final String name;
 
     public ThumbnailDto( String name, String imagePath) {
         this.name = name;

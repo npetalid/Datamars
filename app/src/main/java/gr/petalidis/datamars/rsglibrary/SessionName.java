@@ -18,11 +18,11 @@ package gr.petalidis.datamars.rsglibrary;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class SessionName {
+class SessionName {
     final static public SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
-    private String filename;
-    private Date date;
+    private final String filename;
+    private final Date date;
 
     public SessionName(String filename, Date date) {
         this.filename = filename;

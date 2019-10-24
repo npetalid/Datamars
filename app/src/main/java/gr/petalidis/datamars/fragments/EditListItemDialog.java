@@ -12,7 +12,7 @@ import gr.petalidis.datamars.inspections.domain.UsbAlias;
 import gr.petalidis.datamars.inspections.repository.DbHandler;
 import gr.petalidis.datamars.inspections.service.UsbAliasService;
 
-public class EditListItemDialog extends Dialog implements View.OnClickListener {
+class EditListItemDialog extends Dialog implements View.OnClickListener {
     private final UsbAlias item;
     private  EditText editText;
     private final UsbListView usbListView;

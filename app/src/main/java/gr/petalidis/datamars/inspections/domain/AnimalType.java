@@ -10,7 +10,8 @@ public enum AnimalType {
     SHEEP_ANIMAL(Moo.getAppContext().getResources().getString(R.string.sheepAnimal)),
     HEGOAT_ANIMAL(Moo.getAppContext().getResources().getString(R.string.heGoatAnimal)),
     RAM_ANIMAL(Moo.getAppContext().getResources().getString(R.string.ramAnimal)),
-    HORSE_ANIMAL(Moo.getAppContext().getResources().getString(R.string.horseAnimal));
+    HORSE_ANIMAL(Moo.getAppContext().getResources().getString(R.string.horseAnimal)),
+    KIDLAMB_ANIMAL("Αμνοερίφια");
 
     final String title;
 

@@ -21,20 +21,20 @@ import java.util.List;
 
 public class RsgRootDirectory {
 
-    private CsvRootDirectory csvRootDirectory = new CsvRootDirectory();
+    private final CsvRootDirectory csvRootDirectory = new CsvRootDirectory();
     private String rsgRoot;
 
-    private String usbName = "";
+    private String usbName;
 
-    private String csvPath = "";
+    private String csvPath;
     public RsgRootDirectory() {
         this("/storage");
     }
 
-    public RsgRootDirectory(String startingPath) throws IllegalStateException {
+    private RsgRootDirectory(String startingPath) throws IllegalStateException {
 
-        List<String> rsgRoots = recurseIntoFilePath(new ArrayList<String>(), startingPath);
-        if (rsgRoots.isEmpty() || rsgRoots.size() > 1) {
+        List<String> rsgRoots = recurseIntoFilePath(new ArrayList<>(), startingPath);
+        if (rsgRoots.size() != 1) {
             throw new IllegalStateException("Could not find a connected Datamars device");
         }
 
@@ -49,7 +49,7 @@ public class RsgRootDirectory {
 
         //TextView textView = (TextView) getView().findViewById(R.id.status_text_view);
 
-        File f = new File(path.toString());
+        File f = new File(path);
         File[] files = f.listFiles();
         if (files != null) {
             for (File inFile : files) {
@@ -97,14 +97,14 @@ public class RsgRootDirectory {
 
         if (!topDirectory.exists()) {
             boolean mkdir = topDirectory.mkdir();
-            if (mkdir == false) {
+            if (!mkdir) {
                 throw new IllegalStateException("Could not create top level directory");
             }
         }
         File datamarsDir = new File(csvRootDirectory.getDirectory() + File.separator + usbName);
         if (!datamarsDir.exists()) {
             boolean mkDir = datamarsDir.mkdir();
-            if (mkDir == false) {
+            if (!mkDir) {
                 throw new IllegalStateException("Could not create device-differentiating directory");
             }
         }

@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 public class Inspectee implements Serializable {
 
-    private String tin  = "";
-    private String name = "";
+    private String tin;
+    private String name;
     private static Inspectee dummyInspectee = null;
     public Inspectee(String tin, String name) {
         this.tin = tin;

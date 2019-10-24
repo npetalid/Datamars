@@ -3,20 +3,18 @@ package gr.petalidis.datamars.inspections.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.squareup.timessquare.CalendarPickerView;
 
 import org.apache.log4j.Logger;
 
-import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
 import gr.petalidis.datamars.Log4jHelper;
 import gr.petalidis.datamars.R;
-import gr.petalidis.datamars.SessionViewer;
 import gr.petalidis.datamars.rsglibrary.RsgSessionFiles;
 
 
@@ -47,7 +45,8 @@ public class InspectionStepOneActivity extends AppCompatActivity {
             }
         }
 
-        CalendarPickerView calendarView = (CalendarPickerView) findViewById(R.id.inspectionDateText);
+        CalendarPickerView calendarView = findViewById(R.id.inspectionDateText);
+
         Calendar cal = Calendar.getInstance();
 
         Date firstDate = new Date();
@@ -67,20 +66,17 @@ public class InspectionStepOneActivity extends AppCompatActivity {
         calendarView.scrollToDate(cal2.getTime());
         calendarView.highlightDates(files.getDates());
 
-        calendarView.setCellClickInterceptor(new CalendarPickerView.CellClickInterceptor() {
-            @Override
-            public boolean onCellClicked(Date date) {
-                Intent intent = new Intent(mContext, InspectionStepPhotoActivity.class);
-                try {
-                    intent.putExtra("rsgFilename", files.getFilename(date));
-                    intent.putExtra("inspectionDate", date);
-                    startActivity(intent);
-                    return true;
-                } catch (ParseException e) {
-                    log.error("Received not valid name and/or date: " + e.getLocalizedMessage());
-                }
-                return false;
+        calendarView.setCellClickInterceptor(date -> {
+            Intent intent1 = new Intent(mContext, InspectionStepPhotoActivity.class);
+            try {
+                intent1.putExtra("rsgFilename", files.getFilename(date));
+                intent1.putExtra("inspectionDate", date);
+                startActivity(intent1);
+                return true;
+            } catch (Exception e) {
+                log.error("Received not valid name and/or date: " + e.getLocalizedMessage());
             }
+            return false;
         });
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 

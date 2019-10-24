@@ -15,19 +15,16 @@
 
 package gr.petalidis.datamars.rsglibrary;
 
-import android.support.annotation.NonNull;
-import android.util.Log;
+import androidx.annotation.NonNull;
 
 import org.apache.log4j.Logger;
 
 import java.io.Serializable;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import gr.petalidis.datamars.Log4jHelper;
 import gr.petalidis.datamars.Moo;
-import gr.petalidis.datamars.SessionViewer;
 
 public class RsgSession implements Comparable<RsgSession>, Serializable {
     private Date date;

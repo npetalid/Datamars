@@ -23,7 +23,7 @@ public class InspectionService {
     {
         try {
             return InspectionRepository.getAllInspections(dbHandler);
-        } catch (ParseException e) {
+        } catch (Exception e) {
             log.error("findAllInspections(): Unable to get inspection: " + e.getLocalizedMessage());
             throw new PersistenceException(e.getLocalizedMessage());
         }

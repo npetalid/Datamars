@@ -10,9 +10,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +19,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import org.apache.log4j.Logger;
 
@@ -34,12 +34,11 @@ import java.util.List;
 
 import gr.petalidis.datamars.Log4jHelper;
 import gr.petalidis.datamars.R;
-import gr.petalidis.datamars.SessionViewer;
 import gr.petalidis.datamars.inspections.dto.ThumbnailDto;
 
 public class InspectionStepPhotoActivity extends AppCompatActivity {
     private String pictureFilePath;
-    static final int REQUEST_PICTURE_CAPTURE = 1;
+    private static final int REQUEST_PICTURE_CAPTURE = 1;
     private ImageView image;
     private ArrayList<ThumbnailDto> thumbnails = new ArrayList<>();
     private InspectionStepPhotoAdapter adapter;
@@ -65,7 +64,7 @@ public class InspectionStepPhotoActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             thumbnails = (ArrayList<ThumbnailDto>) savedInstanceState.getSerializable("thumbnails");
             pictureFilePath = savedInstanceState.getString("pictureFilePath");
-            if (pictureFilePath != null && pictureFilePath != "") {
+            if (pictureFilePath != null && !pictureFilePath.equals("")) {
                 File file = new File(pictureFilePath);
                 image.setImageURI(Uri.fromFile(file));
             }
@@ -78,7 +77,7 @@ public class InspectionStepPhotoActivity extends AppCompatActivity {
 
         adapter = new InspectionStepPhotoAdapter(this,
                 android.R.layout.simple_list_item_1, thumbnails);
-        final ListView listview = (ListView) findViewById(R.id.imageslist);
+        final ListView listview = findViewById(R.id.imageslist);
 
         listview.setAdapter(adapter);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -102,7 +101,7 @@ public class InspectionStepPhotoActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             thumbnails = (ArrayList<ThumbnailDto>) savedInstanceState.getSerializable("thumbnails");
             pictureFilePath = savedInstanceState.getString("pictureFilePath");
-            if (pictureFilePath != null && pictureFilePath != "") {
+            if (pictureFilePath != null && !pictureFilePath.equals("")) {
                 File file = new File(pictureFilePath);
                 image.setImageURI(Uri.fromFile(file));
             }
@@ -118,7 +117,7 @@ public class InspectionStepPhotoActivity extends AppCompatActivity {
 
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (cameraIntent.resolveActivity(getPackageManager()) != null) {
-            File pictureFile = null;
+            File pictureFile;
             try {
                 pictureFile = getPictureFile();
                 Uri photoURI = FileProvider.getUriForFile(this,
@@ -132,7 +131,6 @@ public class InspectionStepPhotoActivity extends AppCompatActivity {
                 Toast.makeText(this,
                         "Photo file can't be created, please try again",
                         Toast.LENGTH_SHORT).show();
-                return;
             }
         }
     }
@@ -148,6 +146,7 @@ public class InspectionStepPhotoActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_PICTURE_CAPTURE && resultCode == RESULT_OK) {
             File imgFile = new File(pictureFilePath);
             if (imgFile.exists()) {
@@ -179,7 +178,7 @@ public class InspectionStepPhotoActivity extends AppCompatActivity {
         private final Context context;
         private final List<ThumbnailDto> bitmaps;
 
-        public InspectionStepPhotoAdapter(Context context, int resource, List<ThumbnailDto> bitmaps) {
+        InspectionStepPhotoAdapter(Context context, int resource, List<ThumbnailDto> bitmaps) {
             super(context, resource, bitmaps);
             this.context = context;
             this.bitmaps = bitmaps;

@@ -17,12 +17,13 @@
 package gr.petalidis.datamars.activities;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -30,10 +31,10 @@ import java.util.ArrayList;
 import gr.petalidis.datamars.R;
 import gr.petalidis.datamars.rsglibrary.Rsg;
 
-public class RsgAdapter extends ArrayAdapter<Rsg> {
+class RsgAdapter extends ArrayAdapter<Rsg> {
     private final SimpleDateFormat format = new SimpleDateFormat("hh:mm:ss");
 
-    public RsgAdapter(Context context, ArrayList<Rsg> rsgs) {
+    RsgAdapter(Context context, ArrayList<Rsg> rsgs) {
         super(context, 0, rsgs);
     }
 
@@ -47,9 +48,9 @@ public class RsgAdapter extends ArrayAdapter<Rsg> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.rsg_item, parent, false);
         }
         // Lookup view for data population
-        TextView country = (TextView) convertView.findViewById(R.id.countryId);
-        TextView identification = (TextView) convertView.findViewById(R.id.identificationId);
-        TextView myDate = (TextView) convertView.findViewById(R.id.dateId);
+        TextView country = convertView.findViewById(R.id.countryId);
+        TextView identification = convertView.findViewById(R.id.identificationId);
+        TextView myDate = convertView.findViewById(R.id.dateId);
 
         if (rsg!=null) {
             country.setText(rsg.getCountryCode());

@@ -1,15 +1,15 @@
 package gr.petalidis.datamars.inspections.ui;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 
 import org.apache.log4j.Logger;
 
@@ -67,12 +67,12 @@ public class InspectionViewActivity extends AppCompatActivity {
     }
 
     private void setInspectionDateTextView() {
-        TextView inspectionDateTextView = (TextView) findViewById(R.id.viewInspectionDateValue);
+        TextView inspectionDateTextView = findViewById(R.id.viewInspectionDateValue);
         if (inspection != null)
             inspectionDateTextView.setText(dateFormat.format(inspection.getDate()));
     }
     private void setInspectionCoordinatesTextView() {
-        TextView coordinatesTextView = (TextView) findViewById(R.id.viewCoordinatesValue);
+        TextView coordinatesTextView = findViewById(R.id.viewCoordinatesValue);
         if (inspection != null)
             coordinatesTextView.setText(inspection.getLatitude() +", " + inspection.getLongitude());
     }
@@ -111,44 +111,42 @@ public class InspectionViewActivity extends AppCompatActivity {
             Inspectee inspectee = inspection.getProducersWithNoDummy().get(index);
 
             if (inspectee!=null) {
+                TextView inspecteeView  = findViewById(R.id.viewProducerTin);
+                inspecteeView.setText(inspectee.getTin() + " " +
+                        inspectee.getName());
+
                 Report report = inspection.generateReportFor(inspectee);
-                TextView totalValue = (TextView) findViewById(R.id.total);
+                TextView totalValue = findViewById(R.id.total);
                 totalValue.setText(report.getTotal() + "");
 
-                TextView noTag = (TextView) findViewById(R.id.noTag);
+                TextView noTag = findViewById(R.id.noTag);
                 noTag.setText(report.getNoTag() + "");
 
-                TextView noTagUnder6 = (TextView) findViewById(R.id.noTagUnder6);
+                TextView noTagUnder6 = findViewById(R.id.noTagUnder6);
                 noTagUnder6.setText(report.getNoTagUnder6() + "");
 
-                TextView noElectronicTag = (TextView) findViewById(R.id.noElectronicTag);
+                TextView noElectronicTag = findViewById(R.id.noElectronicTag);
                 noElectronicTag.setText(report.getNoElectronicTag() + "");
 
-                TextView singleTag = (TextView) findViewById(R.id.singleTag);
+                TextView singleTag = findViewById(R.id.singleTag);
                 singleTag.setText(report.getSingleTag() + "");
 
-                TextView countedButNotInRegistry = (TextView) findViewById(R.id.countedButNotInRegistry);
+                TextView countedButNotInRegistry = findViewById(R.id.countedButNotInRegistry);
                 countedButNotInRegistry.setText(report.getCountedButNotInRegistry() + "");
 
                 Map<AnimalType, Long> selectable = report.getSelectable();
-                TextView sheepTotalValue = (TextView) findViewById(R.id.sheepTotalValue);
+                TextView sheepTotalValue = findViewById(R.id.sheepTotalValue);
                 sheepTotalValue.setText(selectable.get(AnimalType.SHEEP_ANIMAL) + "");
-                TextView goatTotalValue = (TextView) findViewById(R.id.goatTotalValue);
+                TextView goatTotalValue = findViewById(R.id.goatTotalValue);
                 goatTotalValue.setText(selectable.get(AnimalType.GOAT_ANIMAL) + "");
 
-                TextView ramTotalValue = (TextView) findViewById(R.id.ramTotalValue);
-                ramTotalValue.setText(selectable.get(AnimalType.RAM_ANIMAL) + "");
+                TextView ramTotalValue = findViewById(R.id.ramTotalValue);
+                ramTotalValue.setText(selectable.get(AnimalType.RAM_ANIMAL) + selectable.get(AnimalType.HEGOAT_ANIMAL) + "");
 
-                TextView heGoatTotalValue = (TextView) findViewById(R.id.heGoatTotalValue);
-                heGoatTotalValue.setText(selectable.get(AnimalType.HEGOAT_ANIMAL) + "");
+                TextView lambsTotalValue = findViewById(R.id.lambsTotalValue);
+                lambsTotalValue.setText(selectable.get(AnimalType.KIDLAMB_ANIMAL)+"");
 
-                TextView kidTotalValue = (TextView) findViewById(R.id.kidTotalValue);
-                kidTotalValue.setText(selectable.get(AnimalType.KID_ANIMAL) + "");
-
-                TextView lambsTotalValue = (TextView) findViewById(R.id.lambsTotalValue);
-                lambsTotalValue.setText(selectable.get(AnimalType.LAMB_ANIMAL) + "");
-
-                TextView horseTotalValue = (TextView) findViewById(R.id.horseTotalValue);
+                TextView horseTotalValue = findViewById(R.id.horseTotalValue);
                 horseTotalValue.setText(selectable.get(AnimalType.HORSE_ANIMAL) + "");
 
 

@@ -3,8 +3,6 @@ package gr.petalidis.datamars.inspections.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
@@ -12,9 +10,10 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
+
 import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.Map;
 
 import gr.petalidis.datamars.Moo;
 import gr.petalidis.datamars.R;
@@ -30,11 +29,11 @@ public class InspectionStepFourActivity extends AppCompatActivity {
         HEGOAT_ENTRY(R.string.heGoatAnimal,R.id.heGoatLegalConventionalTag,R.id.heGoatConventionalOutOfRegistry,R.id.heGoatSingleConventionalTag,R.id.heGoatIllegalConventionalTag),
         RAM_ENTRY(R.string.ramAnimal,R.id.ramLegalConventionalTag,R.id.ramConventionalOutOfRegistry,R.id.ramSingleConventionalTag,R.id.ramIllegalConventionalTag);
 
-         String animal;
-         int conventionalTag;
-         int outOfRegistryTag;
-         int singleTag;
-         int illegalTag;
+         final String animal;
+         final int conventionalTag;
+         final int outOfRegistryTag;
+         final int singleTag;
+         final int illegalTag;
 
          ConventionalEntryTag(int animalStringId,int conventionalTag, int outOfRegistryTag, int singleTag, int illegalTag) {
              this.conventionalTag = conventionalTag;
@@ -62,15 +61,11 @@ public class InspectionStepFourActivity extends AppCompatActivity {
         }
     }
     private Inspection inspection;
-    private DbHandler dbHandler;
-    private Context mContext;
-    private Map<Integer,ConventionalEntryTag> valuesToLegalConventionalLabels = new HashMap<>();
-
 
     private int index = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        this.mContext = this;
+        Context mContext = this;
         super.onCreate(savedInstanceState);
         // recovering the instance state
         if (savedInstanceState != null) {
@@ -79,7 +74,7 @@ public class InspectionStepFourActivity extends AppCompatActivity {
             inspection = (Inspection) getIntent().getExtras().getSerializable("inspection");
         }
 
-        dbHandler = new DbHandler(this.getApplicationContext());
+        DbHandler dbHandler = new DbHandler(this.getApplicationContext());
         setContentView(R.layout.activity_inspection_step_four);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

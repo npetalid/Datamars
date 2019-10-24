@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -13,8 +12,7 @@ import gr.petalidis.datamars.inspections.domain.ScannedDocument;
 
 public class ScannedDocumentRepository {
 
-    public static List<ScannedDocument> getScannedDocumentFor(DbHandler dbHandler, UUID inspectionId) throws ParseException
-    {
+    public static List<ScannedDocument> getScannedDocumentFor(DbHandler dbHandler, UUID inspectionId) {
         List<ScannedDocument> scannedDocuments = new ArrayList<>();
 
         String selectDateProducerQuery = "SELECT " +
@@ -51,6 +49,5 @@ public class ScannedDocumentRepository {
             });
 
         }
-        return;
     }
 }

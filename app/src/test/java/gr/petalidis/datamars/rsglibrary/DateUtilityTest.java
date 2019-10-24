@@ -29,10 +29,6 @@ import static org.junit.Assert.assertEquals;
  * @author npetalid
  */
 public class DateUtilityTest {
-    
-    public DateUtilityTest() {
-    }
-    
     @BeforeClass
     public static void setUpClass() {
     }
@@ -56,7 +52,7 @@ public class DateUtilityTest {
     public void testIsValidYear() {
         System.out.println("isValidYear2009");
         String year = "2009";
-        boolean expResult = true;
+        boolean expResult = false; //we expect everything to be after 2010
         boolean result = RsgFileUtility.isValidYear(year);
         assertEquals(expResult, result);
        

@@ -11,8 +11,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +20,9 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,15 +41,14 @@ import gr.petalidis.datamars.inspections.service.InspectionService;
 
 public class InspectionViewPhotoActivity extends AppCompatActivity {
     private String pictureFilePath = "";
-    static final int REQUEST_PICTURE_CAPTURE = 1;
+    private static final int REQUEST_PICTURE_CAPTURE = 1;
     private ImageView image;
     private List<ThumbnailDto> thumbnails = new ArrayList<>();
-    private List<ThumbnailDto> newThumbnails = new ArrayList<>();
+    private final List<ThumbnailDto> newThumbnails = new ArrayList<>();
 
     private Inspection inspection;
     private InspectionStepPhotoAdapter adapter;
     private DbHandler dbHandler;
-    private List<ScannedDocument> scannedDocuments = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +66,7 @@ public class InspectionViewPhotoActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             inspection = (Inspection)savedInstanceState.getSerializable("inspection");
             pictureFilePath = savedInstanceState.getString("pictureFilePath");
-            if (pictureFilePath != null && pictureFilePath != "") {
+            if (pictureFilePath != null && !pictureFilePath.equals("")) {
                 File file = new File(pictureFilePath);
                 image.setImageURI(Uri.fromFile(file));
             }
@@ -78,7 +78,7 @@ public class InspectionViewPhotoActivity extends AppCompatActivity {
 
         adapter = new InspectionStepPhotoAdapter(this,
                 android.R.layout.simple_list_item_1, thumbnails);
-        final ListView listview = (ListView) findViewById(R.id.imageslist);
+        final ListView listview = findViewById(R.id.imageslist);
 
         listview.setAdapter(adapter);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -100,7 +100,7 @@ public class InspectionViewPhotoActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             thumbnails = (ArrayList<ThumbnailDto>) savedInstanceState.getSerializable("thumbnails");
             pictureFilePath = savedInstanceState.getString("pictureFilePath");
-            if (pictureFilePath != null && pictureFilePath != "") {
+            if (pictureFilePath != null && !pictureFilePath.equals("")) {
                 File file = new File(pictureFilePath);
                 image.setImageURI(Uri.fromFile(file));
             }
@@ -113,7 +113,7 @@ public class InspectionViewPhotoActivity extends AppCompatActivity {
 
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (cameraIntent.resolveActivity(getPackageManager()) != null) {
-            File pictureFile = null;
+            File pictureFile;
             try {
                 pictureFile = getPictureFile();
                 Uri photoURI = FileProvider.getUriForFile(this,
@@ -125,7 +125,6 @@ public class InspectionViewPhotoActivity extends AppCompatActivity {
                 Toast.makeText(this,
                         "Photo file can't be created, please try again",
                         Toast.LENGTH_SHORT).show();
-                return;
             }
         }
     }
@@ -141,6 +140,7 @@ public class InspectionViewPhotoActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == REQUEST_PICTURE_CAPTURE && resultCode == RESULT_OK) {
             File imgFile = new File(pictureFilePath);
             if (imgFile.exists()) {
@@ -159,7 +159,7 @@ public class InspectionViewPhotoActivity extends AppCompatActivity {
     }
 
     public void savePhotos(View view) {
-        this.scannedDocuments = newThumbnails.stream().map(x-> new ScannedDocument(inspection.getId(),x.getImagePath())).collect(Collectors.toList());
+        List<ScannedDocument> scannedDocuments = newThumbnails.stream().map(x -> new ScannedDocument(inspection.getId(), x.getImagePath())).collect(Collectors.toList());
 
         InspectionService.updatePhotos(dbHandler, inspection, scannedDocuments);
         newThumbnails.clear();
@@ -175,7 +175,7 @@ public class InspectionViewPhotoActivity extends AppCompatActivity {
         private final Context context;
         private final List<ThumbnailDto> bitmaps;
 
-        public InspectionStepPhotoAdapter(Context context, int resource, List<ThumbnailDto> bitmaps) {
+        InspectionStepPhotoAdapter(Context context, int resource, List<ThumbnailDto> bitmaps) {
             super(context, resource, bitmaps);
             this.context = context;
             this.bitmaps = bitmaps;

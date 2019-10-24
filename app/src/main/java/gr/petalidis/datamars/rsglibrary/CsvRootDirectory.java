@@ -11,21 +11,20 @@ import java.util.Set;
 
 import gr.petalidis.datamars.Log4jHelper;
 import gr.petalidis.datamars.Moo;
-import gr.petalidis.datamars.inspections.ui.InspectionStepTwoActivity;
 
 /**
  * Created by npetalid on 19/11/17.
  */
 
 public class CsvRootDirectory {
-    private final Logger log = Log4jHelper.getLogger(CsvRootDirectory.class.getName());
 
-    private String directory;
+    private final String directory;
     public CsvRootDirectory() {
         this.directory =  Moo.getAppContext().getExternalFilesDir("")
                 .getAbsolutePath() + File.separator + "GES3S";
 
         if (!isExternalStorageReadable() || !isExternalStorageWritable()) {
+            Logger log = Log4jHelper.getLogger(CsvRootDirectory.class.getName());
             log.error("Could not write to external storage: " + this.directory);
             throw new IllegalStateException("Could not write to external storage");
         }
@@ -48,8 +47,7 @@ public class CsvRootDirectory {
         if (currentUsbName!=null && !currentUsbName.isEmpty()) {
             usbs.add(currentUsbName);
         }
-        ArrayList<String> usbList = new ArrayList<>();
-        usbList.addAll(usbs);
+        ArrayList<String> usbList = new ArrayList<>(usbs);
         return usbList;
 
     }

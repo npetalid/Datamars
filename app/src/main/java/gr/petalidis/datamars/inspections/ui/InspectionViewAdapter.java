@@ -15,7 +15,7 @@ import gr.petalidis.datamars.R;
 import gr.petalidis.datamars.inspections.domain.Entry;
 import gr.petalidis.datamars.inspections.utilities.TagFormatter;
 
-public class InspectionViewAdapter extends ArrayAdapter<Entry> {
+class InspectionViewAdapter extends ArrayAdapter<Entry> {
     private final Context context;
     private final List<Entry> objects;
     private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm:ss");
@@ -36,13 +36,13 @@ public class InspectionViewAdapter extends ArrayAdapter<Entry> {
         }
         final Entry item = objects.get(position);
 
-        TextView textViewTag = (TextView) rowView.findViewById(R.id.viewTag);
-        TextView textViewTime = (TextView) rowView.findViewById(R.id.viewTagTime);
-        TextView textViewOwner = (TextView) rowView.findViewById(R.id.viewTagOwner);
-        TextView textViewType = (TextView) rowView.findViewById(R.id.viewTagType);
-        TextView textViewComment = (TextView) rowView.findViewById(R.id.viewComments);
+        TextView textViewTag = rowView.findViewById(R.id.viewTag);
+        TextView textViewTime = rowView.findViewById(R.id.viewTagTime);
+        TextView textViewOwner = rowView.findViewById(R.id.viewTagOwner);
+        TextView textViewType = rowView.findViewById(R.id.viewTagType);
+        TextView textViewComment = rowView.findViewById(R.id.viewComments);
         TextView textViewGenre = rowView.findViewById(R.id.viewTagBio);
-        CheckBox textViewIsInRegister = (CheckBox) rowView.findViewById(R.id.viewIsInRegister);
+        CheckBox textViewIsInRegister = rowView.findViewById(R.id.viewIsInRegister);
 
         textViewTag.setText(TagFormatter.format(item.getTag()));
         textViewTime.setText(simpleDateFormat.format(item.getTagDate()));

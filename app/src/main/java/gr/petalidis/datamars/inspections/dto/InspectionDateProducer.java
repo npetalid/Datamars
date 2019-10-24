@@ -1,9 +1,9 @@
 package gr.petalidis.datamars.inspections.dto;
 
 public class InspectionDateProducer {
-    private String id;
-    private String inspectionDate = "";
-    private String mainProducer = "";
+    private final String id;
+    private String inspectionDate;
+    private String mainProducer;
 
     public InspectionDateProducer(String uuid, String inspectionDate, String mainProducer)
     {

@@ -14,8 +14,7 @@
         android:layout_height="wrap_content"
         android:textSize="20sp"/>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -32,7 +31,8 @@
         android:onClick="sortGridEntriesByCountry"
         android:textSize="20sp"
         android:text="@string/countryText"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        style="?android:attr/borderlessButtonStyle"/>
 
     <Button
         android:id="@+id/idButton"
@@ -44,7 +44,8 @@
         android:onClick="sortGridEntriesById"
         android:textSize="20sp"
         android:text="@string/identificationText"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        style="?android:attr/borderlessButtonStyle"/>
 
     <Button
         android:id="@+id/timeButton"
@@ -56,7 +57,8 @@
         android:onClick="sortGridEntriesByTime"
         android:text="@string/timeText"
         android:textSize="20sp"
-        android:textAlignment="center" />
+        android:textAlignment="center"
+        style="?android:attr/borderlessButtonStyle"/>
 
     </LinearLayout>
 

@@ -9,7 +9,6 @@ import java.util.List;
 import gr.petalidis.datamars.inspections.domain.UsbAlias;
 
 public class UsbListView extends ListView {
-
     public UsbListView(Context context, List<UsbAlias> aliases) {
         super(context);
          final ArrayAdapter<UsbAlias> usbAliasArrayAdapter = new ArrayAdapter<UsbAlias>(context,

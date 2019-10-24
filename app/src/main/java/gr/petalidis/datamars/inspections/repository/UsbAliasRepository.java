@@ -5,9 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import gr.petalidis.datamars.inspections.domain.UsbAlias;
 
@@ -20,7 +18,6 @@ public class UsbAliasRepository {
             values.put("alias", usbAlias.getAlias());
             db.insert(DbHandler.TABLE_USB_ALIAS, null, values);
         }
-        return;
     }
 
     public static void saveOrUpdate(DbHandler dbHandler, UsbAlias usbAlias) {
@@ -31,7 +28,7 @@ public class UsbAliasRepository {
         }
     }
 
-    public static void updateUsbAliasFor(DbHandler dbHandler, UsbAlias usbAlias)
+    private static void updateUsbAliasFor(DbHandler dbHandler, UsbAlias usbAlias)
     {
         ContentValues contentValues = new ContentValues();
         contentValues.put("alias",usbAlias.getAlias());
@@ -39,9 +36,8 @@ public class UsbAliasRepository {
         try (final SQLiteDatabase db = dbHandler.getReadableDatabase()) {
             db.update(DbHandler.TABLE_USB_ALIAS,contentValues,"usb=?",new String[]{usbAlias.getUsb()});
         }
-        return;
     }
-    public static UsbAlias getUsbAliasesFor(DbHandler dbHandler, String usb) {
+    private static UsbAlias getUsbAliasesFor(DbHandler dbHandler, String usb) {
 
         String findUsb = "SELECT usb, alias  FROM " + DbHandler.TABLE_USB_ALIAS +
                 " WHERE usb='" + usb +"'";

@@ -5,8 +5,8 @@ import java.util.Set;
 
 import gr.petalidis.datamars.rsglibrary.Rsg;
 
-public interface RsgService {
+interface RsgService {
 
-    public Set<Date> getInspectionDates();
-    public Set<Rsg> getRsgForDate(Date date);
+    Set<Date> getInspectionDates();
+    Set<Rsg> getRsgForDate(Date date);
 }

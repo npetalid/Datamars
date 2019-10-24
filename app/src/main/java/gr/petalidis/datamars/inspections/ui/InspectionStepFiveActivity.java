@@ -5,22 +5,23 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import java.util.HashMap;
-import java.util.Map;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
+
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import gr.petalidis.datamars.R;
 import gr.petalidis.datamars.activities.StartActivity;
-import gr.petalidis.datamars.inspections.domain.AnimalType;
 import gr.petalidis.datamars.inspections.domain.Inspectee;
 import gr.petalidis.datamars.inspections.domain.Inspection;
 import gr.petalidis.datamars.inspections.repository.DbHandler;
@@ -31,7 +32,6 @@ public class InspectionStepFiveActivity extends AppCompatActivity {
     private Inspection inspection;
     private DbHandler dbHandler;
     private Context mContext;
-    private Map<Integer,Integer> valuesToLabels = new HashMap<>();
 
     private int index = 0;
     @Override
@@ -42,7 +42,7 @@ public class InspectionStepFiveActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             inspection = (Inspection) savedInstanceState.getSerializable("inspection");
         } else {
-            inspection = (Inspection) getIntent().getExtras().getSerializable("inspection");
+            inspection = (Inspection) Objects.requireNonNull(getIntent().getExtras()).getSerializable("inspection");
         }
         dbHandler = new DbHandler(this.getApplicationContext());
         setContentView(R.layout.activity_inspection_step_five);
@@ -88,7 +88,7 @@ public class InspectionStepFiveActivity extends AppCompatActivity {
 
         updateButtons();
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
     }
 
@@ -114,15 +114,17 @@ public class InspectionStepFiveActivity extends AppCompatActivity {
     public void save(View view) {
         AlertDialog.Builder preSaveBuilder = new AlertDialog.Builder(this);
 
-
-        String msg = "Βρέθηκαν: \n";
-
         String totalResult = inspection.getProducersWithNoDummy().stream().map(
-                inspectee -> inspection.generateReportFor(inspectee).toString()
-        ).collect(Collectors.joining("\n"));
+                inspectee -> inspection.generateReportFor(inspectee).toHtmlString()
+        ).collect(Collectors.joining("<br/>\n"));
 
-        msg = msg + totalResult +   "\nΝα γίνει αποθήκευση;";
-        preSaveBuilder.setTitle("Αποθήκευση ελέγχου").setMessage(msg)
+        String msg = totalResult +   "<br/>\nΝα γίνει αποθήκευση;";
+        WebView webView = new WebView(this.getApplicationContext());
+        webView.setTag(R.id.WEBVIEW,"WebView");
+        WebSettings webSettings = webView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webView.loadData(msg, "text/html", "utf-8");
+        preSaveBuilder.setTitle("Αποθήκευση ελέγχου").setView(webView)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         InspectionService.save(dbHandler, inspection);

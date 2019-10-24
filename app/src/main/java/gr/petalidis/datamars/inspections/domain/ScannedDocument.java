@@ -8,7 +8,7 @@ public class ScannedDocument implements Serializable {
 
     private UUID inspectionId;
 
-    private String imagePath = "";
+    private String imagePath;
 
     public UUID getId() {
         return id;

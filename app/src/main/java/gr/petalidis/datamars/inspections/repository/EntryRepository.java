@@ -33,14 +33,13 @@ public class EntryRepository {
                 values.put("animalGenre", e.getAnimalGenre());
                 values.put("producer", e.getProducer());
                 values.put("producerTin", e.getProducerTin());
-                values.put("isInRegister", e.isInRegister() == true ? 1 : 0);
+                values.put("isInRegister", e.isInRegister() ? 1 : 0);
                 values.put("comment", e.getComment().getTitle());
 
                 db.insert(DbHandler.TABLE_INSPECTION_ENTRIES, null, values);
             });
 
         }
-        return;
     }
 
     public static List<Rsg> getAlreadyCheckedRsgsFor(DbHandler dbHandler, Date inspectionDate) throws ParseException
@@ -105,7 +104,7 @@ public class EntryRepository {
                     entry.setAnimalGenre(cursor.getString(6));
                     entry.setProducer(cursor.getString(7));
                     entry.setProducerTin(cursor.getString(8));
-                    entry.setInRegister(cursor.getInt(9)==1?true:false);
+                    entry.setInRegister(cursor.getInt(9) == 1);
                     entry.setComment(CommentType.fromString(cursor.getString(10)));
                     entries.add(entry);
                 } while (cursor.moveToNext());

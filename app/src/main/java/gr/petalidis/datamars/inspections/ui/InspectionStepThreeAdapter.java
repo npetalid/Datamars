@@ -21,17 +21,13 @@ import gr.petalidis.datamars.inspections.domain.Entry;
 import gr.petalidis.datamars.inspections.domain.Inspectee;
 import gr.petalidis.datamars.inspections.utilities.TagFormatter;
 
-public class InspectionStepThreeAdapter extends ArrayAdapter<Entry> {
+class InspectionStepThreeAdapter extends ArrayAdapter<Entry> {
     private final Context context;
     private final List<Entry> objects;
-    private final List<Inspectee> producerNames;
     private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm:ss");
     private final ArrayAdapter<Inspectee> spinnerNamesAdapter;
     private final ArrayAdapter<CharSequence> adapterComments;
     private final ArrayAdapter<CharSequence> adapterAnimals;
-    private final ArrayAdapter<CharSequence> adapterSheepGenre;
-    private final ArrayAdapter<CharSequence> adapterGoatGenre;
-    private final ArrayAdapter<CharSequence> adapterHorseGenre;
 
     private final Map<String,ArrayAdapter<CharSequence>> animalsToGenres;
 
@@ -44,7 +40,7 @@ public class InspectionStepThreeAdapter extends ArrayAdapter<Entry> {
         final private Entry item;
         private final Spinner genreSpinner;
 
-        public SpinnerListener(Entry item, Spinner genreSpinner) {
+        SpinnerListener(Entry item, Spinner genreSpinner) {
             this.item = item;
             this.genreSpinner = genreSpinner;
         }
@@ -67,7 +63,7 @@ public class InspectionStepThreeAdapter extends ArrayAdapter<Entry> {
     private class SpinnerGenreListener implements AdapterView.OnItemSelectedListener {
         final private Entry item;
 
-        public SpinnerGenreListener(Entry item) {
+        SpinnerGenreListener(Entry item) {
             this.item = item;
         }
 
@@ -85,7 +81,7 @@ public class InspectionStepThreeAdapter extends ArrayAdapter<Entry> {
     private class SpinnerNamesListener implements AdapterView.OnItemSelectedListener {
         final private Entry item;
 
-        public SpinnerNamesListener(Entry item) {
+        SpinnerNamesListener(Entry item) {
             this.item = item;
         }
 
@@ -104,15 +100,22 @@ public class InspectionStepThreeAdapter extends ArrayAdapter<Entry> {
 
     private class SpinnerCommentsListener implements AdapterView.OnItemSelectedListener {
         final private Entry item;
+        final private CheckBox checkBox;
 
-        public SpinnerCommentsListener(Entry item) {
+        SpinnerCommentsListener(Entry item, CheckBox checkBox) {
             this.item = item;
+            this.checkBox = checkBox;
         }
 
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int pos, long l) {
             String selectedItem = (String) parent.getItemAtPosition(pos);
             item.setComment(CommentType.fromString(selectedItem));
+            if (CommentType.SINGLE!=item.getComment()
+                && CommentType.EMPTY!=item.getComment()) {
+                item.setInRegister(false);
+                checkBox.setChecked(item.isInRegister());
+            }
         }
 
         @Override
@@ -126,7 +129,6 @@ public class InspectionStepThreeAdapter extends ArrayAdapter<Entry> {
         super(context, resource, objects);
         this.context = context;
         this.objects = objects;
-        this.producerNames = producerNames;
         spinnerNamesAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, producerNames.toArray(new Inspectee[]{}));
         spinnerNamesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         adapterAnimals = ArrayAdapter.createFromResource(context,
@@ -135,28 +137,28 @@ public class InspectionStepThreeAdapter extends ArrayAdapter<Entry> {
 
         animalsToGenres = new HashMap<>();
 
-        adapterSheepGenre = ArrayAdapter.createFromResource(context,
-                R.array.sheep_genre,android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<CharSequence> adapterSheepGenre = ArrayAdapter.createFromResource(context,
+                R.array.sheep_genre, android.R.layout.simple_spinner_dropdown_item);
         adapterSheepGenre.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        adapterGoatGenre = ArrayAdapter.createFromResource(context,
-                R.array.goat_genre,android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<CharSequence> adapterGoatGenre = ArrayAdapter.createFromResource(context,
+                R.array.goat_genre, android.R.layout.simple_spinner_dropdown_item);
         adapterGoatGenre.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        adapterHorseGenre = ArrayAdapter.createFromResource(context,
-                R.array.horse_genre,android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<CharSequence> adapterHorseGenre = ArrayAdapter.createFromResource(context,
+                R.array.horse_genre, android.R.layout.simple_spinner_dropdown_item);
         adapterHorseGenre.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
 
-        animalsToGenres.put(context.getResources().getString(R.string.goatAnimal),adapterGoatGenre);
-        animalsToGenres.put(context.getResources().getString(R.string.kidAnimal),adapterGoatGenre);
-        animalsToGenres.put(context.getResources().getString(R.string.heGoatAnimal),adapterGoatGenre);
+        animalsToGenres.put(context.getResources().getString(R.string.goatAnimal), adapterGoatGenre);
+        animalsToGenres.put(context.getResources().getString(R.string.kidAnimal), adapterGoatGenre);
+        animalsToGenres.put(context.getResources().getString(R.string.heGoatAnimal), adapterGoatGenre);
 
-        animalsToGenres.put(context.getResources().getString(R.string.sheepAnimal),adapterSheepGenre);
-        animalsToGenres.put(context.getResources().getString(R.string.lambAnimal),adapterSheepGenre);
-        animalsToGenres.put(context.getResources().getString(R.string.ramAnimal),adapterSheepGenre);
+        animalsToGenres.put(context.getResources().getString(R.string.sheepAnimal), adapterSheepGenre);
+        animalsToGenres.put(context.getResources().getString(R.string.lambAnimal), adapterSheepGenre);
+        animalsToGenres.put(context.getResources().getString(R.string.ramAnimal), adapterSheepGenre);
 
-        animalsToGenres.put(context.getResources().getString(R.string.horseAnimal),adapterHorseGenre);
+        animalsToGenres.put(context.getResources().getString(R.string.horseAnimal), adapterHorseGenre);
 
         adapterComments = ArrayAdapter.createFromResource(context, R.array.comments_array,android.R.layout.simple_spinner_item);
         adapterComments.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -171,11 +173,11 @@ public class InspectionStepThreeAdapter extends ArrayAdapter<Entry> {
       }
         final Entry item = objects.get(position);
 
-        TextView textView = (TextView) rowView.findViewById(R.id.textView);
-        TextView tagDateView = (TextView) rowView.findViewById(R.id.editText2);
-        final CheckBox checkBox = (CheckBox) rowView.findViewById(R.id.checkBox);
+        TextView textView = rowView.findViewById(R.id.textView);
+        TextView tagDateView = rowView.findViewById(R.id.editText2);
+        final CheckBox checkBox = rowView.findViewById(R.id.checkBox);
 
-        Spinner spinner = (Spinner) rowView.findViewById(R.id.spinner);
+        Spinner spinner = rowView.findViewById(R.id.spinner);
         Spinner genreSpinner = rowView.findViewById(R.id.biospinner);
 
         spinner.setAdapter(adapterAnimals);
@@ -189,14 +191,14 @@ public class InspectionStepThreeAdapter extends ArrayAdapter<Entry> {
         genreSpinner.setOnItemSelectedListener(new SpinnerGenreListener(item));
         genreSpinner.setSelection(animalsToGenres.get(item.getAnimalType()).getPosition(item.getAnimalGenre()));
 
-        Spinner spinnerNames = (Spinner) rowView.findViewById(R.id.spinnerNames);
+        Spinner spinnerNames = rowView.findViewById(R.id.spinnerNames);
         spinnerNames.setAdapter(spinnerNamesAdapter);
         spinnerNames.setOnItemSelectedListener(new SpinnerNamesListener(item));
         spinnerNames.setSelection(spinnerNamesAdapter.getPosition(new Inspectee(item.getProducerTin(), item.getProducer())));
 
-        Spinner spinnerComments = (Spinner) rowView.findViewById(R.id.viewComments);
+        Spinner spinnerComments = rowView.findViewById(R.id.viewComments);
         spinnerComments.setAdapter(adapterComments);
-        spinnerComments.setOnItemSelectedListener(new SpinnerCommentsListener(item));
+        spinnerComments.setOnItemSelectedListener(new SpinnerCommentsListener(item,checkBox));
         spinnerComments.setSelection(adapterComments.getPosition(item.getComment().getTitle()));
 //
 //        editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -218,10 +220,16 @@ public class InspectionStepThreeAdapter extends ArrayAdapter<Entry> {
             public void onClick(View view) {
                 item.setInRegister(!item.isInRegister());
                 checkBox.setChecked(item.isInRegister());
+                if (item.isInRegister() &&
+                        item.getComment()!=CommentType.EMPTY
+                        && item.getComment()!=CommentType.SINGLE) {
+                    item.setComment(CommentType.EMPTY);
+                    spinnerComments.setSelection(adapterComments.getPosition(item.getComment().getTitle()));
+
+                }
             }
         });
         return rowView;
     }
-
 
 }

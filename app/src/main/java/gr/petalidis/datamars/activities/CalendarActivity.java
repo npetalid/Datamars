@@ -18,21 +18,20 @@ package gr.petalidis.datamars.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.squareup.timessquare.CalendarPickerView;
 
 import org.apache.log4j.Logger;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 import gr.petalidis.datamars.Log4jHelper;
 import gr.petalidis.datamars.R;
-import gr.petalidis.datamars.SessionViewer;
 import gr.petalidis.datamars.rsglibrary.RsgSessionFiles;
 
 public class CalendarActivity extends AppCompatActivity {
@@ -61,7 +60,7 @@ public class CalendarActivity extends AppCompatActivity {
             }
         }
 
-        CalendarPickerView calendarView = (CalendarPickerView) findViewById(R.id.calendar_view);
+        CalendarPickerView calendarView = findViewById(R.id.calendar_view);
         Calendar cal = Calendar.getInstance();
 
         Date firstDate = new Date();
@@ -80,20 +79,17 @@ public class CalendarActivity extends AppCompatActivity {
 
         calendarView.highlightDates(files.getDates());
         calendarView.scrollToDate(cal2.getTime());
-        calendarView.setCellClickInterceptor(new CalendarPickerView.CellClickInterceptor() {
-            @Override
-            public boolean onCellClicked(Date date) {
-                Intent intent = new Intent(mContext, ViewRsgActivity.class);
-                try {
-                    intent.putExtra("rsg", files.getFilename(date));
-                    intent.putExtra("date", SimpleDateFormat.getDateInstance().format(date));
-                    startActivity(intent);
-                    return true;
-                } catch (ParseException e) {
-                    log.error("Unable to parse date: " +date + ":" + e.getLocalizedMessage());
-                }
-                return false;
+        calendarView.setCellClickInterceptor(date -> {
+            Intent intent1 = new Intent(mContext, ViewRsgActivity.class);
+            try {
+                intent1.putExtra("rsg", files.getFilename(date));
+                intent1.putExtra("date", SimpleDateFormat.getDateInstance().format(date));
+                startActivity(intent1);
+                return true;
+            } catch (Exception e) {
+                log.error("Unable to parse date: " +date + ":" + e.getLocalizedMessage());
             }
+            return false;
         });
 
     }
@@ -104,20 +100,18 @@ public class CalendarActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
+    public void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
 
         savedInstanceState.putSerializable("dates", files);
     }
 
     @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
+    public void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        if (savedInstanceState != null) {
-            files = (RsgSessionFiles) savedInstanceState.getSerializable("dates");
-            if (files == null) {
-                    files = new RsgSessionFiles();
-            }
+        files = (RsgSessionFiles) savedInstanceState.getSerializable("dates");
+        if (files == null) {
+                files = new RsgSessionFiles();
         }
     }
 

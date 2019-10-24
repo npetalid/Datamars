@@ -8,7 +8,7 @@ public enum OtherEntryType implements Serializable {
     ILLEGAL("ILLEGAL"),
     NO_EARRING("NO_EARRING"),
     OUT_OF_REGISTRY("OUT_OF_REGISTRY");
-    private String name;
+    private final String name;
 
     OtherEntryType(String name) {
         this.name = name;

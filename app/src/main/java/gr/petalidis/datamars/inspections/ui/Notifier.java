@@ -2,7 +2,8 @@ package gr.petalidis.datamars.inspections.ui;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
+
+import androidx.appcompat.app.AlertDialog;
 
 public class Notifier {
     public enum NOTIFICATION_MESSAGE_TYPE {
@@ -10,18 +11,19 @@ public class Notifier {
         WARNING_MESSAGE("Προειδοποίηση"),
         INFO_MESSAGE("Πληροφορία");
 
-        private String message = "";
+        private String message;
 
         NOTIFICATION_MESSAGE_TYPE(String message)
         {
             this.message = message;
         }
 
-        public String getMessage()
+        String getMessage()
         {
             return this.message;
         }
-    };
+    }
+
     public static void notify(Context context, String msg, NOTIFICATION_MESSAGE_TYPE type)
     {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(

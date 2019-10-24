@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context="inspections.ui.InspectionStepTwoActivity">
+    tools:context="inspections.ui.InspectionStepFourActivity">
 
     <LinearLayout
         android:id="@+id/step5Heading"
@@ -15,7 +15,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/gotoStep5Screen"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -44,6 +44,7 @@
             android:layout_weight="4"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:gravity="center"
             android:textSize="20sp" />
 
         <ImageButton
@@ -106,7 +107,7 @@
             android:textSize="20sp" />
 
         <TextView
-            android:id="@+id/singleTitle"
+            android:id="@+id/singleTitleBefore10"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -131,43 +132,43 @@
 
         <TextView
             android:id="@+id/sheepConventionalTagLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/sheepAnimal"
             android:textSize="20sp" />
 
-        <android.support.design.widget.TextInputEditText
+        <EditText
             android:id="@+id/sheepLegalConventionalTag"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:inputType="numberDecimal"
             android:text=""
             android:textSize="20sp" />
 
-        <android.support.design.widget.TextInputEditText
+        <EditText
             android:id="@+id/sheepConventionalOutOfRegistry"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:inputType="numberDecimal"
             android:text=""
             android:textSize="20sp" />
 
-        <android.support.design.widget.TextInputEditText
+        <EditText
             android:id="@+id/sheepSingleConventionalTag"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:inputType="numberDecimal"
             android:text=""
             android:textSize="20sp" />
 
-        <android.support.design.widget.TextInputEditText
+        <EditText
             android:id="@+id/sheepIllegalConventionalTag"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:inputType="numberDecimal"
             android:text=""
@@ -183,43 +184,43 @@
 
         <TextView
             android:id="@+id/goatConventionalTagLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/goatAnimal"
             android:textSize="20sp" />
 
-        <android.support.design.widget.TextInputEditText
+        <EditText
             android:id="@+id/goatLegalConventionalTag"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:inputType="numberDecimal"
             android:text=""
             android:textSize="20sp" />
 
-        <android.support.design.widget.TextInputEditText
+        <EditText
             android:id="@+id/goatConventionalOutOfRegistry"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:inputType="numberDecimal"
             android:text=""
             android:textSize="20sp" />
 
-        <android.support.design.widget.TextInputEditText
+        <EditText
             android:id="@+id/goatSingleConventionalTag"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:inputType="numberDecimal"
             android:text=""
             android:textSize="20sp" />
 
-        <android.support.design.widget.TextInputEditText
+        <EditText
             android:id="@+id/goatIllegalConventionalTag"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:inputType="numberDecimal"
             android:text=""
@@ -234,43 +235,43 @@
 
         <TextView
             android:id="@+id/ramConventionalTagLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/ramAnimal"
             android:textSize="20sp" />
 
-        <android.support.design.widget.TextInputEditText
+        <EditText
             android:id="@+id/ramLegalConventionalTag"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:inputType="numberDecimal"
             android:text=""
             android:textSize="20sp" />
 
-        <android.support.design.widget.TextInputEditText
+        <EditText
             android:id="@+id/ramConventionalOutOfRegistry"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:inputType="numberDecimal"
             android:text=""
             android:textSize="20sp" />
 
-        <android.support.design.widget.TextInputEditText
+        <EditText
             android:id="@+id/ramSingleConventionalTag"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:inputType="numberDecimal"
             android:text=""
             android:textSize="20sp" />
 
-        <android.support.design.widget.TextInputEditText
+        <EditText
             android:id="@+id/ramIllegalConventionalTag"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:inputType="numberDecimal"
             android:text=""
@@ -285,43 +286,43 @@
 
         <TextView
             android:id="@+id/heGoatConventionalTagLabel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="@string/heGoatAnimal"
             android:textSize="20sp" />
 
-        <android.support.design.widget.TextInputEditText
+        <EditText
             android:id="@+id/heGoatLegalConventionalTag"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:inputType="numberDecimal"
             android:text=""
             android:textSize="20sp" />
 
-        <android.support.design.widget.TextInputEditText
+        <EditText
             android:id="@+id/heGoatConventionalOutOfRegistry"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:inputType="numberDecimal"
             android:text=""
             android:textSize="20sp" />
 
-        <android.support.design.widget.TextInputEditText
+        <EditText
             android:id="@+id/heGoatSingleConventionalTag"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:inputType="numberDecimal"
             android:text=""
             android:textSize="20sp" />
 
-        <android.support.design.widget.TextInputEditText
+        <EditText
             android:id="@+id/heGoatIllegalConventionalTag"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:inputType="numberDecimal"
             android:text=""
