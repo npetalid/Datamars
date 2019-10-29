@@ -18,6 +18,7 @@ package gr.petalidis.datamars;
 
 import androidx.test.espresso.web.webdriver.Locator;
 import androidx.test.filters.LargeTest;
+import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
 import org.junit.After;
@@ -34,6 +35,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import gr.petalidis.datamars.activities.StartActivity;
+import gr.petalidis.datamars.inspections.repository.DbHandler;
 import gr.petalidis.datamars.rsglibrary.CsvRootDirectory;
 import gr.petalidis.datamars.testUtils.DataEntry;
 import gr.petalidis.datamars.testUtils.DataSet;
@@ -117,6 +119,9 @@ public class RegisterInspectionTest {
 
     @Before
     public void setUp() throws Exception {
+        Moo.setTestProperties(InstrumentationRegistry.getInstrumentation().getContext());
+        DbHandler dbHandler = new DbHandler(Moo.getAppContext());
+        dbHandler.dropDatabase(Moo.getAppContext());
 
     }
 
@@ -211,6 +216,48 @@ public class RegisterInspectionTest {
 
         onView(withId(android.R.id.button1)).perform(click());
 
+        onView(withId(R.id.inspectionsButton))
+                .perform(click());
+
+        onView(withText("testDevice")).perform(click());
+
+        onData(hasToString("Pappas2")).perform(click());
+        producers.stream().sorted(Comparator.comparingInt(DataEntry.Producer::getIndex))
+                .forEach(x -> {
+                    onView(withId(R.id.viewProducerTin)).check(matches(withText(containsString(x.getTin()))));
+
+                    onView(withId(R.id.total)).check(matches(withText(containsString(DataEntry.ResultEntryGetter
+                            .getTotalFor(results, x.getTin())))));
+
+                    onView(withId(R.id.noTag)).check(matches(withText(containsString(DataEntry.ResultEntryGetter
+                            .getNoTagFor(results, x.getTin())))));
+
+                    onView(withId(R.id.noTagUnder6)).check(matches(withText(containsString(DataEntry.ResultEntryGetter
+                            .getNoTagUnder6For(results, x.getTin())))));
+
+                    onView(withId(R.id.noElectronicTag)).check(matches(withText(containsString(DataEntry.ResultEntryGetter
+                            .getNoElectronicTagFor(results, x.getTin())))));
+
+                    onView(withId(R.id.singleTag)).check(matches(withText(containsString(DataEntry.ResultEntryGetter
+                            .getSingleTagFor(results, x.getTin())))));
+                    onView(withId(R.id.countedButNotInRegistry)).check(matches(withText(containsString(DataEntry.ResultEntryGetter
+                            .getCountedButNotInRegistryFor(results, x.getTin())))));
+
+                    onView(withId(R.id.sheepTotalValue)).check(matches(withText(containsString(DataEntry.ResultEntryGetter
+                            .getSheepFor(results, x.getTin())))));
+
+                    onView(withId(R.id.goatTotalValue)).check(matches(withText(containsString(DataEntry.ResultEntryGetter
+                            .getGoatFor(results, x.getTin())))));
+
+                    onView(withId(R.id.ramTotalValue)).check(matches(withText(containsString(DataEntry.ResultEntryGetter
+                            .getSelectableRamHeGoatFor(results, x.getTin())))));
+                    onView(withId(R.id.lambsTotalValue)).check(matches(withText(containsString(DataEntry.ResultEntryGetter
+                            .getSelectableKidLambFor(results, x.getTin())))));
+                    onView(withId(R.id.horseTotalValue)).check(matches(withText(containsString(DataEntry.ResultEntryGetter
+                            .getSelectableHorseFor(results, x.getTin())))));
+
+                    onView(withId(R.id.nextProducer3)).perform(click());
+                });
 
     }
 
@@ -225,9 +272,5 @@ public class RegisterInspectionTest {
         if (datamarsDir.exists()) {
             datamarsDir.delete();
         }
-        //Drop database
-//        DbHandler dbHandler = new DbHandler(Moo.getAppContext());
-//        dbHandler.dropDatabase();
-
     }
 }

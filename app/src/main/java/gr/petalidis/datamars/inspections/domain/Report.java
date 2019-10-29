@@ -27,7 +27,7 @@ public class Report {
     }
 
     private String surround(String id, String value) {
-        return "<div id=\""+inspectee.getTin()+"-"+id+"\">" + value + "</div>";
+        return "<span id=\""+inspectee.getTin()+"-"+id+"\">" + value + "</span>";
 
     }
     private String surround(String id, long value) {
@@ -111,9 +111,9 @@ public class Report {
                 "<table><tr><td>" +
                 "Καταμετρηθέντα: <i>" + getTotalHtmlString() + "</i></td><td></td></tr><tr><td>" +
                 "Χωρίς σήμανση: <i>"  + getNoTagHtmlString() + "</i></td><td>" +
-                "Κάτω των 6 μηνων χωρίς σήμανση: <i>" + getNoTagUnder6HtmlString() + "</i></td></tr><tr><td>" +
+                "&lt; 6 μηνων χωρίς σήμανση: <i>" + getNoTagUnder6HtmlString() + "</i></td></tr><tr><td>" +
                 "Χωρίς ηλ. σήμανση: <i>" + getNoElectronicTagHtmlString() + "</i></td><td>" + "Με μονό ενώτιο: <i>" + getSingleTagHtmlString() + "</i></td></tr><tr><td>" +
-                "Με σήμανση που δεν αναγράφονται στο μητρώο <i>" +getCountedButNotInRegistryHtmlString()+ "</i></td><td></td></tr>"
+                "Με σήμανση εκτός μητρώου <i>" +getCountedButNotInRegistryHtmlString()+ "</i></td><td></td></tr>"
                 + "</table>"
                 +
                // "<h4>Επιλέξιμα</h4>" +

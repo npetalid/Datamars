@@ -16,19 +16,25 @@ package gr.petalidis.datamars;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.res.AssetManager;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
 import java.util.Objects;
+import java.util.Properties;
 
 public class Moo extends Application {
 
     private static WeakReference<Context> weakReference;
     final static private SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
+    final static Properties properties = new Properties();
     public void onCreate() {
         super.onCreate();
         Moo.weakReference = new WeakReference<>(getApplicationContext());
+        readProperties(getApplicationContext());
     }
 
     public static Context getAppContext()
@@ -37,7 +43,28 @@ public class Moo extends Application {
         return context;
     }
 
+    public static String getProperty(String key)
+    {
+        return properties.getProperty(key);
+    }
+
+    public static void setTestProperties(Context context)
+    {
+        readProperties(context);
+    }
+
     public static SimpleDateFormat getFormatter() {
         return formatter;
+    }
+
+    private static void readProperties(Context context) {
+        AssetManager assetManager = context.getAssets();
+        try (
+                InputStream inputStream = assetManager.open("application.properties")
+        ) {
+            properties.load(inputStream);
+        } catch (IOException e) {
+            throw new RuntimeException(e.getLocalizedMessage());
+        }
     }
 }

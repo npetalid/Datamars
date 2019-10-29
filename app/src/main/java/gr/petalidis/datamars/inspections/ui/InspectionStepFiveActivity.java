@@ -122,6 +122,7 @@ public class InspectionStepFiveActivity extends AppCompatActivity {
         WebView webView = new WebView(this.getApplicationContext());
         webView.setTag(R.id.WEBVIEW,"WebView");
         WebSettings webSettings = webView.getSettings();
+        webView.setVerticalScrollBarEnabled(true);
         webSettings.setJavaScriptEnabled(true);
         webView.loadData(msg, "text/html", "utf-8");
         preSaveBuilder.setTitle("Αποθήκευση ελέγχου").setView(webView)

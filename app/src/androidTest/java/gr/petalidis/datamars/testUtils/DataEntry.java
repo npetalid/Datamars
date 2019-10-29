@@ -250,6 +250,77 @@ public class DataEntry {
             return tin;
         }
     }
+    public static class ResultEntryGetter {
+        public static String getTotalFor(List<ResultEntry> resultEntries, String tin)
+        {
+            return
+                    resultEntries.stream().filter(x -> x.getId().contains(tin + "-total")).findAny().map(x->x.number)
+                            .orElse("");
+        }
+        public static String getNoTagUnder6For(List<ResultEntry> resultEntries, String tin)
+        {
+            return
+                    resultEntries.stream().filter(x -> x.getId().contains(tin + "-noTagUnder6")).findAny().map(x->x.number)
+                            .orElse("");
+        }
+        public static String getNoElectronicTagFor(List<ResultEntry> resultEntries, String tin)
+        {
+            return
+                    resultEntries.stream().filter(x -> x.getId().contains(tin + "-noElectronicTag")).findAny().map(x->x.number)
+                            .orElse("");
+        }
+        public static String getSingleTagFor(List<ResultEntry> resultEntries, String tin)
+        {
+            return
+                    resultEntries.stream().filter(x -> x.getId().contains(tin + "-singleTag")).findAny().map(x->x.number)
+                            .orElse("");
+        }
+        public static String getCountedButNotInRegistryFor(List<ResultEntry> resultEntries, String tin)
+        {
+            return
+                    resultEntries.stream().filter(x -> x.getId().contains(tin + "-countedButNotInRegistry")).findAny().map(x->x.number)
+                            .orElse("");
+        }
+        public static String getSheepFor(List<ResultEntry> resultEntries, String tin)
+        {
+            return
+                    resultEntries.stream().filter(x -> x.getId().contains(tin + "-" + AnimalType.SHEEP_ANIMAL.getTitle())).findAny().map(x->x.number)
+                            .orElse("");
+        }
+        public static String getGoatFor(List<ResultEntry> resultEntries, String tin)
+        {
+            return
+                    resultEntries.stream().filter(x -> x.getId().contains(tin + "-" +  AnimalType.GOAT_ANIMAL.getTitle())).findAny().map(x->x.number)
+                            .orElse("");
+        }
+        public static String getNoTagFor(List<ResultEntry> resultEntries, String tin)
+        {
+            return
+                    resultEntries.stream().filter(x -> x.getId().contains(tin + "-noΤag")).findAny().map(x->x.number)
+                            .orElse("");
+        }
+
+        public static String getSelectableRamHeGoatFor(List<ResultEntry> resultEntries, String tin)
+        {
+            return
+                    resultEntries.stream().filter(x -> x.getId().contains(tin + "-Κριοί-Τράγοι")).findAny().map(x->x.number)
+                            .orElse("");
+        }
+        public static String getSelectableHorseFor(List<ResultEntry> resultEntries, String tin)
+        {
+            return
+                    resultEntries.stream().filter(x -> x.getId().contains(tin + "-" + AnimalType.HORSE_ANIMAL.getTitle())).findAny().map(x->x.number)
+                            .orElse("");
+        }
+
+        public static String getSelectableKidLambFor(List<ResultEntry> resultEntries, String tin)
+        {
+            return
+                    resultEntries.stream().filter(x -> x.getId().contains(tin + "-" + AnimalType.KIDLAMB_ANIMAL.getTitle())).findAny().map(x->x.number)
+                            .orElse("");
+        }
+
+    }
 
     public static class ResultEntryBuilder {
         private List<ResultEntry> resultEntryList = new ArrayList<>();
@@ -294,10 +365,7 @@ public class DataEntry {
             resultEntryList.add( new ResultEntry(tin+"-"+ AnimalType.GOAT_ANIMAL.getTitle(),value+""));
             return this;
         }
-        public ResultEntryBuilder addKidLamb(String value) {
-            resultEntryList.add( new ResultEntry(tin+"-Αμνοερίφια",value+""));
-            return this;
-        }
+
         public ResultEntryBuilder addNoTag(String value) {
             resultEntryList.add( new ResultEntry(tin+"-noΤag",value+""));
             return this;
@@ -305,7 +373,7 @@ public class DataEntry {
 
 
         public void addSelectableRamHeGoat(String value) {
-            resultEntryList.add( new ResultEntry(tin+"-"+ "Κριοί-Τράγοι",value+""));
+            resultEntryList.add( new ResultEntry(tin+"-Κριοί-Τράγοι",value+""));
         }
         public List<ResultEntry> build()
         {

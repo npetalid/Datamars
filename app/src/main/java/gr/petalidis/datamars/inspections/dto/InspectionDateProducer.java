@@ -1,5 +1,7 @@
 package gr.petalidis.datamars.inspections.dto;
 
+import androidx.annotation.NonNull;
+
 public class InspectionDateProducer {
     private final String id;
     private String inspectionDate;
@@ -22,5 +24,11 @@ public class InspectionDateProducer {
 
     public String getId() {
         return id;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return mainProducer;
     }
 }
