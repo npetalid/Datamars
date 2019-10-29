@@ -95,8 +95,8 @@ public class RegisterInspectionTest {
     public static Collection<Object[]> data() throws Exception {
 
         List<Object[]> arrayList = new ArrayList<>();
-        // arrayList.add(DataSet.readData("Dataset1.csv").toArray());
-        // arrayList.add(DataSet.readData("Dataset2.csv").toArray());
+        arrayList.add(DataSet.readData("Dataset1.csv").toArray());
+        arrayList.add(DataSet.readData("Dataset2.csv").toArray());
         arrayList.add(DataSet.readData("Dataset3.csv").toArray());
 
         return arrayList;
@@ -221,7 +221,7 @@ public class RegisterInspectionTest {
 
         onView(withText("testDevice")).perform(click());
 
-        onData(hasToString("Pappas2")).perform(click());
+        onData(hasToString(producers.stream().filter(x->x.getIndex()==0).findAny().map(x->x.getName()).orElse(""))).perform(click());
         producers.stream().sorted(Comparator.comparingInt(DataEntry.Producer::getIndex))
                 .forEach(x -> {
                     onView(withId(R.id.viewProducerTin)).check(matches(withText(containsString(x.getTin()))));
