@@ -33,7 +33,7 @@ public class OtherEntryRepository {
         }
     }
 
-    public static Set<OtherEntry> getEntriesFor(DbHandler dbHandler, UUID inspectionId, OtherEntryType type) {
+    public static Set<OtherEntry> getEntriesFor(DbHandler dbHandler, UUID inspectionId) {
         Set<OtherEntry> entries = new HashSet<>();
 
         String selectDateProducerQuery = "SELECT " +
@@ -45,7 +45,7 @@ public class OtherEntryRepository {
                 "animal," +
                 "value " +
                 " FROM " + DbHandler.TABLE_INSPECTION_OTHER_ENTRIES +
-                " where inspectionId = '" + inspectionId.toString() + "' AND type='" + type.getName() + "'";
+                " where inspectionId = '" + inspectionId.toString() + "'";
 
         try (final SQLiteDatabase db = dbHandler.getReadableDatabase();
              Cursor cursor = db.rawQuery(selectDateProducerQuery, null)) {
@@ -55,9 +55,7 @@ public class OtherEntryRepository {
                     OtherEntry entry = new OtherEntry();
                     entry.setId(UUID.fromString(cursor.getString(0)));
                     entry.setInspectionId(UUID.fromString(cursor.getString(1)));
-                    entry.setEntryType(cursor.getString(2).equals(OtherEntryType.CONVENTIONAL.getName())?
-                            OtherEntryType.CONVENTIONAL:OtherEntryType.NO_EARRING);
-                    entry.setInspectee(new Inspectee(cursor.getString(3),cursor.getString(4)));
+                    entry.setEntryType(OtherEntryType.valueOf(cursor.getString(2)));                 entry.setInspectee(new Inspectee(cursor.getString(3),cursor.getString(4)));
                     entry.setAnimal(cursor.getString(5));
                     entry.setCount(cursor.getInt(6));
                     entries.add(entry);

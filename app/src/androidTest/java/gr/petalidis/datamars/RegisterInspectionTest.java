@@ -70,7 +70,7 @@ import static org.hamcrest.core.StringContains.containsString;
  * ΙΒ = (Προβατίνες) με συμβατικό ενώτιο εκτός ιστορικής περιόδου
  * ΙΓ = ΖΩΑ χωρίς ενώτιο
  * ΙΔ = ΖΩΑ κατω των 6 μηνών
- *
+ * <p>
  * Καταμετρηθέντα = Α+Β+Γ+Δ+Ε+Ζ+Θ+Ι+ΙΑ+ΙΒ+ΙΓ+ΙΔ (Όχι τα ιπποειδή)
  * Ζώα χωρίς σήμανση = Ε+ΙΓ
  * Ζώα χωρίς σήμανση < 6 μηνών = ΙΔ
@@ -201,18 +201,16 @@ public class RegisterInspectionTest {
                 });
         onView(withId(R.id.saveInspectionButon)).perform(click());
 
-//        producers.stream().sorted(Comparator.comparing(DataEntry.Producer::getIndex)).forEach(
-//                producer ->
-//
-                    results//.stream().filter(x -> x.getId().contains(producer.getTin()))
-                            .forEach(x ->
-                                    onWebView().withElement(findElement(Locator.ID, x.getId()))
-                                            .check(webMatches(getText(), containsString(x.getNumber())))
-                            );
-               // })
 
-//        );
-        //onData(allOf(is(instanceOf(Map.class))));
+        results
+                .forEach(x ->
+                        onWebView().withElement(findElement(Locator.ID, x.getId()))
+                                .check(webMatches(getText(), containsString(x.getNumber())))
+                );
+
+
+        onView(withId(android.R.id.button1)).perform(click());
+
 
     }
 
@@ -227,6 +225,9 @@ public class RegisterInspectionTest {
         if (datamarsDir.exists()) {
             datamarsDir.delete();
         }
+        //Drop database
+//        DbHandler dbHandler = new DbHandler(Moo.getAppContext());
+//        dbHandler.dropDatabase();
 
     }
 }

@@ -125,15 +125,13 @@ public class InspectionStepFiveActivity extends AppCompatActivity {
         webSettings.setJavaScriptEnabled(true);
         webView.loadData(msg, "text/html", "utf-8");
         preSaveBuilder.setTitle("Αποθήκευση ελέγχου").setView(webView)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        InspectionService.save(dbHandler, inspection);
-                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                        builder.setTitle(R.string.success).setMessage(R.string.success);
-                        builder.show();
-                        Intent intent = new Intent(mContext,StartActivity.class);
-                        startActivity(intent);
-                    }
+                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+                    InspectionService.save(dbHandler, inspection);
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                    builder.setTitle(R.string.success).setMessage(R.string.success);
+                    builder.show();
+                    Intent intent = new Intent(mContext,StartActivity.class);
+                    startActivity(intent);
                 })
                 .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
