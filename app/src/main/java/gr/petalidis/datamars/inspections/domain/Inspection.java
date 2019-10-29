@@ -315,7 +315,7 @@ public class Inspection implements Serializable {
     //Χωρίς ηλ. σήμανση: συμβατικά παράνομα
     private long getNoElectronicTag(String producerTin)
     {
-        return  conventionalTags.stream().filter(x->x.getInspectee().getTin().equals(producer1Tin)
+        return  conventionalTags.stream().filter(x->x.getInspectee().getTin().equals(producerTin)
                 && (x.getEntryType()==OtherEntryType.ILLEGAL
                     ||
                 (x.getEntryType()==OtherEntryType.NO_EARRING

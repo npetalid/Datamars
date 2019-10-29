@@ -17,7 +17,6 @@
 package gr.petalidis.datamars;
 
 import androidx.test.espresso.web.webdriver.Locator;
-import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 import androidx.test.rule.ActivityTestRule;
 
@@ -26,23 +25,25 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
 
 import gr.petalidis.datamars.activities.StartActivity;
-import gr.petalidis.datamars.inspections.domain.AnimalType;
 import gr.petalidis.datamars.rsglibrary.CsvRootDirectory;
-import gr.petalidis.datamars.rsglibrary.Rsg;
-import gr.petalidis.datamars.rsglibrary.RsgExporter;
+import gr.petalidis.datamars.testUtils.DataEntry;
+import gr.petalidis.datamars.testUtils.DataSet;
 
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.scrollTo;
 import static androidx.test.espresso.action.ViewActions.typeText;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withTagValue;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
@@ -55,54 +56,72 @@ import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.core.StringContains.containsString;
 
 /**
- * Instrumentation test, which will execute on an Android device.
+ * Α = (Προβατίνες) με ηλεκτρονικά ενώτια στο μητρώο και κανένα σχόλιο
+ * Β = (Προβατίνες) με ηλεκτρονικό ενώτιο καταχωρημένο ως ΘΑΝ
+ * Γ = (Προβατίνες) με ηλεκτρονικό ενώτιο καταχωρημένο ως ΣΦΓ
+ * Δ = (Προβατίνες) με ηλεκτρονικό ενώτιο καταχωρημένο ως ΠΩΛ
+ * Ε = (Προβατίνες) με ηλεκτρονικό ενώτιο καταχωρημένο ως ΔΠΛ
+ * ΣΤ = (Προβατίνες) με ηλεκτρονικό ενώτιο καταχωρημένο ως ΛΘΣ
+ * Ζ = (Προβατίνες) με ηλεκτρονικό ενώτιο καταχωρημένο ως ΜΟΝ
+ * Η =  ΙΠΠΟΕΙΔΕΣ
+ * Θ = (Προβατίνες) συμβατικό ενώτιο εντός ιστορικής περιόδου
+ * Ι = (Προβατίνες) με συμβατικό εκτός μητρώου
+ * ΙΑ = (Προβατίνες) με μονό συμβατικό ενώτιο εντός ιστορικής περιόδου
+ * ΙΒ = (Προβατίνες) με συμβατικό ενώτιο εκτός ιστορικής περιόδου
+ * ΙΓ = ΖΩΑ χωρίς ενώτιο
+ * ΙΔ = ΖΩΑ κατω των 6 μηνών
  *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
+ * Καταμετρηθέντα = Α+Β+Γ+Δ+Ε+Ζ+Θ+Ι+ΙΑ+ΙΒ+ΙΓ+ΙΔ (Όχι τα ιπποειδή)
+ * Ζώα χωρίς σήμανση = Ε+ΙΓ
+ * Ζώα χωρίς σήμανση < 6 μηνών = ΙΔ
+ * Ζώα χωρίς ηλ. σήμανση = ΙΒ+ΙΓ
+ * Ζώα με ένα μονό ενώτιο = ΙΑ+Ζ
+ * Ζώα με σήμανση που δεν αναγράφονται στο μητρώο  = Β+Γ+Δ+Ι
+ * ΕΠΙΛΕΞΙΜΕΣ ΠΡΟΒΑΤΙΝΕΣ = Α+Ζ+Θ+ΙΑ (Ζ και ΙΑ μόνο αν Ζ+ΙΑ/(Α+Ζ+Θ+ΙΑ)<=0.2
  */
-@RunWith(AndroidJUnit4.class)
+@RunWith(Parameterized.class)
+//@RunWith(AndroidJUnit4.class)
 @LargeTest
 public class RegisterInspectionTest {
-    private final static String USB_NAME = "testDevice";
-    private final static String TEST_FILE_NAME = "2018-02-22.csv";
+
     @Rule
     public ActivityTestRule<StartActivity> activityRule =
             new ActivityTestRule<>(StartActivity.class);
     private String tmpFilePath = "";
 
+    @Parameterized.Parameters
+    public static Collection<Object[]> data() throws Exception {
+
+        List<Object[]> arrayList = new ArrayList<>();
+        // arrayList.add(DataSet.readData("Dataset1.csv").toArray());
+        // arrayList.add(DataSet.readData("Dataset2.csv").toArray());
+        arrayList.add(DataSet.readData("Dataset3.csv").toArray());
+
+        return arrayList;
+    }
+
+    @Parameterized.Parameter // first data value (0) is default
+    public /* NOT private */ List<DataEntry.Producer> producers;
+
+    @Parameterized.Parameter(1)
+    public /* NOT private */ List<DataEntry.TagEntry> tagEntries;
+
+    @Parameterized.Parameter(2)
+    public /* NOT private */ List<DataEntry.ConventionalEntry> conventionalEntries;
+
+    @Parameterized.Parameter(3)
+    public /* NOT private */ List<DataEntry.ConventionalEntry> noTags;
+
+    @Parameterized.Parameter(4)
+    public /* NOT private */ List<DataEntry.ResultEntry> results;
+
     @Before
     public void setUp() throws Exception {
-        CsvRootDirectory csvRootDirectory = new CsvRootDirectory();
-        File datamarsDir = new File(csvRootDirectory.getDirectory() + File.separator + USB_NAME);
-        if (!datamarsDir.exists()) {
-            boolean mkDir = datamarsDir.mkdir();
-            if (!mkDir) {
-                throw new IllegalStateException("Could not create device-differentiating directory");
-            }
-        }
 
-        Rsg[] rsgsArray = {
-                new Rsg("01234560300062037570054", "22022018", "091614"),
-                new Rsg("01234560300062037570071", "22022018", "091715"),
-                new Rsg("01234560300062037570055", "22022018", "091816"),
-                new Rsg("01234560300062037570012", "22022018", "091917"),
-                new Rsg("01234560300062037570021", "22022018", "092018"),
-                new Rsg("01234560300062037570076", "22022018", "092119"),
-                new Rsg("01234560300062037570027", "22022018", "092220"),
-                new Rsg("01234560300062036290063", "22022018", "092321"),
-                new Rsg("01234560300062037570061", "22022018", "092422"),
-                new Rsg("01234560300062037570072", "22022018", "092523"),
-                new Rsg("01234560300062037570066", "22022018", "092624"),
-                new Rsg("01234560300062037570013", "22022018", "092725"),
-                new Rsg("01234560300062037570068", "22022018", "092826"),
-                new Rsg("01234560300062036290068", "22022018", "092927"),
-                new Rsg("01234560300062037570065", "22022018", "093028"),
-                new Rsg("01234560300062037570081", "22022018", "093129")};
-        Set<Rsg> rsgs = new HashSet<>(Arrays.asList(rsgsArray));
-        tmpFilePath = RsgExporter.export(rsgs, datamarsDir.getAbsolutePath(), TEST_FILE_NAME);
     }
 
     @Test
-    public void useAppContext() {
+    public void testCorrectCalculationOfResults() {
 
         onView(withId(R.id.inspectionsButton))
                 .perform(click());
@@ -126,59 +145,73 @@ public class RegisterInspectionTest {
 
         onView(withId(R.id.gotoStep2Screen)).perform(click());
 
-        onView(withId(R.id.producer1NameText)).perform(typeText("Pappas"));
-        onView(withId(R.id.producer1TinText)).perform(typeText("127137474"));
+        boolean hasMoreThanOneProducers = producers.size() > 1;
+
+        producers.stream().sorted(Comparator.comparing(DataEntry.Producer::getIndex)).forEach(x -> {
+            onView(withId(x.getNameId())).perform(typeText(x.getName()));
+            onView(withId(x.getTinId())).perform(typeText(x.getTin()));
+
+            //if (hasMoreThanOneProducers) {
+            onView(withId(x.getTagId())).perform(click());
+            if (!x.getTag().isEmpty()) {
+                onData(hasToString(x.getTag())).perform(click());
+            }
+            //}
+        });
 
         onView(withId(R.id.gotoStep3Screen)).perform(click());
 
-        onData(hasEntryTag("062037570071")).inAdapterView(withId(R.id.editItemsList)).onChildView(withId(R.id.viewComments)).perform(click());
-        onData(hasToString("ΘΑΝ")).perform(click());
+        tagEntries.forEach(x -> {
 
-        onData(hasEntryTag("062037570055")).inAdapterView(withId(R.id.editItemsList)).onChildView(withId(R.id.viewComments)).perform(click());
-        onData(hasToString("ΣΦΓ")).perform(click());
+            if (x.isInRegister() == false) {
+                //TODO: Do things when false
+            }
+            if (!x.getAnimal().equalsIgnoreCase("Προβατίνα")) {
+                onData(hasEntryTag(x.getTag())).inAdapterView(withId(R.id.editItemsList))
+                        .onChildView(withId(R.id.spinner)).perform(click());
+                onData(hasToString(x.getAnimal())).perform(click());
+            }
+            if (!x.getComment().isEmpty()) {
+                onData(hasEntryTag(x.getTag())).inAdapterView(withId(R.id.editItemsList))
+                        .onChildView(withId(R.id.viewComments)).perform(click());
+                onData(hasToString(x.getComment())).perform(click());
+            }
 
-        onData(hasEntryTag("062037570054")).inAdapterView(withId(R.id.editItemsList)).onChildView(withId(R.id.viewComments)).perform(click());
-        onData(hasToString("ΠΩΛ")).perform(click());
-
-        onData(hasEntryTag("062037570012")).inAdapterView(withId(R.id.editItemsList)).onChildView(withId(R.id.viewComments)).perform(click());
-        onData(hasToString("ΔΠΛ")).perform(click());
-
-        onData(hasEntryTag("062037570021")).inAdapterView(withId(R.id.editItemsList)).onChildView(withId(R.id.viewComments)).perform(click());
-        onData(hasToString("ΛΘΣ")).perform(click());
-
-        onData(hasEntryTag("062036290063")).inAdapterView(withId(R.id.editItemsList)).onChildView(withId(R.id.viewComments)).perform(click());
-        onData(hasToString("ΜΟΝ")).perform(click());
-
+        });
 
         onView(withId(R.id.addFindingsButton)).perform(click());
-        onView(withId(R.id.sheepLegalConventionalTag)).perform(typeText("1"));
-        onView(withId(R.id.sheepConventionalOutOfRegistry)).perform(typeText("1"));
-        onView(withId(R.id.sheepSingleConventionalTag)).perform(typeText("1"));
-        onView(withId(R.id.sheepIllegalConventionalTag)).perform(typeText("1"));
+        producers.stream().sorted(Comparator.comparingInt(DataEntry.Producer::getIndex))
+                .forEach(x -> {
+                    onView(withId(R.id.noEarringTin)).check(matches(withText(containsString(x.getTin()))));
+                    conventionalEntries.stream().filter(y -> y.getTin().equalsIgnoreCase(x.getTin()))
+                            .forEach(y ->
+                                    onView(withId(y.getFieldId())).perform(typeText(y.getNumber())));
+
+                    onView(withId(R.id.nextProducer)).perform(click());
+                });
         onView(withId(R.id.gotoStep5Screen)).perform(click());
-        onView(withId(R.id.noTagOver6MonthValue)).perform(typeText("5"));
-        onView(withId(R.id.noTagUnder6MonthValue)).perform(typeText("5"));
+
+        producers.stream().sorted(Comparator.comparingInt(DataEntry.Producer::getIndex))
+                .forEach(x -> {
+                    onView(withId(R.id.conventionalTin)).check(matches(withText(containsString(x.getTin()))));
+                    noTags.stream().filter(y -> y.getTin().equalsIgnoreCase(x.getTin())).forEach(y ->
+                            onView(withId(y.getFieldId())).perform(typeText(y.getNumber()))
+                    );
+                    onView(withId(R.id.nextProducer2)).perform(click());
+                });
         onView(withId(R.id.saveInspectionButon)).perform(click());
 
-        onWebView().withElement(findElement(Locator.ID, "127137474-total"))
-                .check(webMatches(getText(), containsString("29")));
+//        producers.stream().sorted(Comparator.comparing(DataEntry.Producer::getIndex)).forEach(
+//                producer ->
+//
+                    results//.stream().filter(x -> x.getId().contains(producer.getTin()))
+                            .forEach(x ->
+                                    onWebView().withElement(findElement(Locator.ID, x.getId()))
+                                            .check(webMatches(getText(), containsString(x.getNumber())))
+                            );
+               // })
 
-        onWebView().withElement(findElement(Locator.ID, "127137474-noTagUnder6"))
-                .check(webMatches(getText(), containsString("5")));
-        onWebView().withElement(findElement(Locator.ID, "127137474-noElectronicTag"))
-                .check(webMatches(getText(), containsString("6")));
-        onWebView().withElement(findElement(Locator.ID, "127137474-singleTag"))
-                .check(webMatches(getText(), containsString("2")));
-        onWebView().withElement(findElement(Locator.ID, "127137474-countedButNotInRegistry"))
-                .check(webMatches(getText(), containsString("4")));
-        onWebView().withElement(findElement(Locator.ID, "127137474-" + AnimalType.SHEEP_ANIMAL.getTitle()))
-                .check(webMatches(getText(), containsString("13")));
-        onWebView().withElement(findElement(Locator.ID, "127137474-Αμνοερίφια"))
-                .check(webMatches(getText(), containsString("5")));
-        onWebView().withElement(findElement(Locator.ID, "127137474-noΤag"))
-                .check(webMatches(getText(), containsString("6")));
-
-
+//        );
         //onData(allOf(is(instanceOf(Map.class))));
 
     }
@@ -190,7 +223,7 @@ public class RegisterInspectionTest {
             file.delete();
         }
         CsvRootDirectory csvRootDirectory = new CsvRootDirectory();
-        File datamarsDir = new File(csvRootDirectory.getDirectory() + File.separator + USB_NAME);
+        File datamarsDir = new File(csvRootDirectory.getDirectory() + File.separator + DataEntry.USB_NAME);
         if (datamarsDir.exists()) {
             datamarsDir.delete();
         }

@@ -35,7 +35,7 @@ class RsgFileUtility {
         int currentYear = calendar.get(Calendar.YEAR);
         try {
             int yearInt = Integer.parseInt(year);
-            return MINIMUM_YEAR < yearInt && yearInt<=currentYear;
+            return (MINIMUM_YEAR < yearInt) && (yearInt <= currentYear);
         } catch (NumberFormatException e) {
             log.error("Received not Valid year: "  + year +", " + e.getLocalizedMessage());
             return false;
