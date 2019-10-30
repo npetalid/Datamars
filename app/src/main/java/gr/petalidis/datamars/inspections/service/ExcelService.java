@@ -1,3 +1,19 @@
+
+/*
+ * Copyright 2017-2019 Nikolaos Petalidis
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
+
 package gr.petalidis.datamars.inspections.service;
 
 import org.apache.commons.io.FileUtils;
@@ -15,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 import gr.petalidis.datamars.Log4jHelper;
+import gr.petalidis.datamars.Moo;
 import gr.petalidis.datamars.inspections.domain.AnimalType;
 import gr.petalidis.datamars.inspections.domain.Entry;
 import gr.petalidis.datamars.inspections.domain.Inspectee;
@@ -62,7 +79,7 @@ public class ExcelService {
                 cell = entryRow.createCell(1);
                 cell.setCellValue(entry.getTag());
                 cell = entryRow.createCell(2);
-                cell.setCellValue(entry.getTagDate());
+                cell.setCellValue(Moo.getFormatter().format(entry.getTagDate()));
                 cell = entryRow.createCell(3);
                 cell.setCellValue(entry.isInRegister() ? "ΝΑΙ" : "ΟΧΙ");
                 cell = entryRow.createCell(4);
@@ -123,13 +140,7 @@ public class ExcelService {
                 cell.setCellValue(selectables.get(animalType));
             }
 
-//            sheet.autoSizeColumn(0);
-//            sheet.autoSizeColumn(1);
-//            sheet.autoSizeColumn(2);
-//            sheet.autoSizeColumn(3);
-//            sheet.autoSizeColumn(4);
-//            sheet.autoSizeColumn(5);
-//            sheet.autoSizeColumn(6);
+            //          `
 
         }
 
