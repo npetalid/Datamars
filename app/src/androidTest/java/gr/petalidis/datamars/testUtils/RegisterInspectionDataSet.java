@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 import gr.petalidis.datamars.R;
 import gr.petalidis.datamars.rsglibrary.Rsg;
 
-public class DataSet {
+public class RegisterInspectionDataSet {
 
     private static Map<String, Integer> animalToConventional = new HashMap<>();
 
@@ -62,14 +62,14 @@ public class DataSet {
 
     }
 
-    public static DataEntry readData(String name) throws IOException, ParseException {
-        List<DataEntry.ConventionalEntry> conventionalEntries = new ArrayList<>();
-        List<DataEntry.ConventionalEntry> noTagEntries = new ArrayList<>();
-        List<DataEntry.TagEntry> tagEntries = new ArrayList<>();
-        List<DataEntry.Producer> producerSet = new ArrayList<>();
+    public static RegisterInspectionHelper readData(String name) throws IOException, ParseException {
+        List<RegisterInspectionHelper.ConventionalEntry> conventionalEntries = new ArrayList<>();
+        List<RegisterInspectionHelper.ConventionalEntry> noTagEntries = new ArrayList<>();
+        List<RegisterInspectionHelper.TagEntry> tagEntries = new ArrayList<>();
+        List<RegisterInspectionHelper.Producer> producerSet = new ArrayList<>();
         Map<String, String> tinToRsgOwner = new HashMap<>();
         Map<String, String> tinToName = new HashMap<>();
-        Map<String, DataEntry.ResultEntryBuilder> tinToResultEntryBuilder = new HashMap<>();
+        Map<String, RegisterInspectionHelper.ResultEntryBuilder> tinToResultEntryBuilder = new HashMap<>();
         Set<Rsg> rsgSet = new HashSet<>();
         int index = 0;
 
@@ -92,26 +92,26 @@ public class DataSet {
                         String comments = columns.length>5?columns[5]:"";
                         String quantity = columns.length>6?columns[6]:"0";
 
-                        conventionalEntries.add(new DataEntry.ConventionalEntry(
+                        conventionalEntries.add(new RegisterInspectionHelper.ConventionalEntry(
                                 animalToConventional.get(animal + "-" + inRegister + "-" + comments)
                                 , quantity, tin));
                     } else if (columns[0].equalsIgnoreCase("ΚΑΘΟΛΟΥ")) {
                         String quantity = columns[6];
 
-                        noTagEntries.add(new DataEntry.ConventionalEntry(
+                        noTagEntries.add(new RegisterInspectionHelper.ConventionalEntry(
                                 R.id.noTagOver6MonthValue
                                 , quantity, tin));
                     } else if (columns[0].equalsIgnoreCase("ΚΑΘΟΛΟΥ < 6 ΜΗΝΩΝ")) {
                         String quantity = columns[6];
 
-                        noTagEntries.add(new DataEntry.ConventionalEntry(
+                        noTagEntries.add(new RegisterInspectionHelper.ConventionalEntry(
                                 R.id.noTagUnder6MonthValue
                                 , quantity, tin));
                     } else if (columns[0].equalsIgnoreCase("ΑΠΟΤΕΛΕΣΜΑ")) {
                         String quantity = columns[6];
 
                         if (tinToResultEntryBuilder.get(tin) == null) {
-                            tinToResultEntryBuilder.put(tin, new DataEntry.ResultEntryBuilder(tin));
+                            tinToResultEntryBuilder.put(tin, new RegisterInspectionHelper.ResultEntryBuilder(tin));
                         }
                         if (columns[3].equals("Καταμετρηθέντα")) {
                             tinToResultEntryBuilder.get(tin).addTotal(quantity);
@@ -142,21 +142,21 @@ public class DataSet {
                         String time = "09" + (index < 10 ? "0" + index : index) + "00";
                         boolean inRegister = columns[4].equalsIgnoreCase("ΝΑΙ") || columns[4].equalsIgnoreCase("NAI");
                         Rsg rsg = new Rsg(tag, date, time);
-                        tagEntries.add(new DataEntry.TagEntry(rsg.getIdentificationCode(), columns[3], tin, inRegister, columns.length>5?columns[5]:""));
+                        tagEntries.add(new RegisterInspectionHelper.TagEntry(rsg.getIdentificationCode(), columns[3], tin, inRegister, columns.length>5?columns[5]:""));
                         tinToRsgOwner.put(tin, rsg.getOwner());
                         rsgSet.add(rsg);
                     }
                 }
             }
-            List<DataEntry.ResultEntry> resultEntries = tinToResultEntryBuilder.values()
+            List<RegisterInspectionHelper.ResultEntry> resultEntries = tinToResultEntryBuilder.values()
                     .stream().map(x -> x.build()).flatMap(Collection::stream).collect(Collectors.toList());
-            DataEntry.ProducerBuilder producerBuilder = DataEntry.ProducerBuilder.getInstance();
+            RegisterInspectionHelper.ProducerBuilder producerBuilder = RegisterInspectionHelper.ProducerBuilder.getInstance();
             tinToName.entrySet().forEach(x ->
                     producerBuilder.addProducer(x.getValue(), x.getKey(), tinToRsgOwner.get(x.getKey())));
             producerSet.addAll(producerBuilder.build());
-            DataEntry.saveRsg(rsgSet);
+            RegisterInspectionHelper.saveRsg(rsgSet);
 
-            return new DataEntry(producerSet, tagEntries, conventionalEntries, noTagEntries, resultEntries);
+            return new RegisterInspectionHelper(producerSet, tagEntries, conventionalEntries, noTagEntries, resultEntries);
         }
 
     }

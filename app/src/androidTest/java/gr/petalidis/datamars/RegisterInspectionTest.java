@@ -1,16 +1,16 @@
 /*
-     Copyright 2017 Nikolaos Petalidis
-     Licensed under the Apache License, Version 2.0 (the "License");
-     you may not use this file except in compliance with the License.
-     You may obtain a copy of the License at
-
-         http://www.apache.org/licenses/LICENSE-2.0
-
-     Unless required by applicable law or agreed to in writing, software
-     distributed under the License is distributed on an "AS IS" BASIS,
-     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-     See the License for the specific language governing permissions and
-     limitations under the License.
+ * Copyright 2017-2019 Nikolaos Petalidis
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
  */
 
 
@@ -37,8 +37,8 @@ import java.util.List;
 import gr.petalidis.datamars.activities.StartActivity;
 import gr.petalidis.datamars.inspections.repository.DbHandler;
 import gr.petalidis.datamars.rsglibrary.CsvRootDirectory;
-import gr.petalidis.datamars.testUtils.DataEntry;
-import gr.petalidis.datamars.testUtils.DataSet;
+import gr.petalidis.datamars.testUtils.RegisterInspectionDataSet;
+import gr.petalidis.datamars.testUtils.RegisterInspectionHelper;
 
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.onView;
@@ -95,27 +95,27 @@ public class RegisterInspectionTest {
     public static Collection<Object[]> data() throws Exception {
 
         List<Object[]> arrayList = new ArrayList<>();
-        arrayList.add(DataSet.readData("Dataset1.csv").toArray());
-        arrayList.add(DataSet.readData("Dataset2.csv").toArray());
-        arrayList.add(DataSet.readData("Dataset3.csv").toArray());
+        arrayList.add(RegisterInspectionDataSet.readData("Dataset1.csv").toArray());
+        arrayList.add(RegisterInspectionDataSet.readData("Dataset2.csv").toArray());
+        arrayList.add(RegisterInspectionDataSet.readData("Dataset3.csv").toArray());
 
         return arrayList;
     }
 
     @Parameterized.Parameter // first data value (0) is default
-    public /* NOT private */ List<DataEntry.Producer> producers;
+    public /* NOT private */ List<RegisterInspectionHelper.Producer> producers;
 
     @Parameterized.Parameter(1)
-    public /* NOT private */ List<DataEntry.TagEntry> tagEntries;
+    public /* NOT private */ List<RegisterInspectionHelper.TagEntry> tagEntries;
 
     @Parameterized.Parameter(2)
-    public /* NOT private */ List<DataEntry.ConventionalEntry> conventionalEntries;
+    public /* NOT private */ List<RegisterInspectionHelper.ConventionalEntry> conventionalEntries;
 
     @Parameterized.Parameter(3)
-    public /* NOT private */ List<DataEntry.ConventionalEntry> noTags;
+    public /* NOT private */ List<RegisterInspectionHelper.ConventionalEntry> noTags;
 
     @Parameterized.Parameter(4)
-    public /* NOT private */ List<DataEntry.ResultEntry> results;
+    public /* NOT private */ List<RegisterInspectionHelper.ResultEntry> results;
 
     @Before
     public void setUp() throws Exception {
@@ -152,7 +152,7 @@ public class RegisterInspectionTest {
 
         boolean hasMoreThanOneProducers = producers.size() > 1;
 
-        producers.stream().sorted(Comparator.comparing(DataEntry.Producer::getIndex)).forEach(x -> {
+        producers.stream().sorted(Comparator.comparing(RegisterInspectionHelper.Producer::getIndex)).forEach(x -> {
             onView(withId(x.getNameId())).perform(typeText(x.getName()));
             onView(withId(x.getTinId())).perform(typeText(x.getTin()));
 
@@ -185,7 +185,7 @@ public class RegisterInspectionTest {
         });
 
         onView(withId(R.id.addFindingsButton)).perform(click());
-        producers.stream().sorted(Comparator.comparingInt(DataEntry.Producer::getIndex))
+        producers.stream().sorted(Comparator.comparingInt(RegisterInspectionHelper.Producer::getIndex))
                 .forEach(x -> {
                     onView(withId(R.id.noEarringTin)).check(matches(withText(containsString(x.getTin()))));
                     conventionalEntries.stream().filter(y -> y.getTin().equalsIgnoreCase(x.getTin()))
@@ -196,7 +196,7 @@ public class RegisterInspectionTest {
                 });
         onView(withId(R.id.gotoStep5Screen)).perform(click());
 
-        producers.stream().sorted(Comparator.comparingInt(DataEntry.Producer::getIndex))
+        producers.stream().sorted(Comparator.comparingInt(RegisterInspectionHelper.Producer::getIndex))
                 .forEach(x -> {
                     onView(withId(R.id.conventionalTin)).check(matches(withText(containsString(x.getTin()))));
                     noTags.stream().filter(y -> y.getTin().equalsIgnoreCase(x.getTin())).forEach(y ->
@@ -222,38 +222,38 @@ public class RegisterInspectionTest {
         onView(withText("testDevice")).perform(click());
 
         onData(hasToString(producers.stream().filter(x->x.getIndex()==0).findAny().map(x->x.getName()).orElse(""))).perform(click());
-        producers.stream().sorted(Comparator.comparingInt(DataEntry.Producer::getIndex))
+        producers.stream().sorted(Comparator.comparingInt(RegisterInspectionHelper.Producer::getIndex))
                 .forEach(x -> {
                     onView(withId(R.id.viewProducerTin)).check(matches(withText(containsString(x.getTin()))));
 
-                    onView(withId(R.id.total)).check(matches(withText(containsString(DataEntry.ResultEntryGetter
+                    onView(withId(R.id.total)).check(matches(withText(containsString(RegisterInspectionHelper.ResultEntryGetter
                             .getTotalFor(results, x.getTin())))));
 
-                    onView(withId(R.id.noTag)).check(matches(withText(containsString(DataEntry.ResultEntryGetter
+                    onView(withId(R.id.noTag)).check(matches(withText(containsString(RegisterInspectionHelper.ResultEntryGetter
                             .getNoTagFor(results, x.getTin())))));
 
-                    onView(withId(R.id.noTagUnder6)).check(matches(withText(containsString(DataEntry.ResultEntryGetter
+                    onView(withId(R.id.noTagUnder6)).check(matches(withText(containsString(RegisterInspectionHelper.ResultEntryGetter
                             .getNoTagUnder6For(results, x.getTin())))));
 
-                    onView(withId(R.id.noElectronicTag)).check(matches(withText(containsString(DataEntry.ResultEntryGetter
+                    onView(withId(R.id.noElectronicTag)).check(matches(withText(containsString(RegisterInspectionHelper.ResultEntryGetter
                             .getNoElectronicTagFor(results, x.getTin())))));
 
-                    onView(withId(R.id.singleTag)).check(matches(withText(containsString(DataEntry.ResultEntryGetter
+                    onView(withId(R.id.singleTag)).check(matches(withText(containsString(RegisterInspectionHelper.ResultEntryGetter
                             .getSingleTagFor(results, x.getTin())))));
-                    onView(withId(R.id.countedButNotInRegistry)).check(matches(withText(containsString(DataEntry.ResultEntryGetter
+                    onView(withId(R.id.countedButNotInRegistry)).check(matches(withText(containsString(RegisterInspectionHelper.ResultEntryGetter
                             .getCountedButNotInRegistryFor(results, x.getTin())))));
 
-                    onView(withId(R.id.sheepTotalValue)).check(matches(withText(containsString(DataEntry.ResultEntryGetter
+                    onView(withId(R.id.sheepTotalValue)).check(matches(withText(containsString(RegisterInspectionHelper.ResultEntryGetter
                             .getSheepFor(results, x.getTin())))));
 
-                    onView(withId(R.id.goatTotalValue)).check(matches(withText(containsString(DataEntry.ResultEntryGetter
+                    onView(withId(R.id.goatTotalValue)).check(matches(withText(containsString(RegisterInspectionHelper.ResultEntryGetter
                             .getGoatFor(results, x.getTin())))));
 
-                    onView(withId(R.id.ramTotalValue)).check(matches(withText(containsString(DataEntry.ResultEntryGetter
+                    onView(withId(R.id.ramTotalValue)).check(matches(withText(containsString(RegisterInspectionHelper.ResultEntryGetter
                             .getSelectableRamHeGoatFor(results, x.getTin())))));
-                    onView(withId(R.id.lambsTotalValue)).check(matches(withText(containsString(DataEntry.ResultEntryGetter
+                    onView(withId(R.id.lambsTotalValue)).check(matches(withText(containsString(RegisterInspectionHelper.ResultEntryGetter
                             .getSelectableKidLambFor(results, x.getTin())))));
-                    onView(withId(R.id.horseTotalValue)).check(matches(withText(containsString(DataEntry.ResultEntryGetter
+                    onView(withId(R.id.horseTotalValue)).check(matches(withText(containsString(RegisterInspectionHelper.ResultEntryGetter
                             .getSelectableHorseFor(results, x.getTin())))));
 
                     onView(withId(R.id.nextProducer3)).perform(click());
@@ -268,7 +268,7 @@ public class RegisterInspectionTest {
             file.delete();
         }
         CsvRootDirectory csvRootDirectory = new CsvRootDirectory();
-        File datamarsDir = new File(csvRootDirectory.getDirectory() + File.separator + DataEntry.USB_NAME);
+        File datamarsDir = new File(csvRootDirectory.getDirectory() + File.separator + RegisterInspectionHelper.USB_NAME);
         if (datamarsDir.exists()) {
             datamarsDir.delete();
         }

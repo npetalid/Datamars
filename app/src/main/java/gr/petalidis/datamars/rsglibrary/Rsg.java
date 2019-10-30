@@ -1,24 +1,32 @@
-/*        Copyright 2017 Nikolaos Petalidis
-*
-*        Licensed under the Apache License, Version 2.0 (the "License");
-*        you may not use this file except in compliance with the License.
-*        You may obtain a copy of the License at
-*
-*        http://www.apache.org/licenses/LICENSE-2.0
-*
-*        Unless required by applicable law or agreed to in writing, software
-*        distributed under the License is distributed on an "AS IS" BASIS,
-*        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*        See the License for the specific language governing permissions and
-*        limitations under the License.
-*/
+/*
+ * Copyright 2017-2019 Nikolaos Petalidis
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 
 package gr.petalidis.datamars.rsglibrary;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  *  ISO Long (default): - Animal:
@@ -84,7 +92,7 @@ public class Rsg {
 
     @Override
     public String toString() {
-        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hms");
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy hhmmss");
 
         return countryCode + "," + identificationCode + "," + format.format(date);
     }
@@ -119,4 +127,50 @@ public class Rsg {
         return this.date.equals(other.date);
     }
 
+    public boolean isDoubleOf(Rsg other)
+    {
+
+        if (!this.identificationCode.equals(other.identificationCode)) {
+            return false;
+        }
+        if (!this.countryCode.equals(other.countryCode)) {
+            return false;
+        }
+
+        return Math.abs(this.date.getTime()-other.date.getTime())>3000;
+    }
+
+    public boolean isInErrorOf(Rsg other)
+    {
+
+        if (this.equals(other)) {
+            return false;
+        }
+        if (!this.identificationCode.equals(other.identificationCode)) {
+            return false;
+        }
+        if (!this.countryCode.equals(other.countryCode)) {
+            return false;
+        }
+
+        return Math.abs(this.date.getTime()-other.date.getTime())<=3000;
+    }
+
+    public static Map<Rsg, Set<Rsg>> getEntriesMatching(Set<Rsg> rsgs, Function<Rsg, Predicate<Rsg>> function)
+    {
+        Map<Rsg,Set<Rsg>> hits = new HashMap<>();
+
+        rsgs.stream().sorted(Comparator.comparing(Rsg::getDate)).forEach(rsg-> {
+                    boolean isInHitSet = hits.values().stream().flatMap(Collection::stream).collect(Collectors.toSet()).contains(rsg);
+                    if (!isInHitSet) {
+                        Set<Rsg> hitSet = rsgs.stream().filter(other -> function.apply(other).test(rsg)).collect(Collectors.toSet());
+                        if (!hitSet.isEmpty()) {
+                            hits.put(rsg, hitSet);
+                        }
+                    }
+
+                }
+        );
+        return hits;
+    }
 }

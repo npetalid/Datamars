@@ -15,6 +15,8 @@
 
 package gr.petalidis.datamars.rsglibrary;
 
+import org.hamcrest.collection.IsMapContaining;
+import org.hamcrest.collection.IsMapWithSize;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -23,8 +25,13 @@ import org.junit.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 
 /**
@@ -101,5 +108,71 @@ public class RsgTest {
         assertEquals(expResult, result);
         
     }
-    
+
+    @Test
+    public void testIsDoubleOfWhenUnder3secs() throws ParseException {
+        Rsg instance = new Rsg("A0000000964000000123456","26072017","124028");
+        Rsg other = new Rsg("A0000000964000000123456","26072017","124030");
+        assertEquals(false, instance.isDoubleOf(other));
+    }
+    @Test
+    public void testIsDoubleOfWhenExactly3secs() throws ParseException {
+        Rsg instance = new Rsg("A0000000964000000123456","26072017","124028");
+        Rsg other = new Rsg("A0000000964000000123456","26072017","124031");
+        assertEquals(false, instance.isDoubleOf(other));
+    }
+    @Test
+    public void testIsDoubleOfWhenOver3secs() throws ParseException {
+        Rsg instance = new Rsg("A0000000964000000123456","26072017","124028");
+        Rsg other = new Rsg("A0000000964000000123456","26072017","124032");
+        assertEquals(true, instance.isDoubleOf(other));
+    }
+    @Test
+    public void testIsInErrorOfWhenUnder3secs() throws ParseException {
+        Rsg instance = new Rsg("A0000000964000000123456","26072017","124028");
+        Rsg other = new Rsg("A0000000964000000123456","26072017","124030");
+        assertEquals(true, instance.isInErrorOf(other));
+    }
+    @Test
+    public void testIsInErrorOfWhenExactly3secs() throws ParseException {
+        Rsg instance = new Rsg("A0000000964000000123456","26072017","124028");
+        Rsg other = new Rsg("A0000000964000000123456","26072017","124031");
+        assertEquals(true, instance.isInErrorOf(other));
+    }
+    @Test
+    public void testIsInErrorOfWhenOver3secs() throws ParseException {
+        Rsg instance = new Rsg("A0000000964000000123456","26072017","124028");
+        Rsg other = new Rsg("A0000000964000000123456","26072017","124032");
+        assertEquals(false, instance.isInErrorOf(other));
+    }
+
+    @Test
+    public void testGetDoublesIn() throws ParseException {
+        Rsg rsg1 = new Rsg("A0000000964000000123456","26072017","124028");
+        Rsg rsg2 = new Rsg("A0000000964000000123456","26072017","124033");
+        Rsg rsg3 = new Rsg("A0000000964000000123456","26072017","124034");
+        Rsg rsg4 = new Rsg("A0000000964000000123457","26072017","124035");
+        Set<Rsg> rsgs = new HashSet<>();
+        rsgs.addAll(Arrays.asList(rsg1,rsg2,rsg3,rsg4));
+        Set<Rsg> doubleRsgs = new HashSet<>(Arrays.asList(rsg2, rsg3));
+        Map<Rsg, Set<Rsg>> doublesIn = Rsg.getEntriesMatching(rsgs, rsg-> other->rsg.isDoubleOf(other));
+        assertThat(doublesIn, IsMapContaining.hasKey(rsg1));
+        assertThat(doublesIn, IsMapContaining.hasEntry(rsg1,doubleRsgs));
+        assertThat(doublesIn, IsMapWithSize.aMapWithSize(1));
+    }
+
+    @Test
+    public void testGetErrorsIn() throws ParseException {
+        Rsg rsg1 = new Rsg("A0000000964000000123456","26072017","124028");
+        Rsg rsg2 = new Rsg("A0000000964000000123456","26072017","124030");
+        Rsg rsg3 = new Rsg("A0000000964000000123456","26072017","124031");
+        Rsg rsg4 = new Rsg("A0000000964000000123457","26072017","124035");
+        Set<Rsg> rsgs = new HashSet<>();
+        rsgs.addAll(Arrays.asList(rsg1,rsg2,rsg3,rsg4));
+        Set<Rsg> doubleRsgs = new HashSet<>(Arrays.asList(rsg2, rsg3));
+        Map<Rsg, Set<Rsg>> doublesIn = Rsg.getEntriesMatching(rsgs, rsg-> other->rsg.isInErrorOf(other));
+        assertThat(doublesIn, IsMapContaining.hasKey(rsg1));
+        assertThat(doublesIn, IsMapContaining.hasEntry(rsg1,doubleRsgs));
+        assertThat(doublesIn, IsMapWithSize.aMapWithSize(1));
+    }
 }

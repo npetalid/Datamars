@@ -19,25 +19,27 @@ package gr.petalidis.datamars;
 import org.hamcrest.Description;
 import org.hamcrest.TypeSafeMatcher;
 
+import java.util.Date;
+
 import gr.petalidis.datamars.inspections.domain.Entry;
 
-public class EntryTagMatcher extends TypeSafeMatcher<Entry> {
-    private final String tagExpected;
-    private EntryTagMatcher(String tagExpected) {
-        this.tagExpected = tagExpected;
+public class EntryDateMatcher extends TypeSafeMatcher<Entry> {
+    private final Date dateExpected;
+    private EntryDateMatcher(Date dateExpected) {
+        this.dateExpected = dateExpected;
     }
 
     @Override
     public void describeTo(Description description) {
-        description.appendText("Tag did not contain a value of " + tagExpected);
+        description.appendText("Date did not contain a value of " + dateExpected);
     }
 
     @Override
     protected boolean matchesSafely(Entry item) {
-        return item.getTag().equals(tagExpected);
+        return item.getTagDate().equals(dateExpected);
     }
 
-    public static EntryTagMatcher hasEntryTag(String tagExpected) {
-        return new EntryTagMatcher(tagExpected);
+    public static EntryDateMatcher hasEntryDate(Date dateExpected) {
+        return new EntryDateMatcher(dateExpected);
     }
 }

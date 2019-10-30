@@ -19,6 +19,7 @@ package gr.petalidis.datamars.inspections.domain;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -75,16 +76,8 @@ public class Inspection implements Serializable {
         return producer1Tin;
     }
 
-    public void setProducer1Tin(String producer1Tin) {
-        this.producer1Tin = producer1Tin;
-    }
-
     public String getProducer1Name() {
         return producer1Name;
-    }
-
-    public void setProducer1Name(String producer1Name) {
-        this.producer1Name = producer1Name;
     }
 
     public String getProducer2Tin() {
@@ -160,24 +153,36 @@ public class Inspection implements Serializable {
     public void initScannedDocuments(List<ThumbnailDto> thumbnailDtos) {
         this.scannedDocuments = thumbnailDtos.stream().map(x-> new ScannedDocument(this.id,x.getImagePath())).collect(Collectors.toList());
     }
+
     public void initEntries(Set<Rsg> rsgs)
     {
+        Map<Rsg,Set<Rsg>> doubles = Rsg.getEntriesMatching(rsgs, rsg-> rsg::isDoubleOf);
+        Map<Rsg,Set<Rsg>> errors = Rsg.getEntriesMatching(rsgs, rsg-> rsg::isInErrorOf);
+
+        Set<Rsg> flattenedDoubles = doubles.values().stream().flatMap(Collection::stream).collect(Collectors.toSet());
+        Set<Rsg> flattenedErrors = errors.values().stream().flatMap(Collection::stream).collect(Collectors.toSet());
 
         this.entries = rsgs
                 .stream()
-                .map(x->new Entry(this,
-                        x.getCountryCode(),
-                        x.getIdentificationCode(),
-                        x.getDate())).collect(Collectors.toList());
-    }
-    public void associateEntries(String tagPart, String tin, String name)
-    {
+                .map(x-> {
+                    Entry entry = new Entry(this,
+                            x.getCountryCode(),
+                            x.getIdentificationCode(),
+                            x.getDate());
+                    if (flattenedDoubles.contains(x)) {
+                        entry.setComment(CommentType.DOUBLE);
+                        entry.setInRegister(false);
+                    }
+                    if (flattenedErrors.contains(x)) {
+                        entry.setComment(CommentType.FAULT);
+                        entry.setInRegister(false);
+                    }
+                    return entry;
+                })
+                .collect(Collectors.toList());
 
-        this.entries.stream().filter(x->x.getTag().substring(4,8).equals(tagPart)).forEach(x->{
-            x.setProducer(name);
-            x.setProducerTin(tin);
-        });
     }
+
     public void setEntries(List<Entry> entries) {
         this.entries = entries;
     }
@@ -196,12 +201,6 @@ public class Inspection implements Serializable {
     public void setLegalConventionalTag(Inspectee inspectee, String animal, int number) {
         conventionalTags.remove(new OtherEntry(inspectee,animal,number, OtherEntryType.CONVENTIONAL,id));
         conventionalTags.add(new OtherEntry(inspectee,animal,number, OtherEntryType.CONVENTIONAL,id));
-    }
-
-
-    public List<OtherEntry> getConventionalInRegisterFor(Inspectee inspectee) {
-        return conventionalTags.stream()
-                .filter(x -> x.getInspectee().equals(inspectee)).collect(Collectors.toList());
     }
 
     public void setConventionalTags(Set<OtherEntry> conventionalTags) {
@@ -224,16 +223,6 @@ public class Inspection implements Serializable {
         if (!producer4Name.trim().isEmpty()) names.add(new Inspectee(producer4Tin,producer4Name));
         return names;
     }
-    public List<String> getProducerTins()
-    {
-        List<String> names = new ArrayList<>();
-        names.add(producer1Tin);
-        if (!producer2Tin.trim().isEmpty()) names.add(producer2Tin);
-        if (!producer3Tin.trim().isEmpty()) names.add(producer3Tin);
-        if (!producer4Tin.trim().isEmpty()) names.add(producer4Tin);
-        names.add(Inspectee.getDummyInspectee().getName());
-        return names;
-    }
 
     //Καταμετρηθέντα + Οσα σκαναρίστηκαν εκτός των FALSE και αλόγων + όσα με συμβατικά ενώτια
     private long getCount(String producer1Tin) {
@@ -243,7 +232,7 @@ public class Inspection implements Serializable {
         long allCountElectronicTagWithoutHorses = allCountElectronicTag -
                 getCount(producer1Tin, AnimalType.HORSE_ANIMAL);
         long conventionalTagCount =
-                conventionalTags.stream().filter(x->x.getInspectee().getTin().equals(producer1Tin)).map(x->x.getCount()).reduce(0,Integer::sum);
+                conventionalTags.stream().filter(x->x.getInspectee().getTin().equals(producer1Tin)).map(OtherEntry::getCount).reduce(0,Integer::sum);
         return allCountElectronicTagWithoutHorses+conventionalTagCount;
     }
 
@@ -253,22 +242,7 @@ public class Inspection implements Serializable {
                 && x.getAnimalType().trim().equals(animalType.title) && x.getProducerTin()
                 .equals(producer1Tin)).count()
                 + conventionalTags.stream().filter(x->x.getInspectee().getTin().equals(producer1Tin)
-                && x.getAnimal().equals(animalType.title)).map(x->x.getCount()).reduce(0,Integer::sum);
-    }
-
-    //Επιλέξιμα: Όσα είναι στο μητρώο + όσα είναι νομιμα συμβατικα  (ανά είδος)
-    public long getSelectableCount(String producer1Tin) {
-        return getEntries().stream()
-                .filter(x->!x.isDummy()
-                        && x.isInRegister()
-                        && x.getProducerTin().equals(producer1Tin)
-                        && !x.getAnimalType().equals(AnimalType.HORSE_ANIMAL.title)
-                        && !x.getComment().equals(CommentType.DOUBLE)
-                        && !x.getComment().equals(CommentType.SLAUGHTERED)
-                        && !x.getComment().equals(CommentType.SOLD)
-                        && !x.getComment().equals(CommentType.DEAD)).count()
-                + conventionalTags.stream().filter(x->x.getInspectee().getTin().equals(producer1Tin)
-                && !x.getAnimal().equals(AnimalType.HORSE_ANIMAL.title)).map(x->x.getCount()).reduce(0,Integer::sum);
+                && x.getAnimal().equals(animalType.title)).map(OtherEntry::getCount).reduce(0,Integer::sum);
     }
 
     //Επιλέξιμα: Όσα είναι στο μητρώο + όσα είναι νομιμα συμβατικα  (ανά είδος)
@@ -285,25 +259,9 @@ public class Inspection implements Serializable {
                 +
                 conventionalTags.stream().filter(x -> x.getInspectee().getTin().equals(producer1Tin)
                         && x.getAnimal().equals(animals) && (x.getEntryType()==OtherEntryType.CONVENTIONAL
-                || x.getEntryType()==OtherEntryType.SINGLE)).map(x->x.getCount()).reduce(0,Integer::sum);
+                || x.getEntryType()==OtherEntryType.SINGLE)).map(OtherEntry::getCount).reduce(0,Integer::sum);
     }
 
-    //Ζώα χωρίς σήμανση (Συνολο ανεξαρτήτου είδους):
-    //Εκτός ιστορικής περιόδου συμβατικά + μονά συμβατικά + νούμερο που εισάγει ο χρήστης + όσα έχουν χαρακτηριστεί διπλά
-
-    public long getUntagged(String producer1Tin) {
-        long doubles = getEntries().stream().filter(x -> !x.isDummy()
-                && x.getComment().equals(CommentType.DOUBLE)
-                && x.getProducerTin()
-                .equals(producer1Tin)).count();
-
-        Integer untagged = conventionalTags.stream().filter(x -> x.getInspectee().getTin().equals(producer1Tin)
-                && (x.getEntryType() == OtherEntryType.ILLEGAL //Παράνομα συμβατικά
-                || x.getEntryType() == OtherEntryType.SINGLE //Μονά συμβατικά
-                || (x.getEntryType() == OtherEntryType.NO_EARRING //Χωρίς ενώτιο και άνω των 6 μηνών
-                && x.getAnimal().equals("Over6")))).map(x -> x.getCount()).reduce(0, Integer::sum);
-        return doubles + untagged;
-    }
     //Ζώα χωρίς ενώτια ούτε ηλ. σήμανση:Εκτός ιστορικής περιόδου συμβατικά + νούμερο που εισάγει ο χρήστης + όσα έχουν χαρακτηριστεί διπλά
     private long getNoTag(String producerTin)
     {
@@ -314,17 +272,8 @@ public class Inspection implements Serializable {
 
         Integer untagged = conventionalTags.stream().filter(x -> x.getInspectee().getTin().equals(producerTin)
                 && x.getEntryType() == OtherEntryType.NO_EARRING
-                && x.getAnimal().equals("Over6")).map(x -> x.getCount()).reduce(0, Integer::sum);
+                && x.getAnimal().equals("Over6")).map(OtherEntry::getCount).reduce(0, Integer::sum);
         return doubles+untagged;
-    }
-
-    //Ζώα κάτω των 6 μηνών (χωρίς σήμανση)
-    public long getUntaggedUnder6(String producer1Tin) {
-
-        return conventionalTags.stream().filter(x -> x.getInspectee().getTin().equals(producer1Tin)
-                && x.getEntryType() == OtherEntryType.NO_EARRING //Χωρίς ενώτιο και άνω των 6 μηνών
-                && x.getAnimal().equals("Under6")).map(x -> x.getCount()).reduce(0, Integer::sum);
-
     }
 
     //Πολλαπλή:
@@ -335,7 +284,7 @@ public class Inspection implements Serializable {
                 && (x.getEntryType()==OtherEntryType.ILLEGAL
                     ||
                 (x.getEntryType()==OtherEntryType.NO_EARRING
-                && x.getAnimal().equals("Over6")))).map(x->x.getCount()).reduce(0,Integer::sum);
+                && x.getAnimal().equals("Over6")))).map(OtherEntry::getCount).reduce(0,Integer::sum);
     }
 
     //Ζώα με ένα ένωτιο: Είτε συμβατικό είτε ηλεκτρονικό
@@ -346,7 +295,7 @@ public class Inspection implements Serializable {
                         && x.getProducerTin().equals(producer1Tin)
                         && x.getComment().equals(CommentType.SINGLE)).count()
                 + conventionalTags.stream().filter(x->x.getInspectee().getTin().equals(producer1Tin)
-               && x.getEntryType()==OtherEntryType.SINGLE).map(x->x.getCount()).reduce(0,Integer::sum);
+               && x.getEntryType()==OtherEntryType.SINGLE).map(OtherEntry::getCount).reduce(0,Integer::sum);
     }
 
 
@@ -363,7 +312,7 @@ public class Inspection implements Serializable {
 
         Integer outOfRegistryUntagged = conventionalTags.stream().filter(x -> x.getInspectee().getTin().equals(producer1Tin)
                 && x.getEntryType() == OtherEntryType.OUT_OF_REGISTRY //Χωρίς ενώτιο και άνω των 6 μηνών
-                ).map(x -> x.getCount()).reduce(0, Integer::sum);
+                ).map(OtherEntry::getCount).reduce(0, Integer::sum);
         return outOfRegistry+outOfRegistryUntagged;
 
     }
@@ -402,7 +351,7 @@ public class Inspection implements Serializable {
         strings.add(line5);
         String header = "Χώρα, Ενώτιο,Ημ/νια Ελέγχου,Βρέθηκε στο μητρώο,Ονοματεπώνυμο Παραγωγού,ΑΦΜ Παραγωγού,Είδος ζώου,Φυλή, Σχόλια";
         strings.add(header);
-        strings.addAll(entries.stream().filter(x->!x.isDummy()).map(x->x.toString()).collect(Collectors.toList()));
+        strings.addAll(entries.stream().filter(x->!x.isDummy()).map(Entry::toString).collect(Collectors.toList()));
         return strings;
     }
 
@@ -503,6 +452,5 @@ public class Inspection implements Serializable {
                 getOutOfRegistryTagged(inspectee.getTin()),
                 selectablesMap
                 );
-
     }
 }

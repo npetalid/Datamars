@@ -581,4 +581,5 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
         }
 
     }
+
 }

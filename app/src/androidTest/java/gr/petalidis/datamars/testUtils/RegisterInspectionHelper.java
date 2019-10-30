@@ -32,7 +32,7 @@ import gr.petalidis.datamars.rsglibrary.CsvRootDirectory;
 import gr.petalidis.datamars.rsglibrary.Rsg;
 import gr.petalidis.datamars.rsglibrary.RsgExporter;
 
-public class DataEntry {
+public class RegisterInspectionHelper {
     private static Set<Rsg> rsgsArray;
 
     public final static String USB_NAME = "testDevice";
@@ -67,9 +67,9 @@ public class DataEntry {
     private List<ResultEntry> resultEntries;
 
 
-    public DataEntry(List<Producer> producers, List<TagEntry> tagEntries, List<ConventionalEntry> conventionalEntries,
-                     List<ConventionalEntry> noTagEntries,
-                     List<ResultEntry> resultEntries) {
+    public RegisterInspectionHelper(List<Producer> producers, List<TagEntry> tagEntries, List<ConventionalEntry> conventionalEntries,
+                                    List<ConventionalEntry> noTagEntries,
+                                    List<ResultEntry> resultEntries) {
         this.producers = producers;
         this.tagEntries = tagEntries;
         this.conventionalEntries = conventionalEntries;
