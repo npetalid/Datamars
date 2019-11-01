@@ -247,19 +247,42 @@ public class Inspection implements Serializable {
 
     //Επιλέξιμα: Όσα είναι στο μητρώο + όσα είναι νομιμα συμβατικα  (ανά είδος)
     private long getSelectableCount(String producer1Tin, String animals) {
-        return getEntries().stream().filter(x -> !x.isDummy()
+        long singleElectronic = getEntries().stream().filter(x -> !x.isDummy()
+                && x.isInRegister()
+                && x.getComment().equals(CommentType.SINGLE)
+                && x.getAnimalType().trim().equals(animals) && x.getProducerTin()
+                .equals(producer1Tin)).count();
+        Integer singleConventional = conventionalTags.stream().filter(x -> x.getInspectee().getTin().equals(producer1Tin)
+                && x.getAnimal().equals(animals) &&
+                x.getEntryType() == OtherEntryType.SINGLE).map(OtherEntry::getCount).reduce(0, Integer::sum);
+
+        long allOthers = getEntries().stream().filter(x -> !x.isDummy()
                 && x.isInRegister()
                 && !x.getComment().equals(CommentType.SLAUGHTERED)
                 && !x.getComment().equals(CommentType.SOLD)
                 && !x.getComment().equals(CommentType.DEAD)
                 && !x.getComment().equals(CommentType.DOUBLE)
                 && !x.getComment().equals(CommentType.FAULT)
+                && !x.getComment().equals(CommentType.SINGLE)
                 && x.getAnimalType().trim().equals(animals) && x.getProducerTin()
                 .equals(producer1Tin)).count()
                 +
                 conventionalTags.stream().filter(x -> x.getInspectee().getTin().equals(producer1Tin)
-                        && x.getAnimal().equals(animals) && (x.getEntryType()==OtherEntryType.CONVENTIONAL
-                || x.getEntryType()==OtherEntryType.SINGLE)).map(OtherEntry::getCount).reduce(0,Integer::sum);
+                        && x.getAnimal().equals(animals) && x.getEntryType() == OtherEntryType.CONVENTIONAL)
+                        .map(OtherEntry::getCount).reduce(0, Integer::sum);
+
+        long total = singleConventional+singleElectronic+allOthers;
+        float singles = singleConventional+singleElectronic;
+        if (total==0) {
+            return 0;
+        }
+
+        float pct = singles / total;
+        if (pct<=0.2f) { //Count animals with single tags only when they are <=20% of the total selectables
+            return total;
+        } else {
+            return allOthers;
+        }
     }
 
     //Ζώα χωρίς ενώτια ούτε ηλ. σήμανση:Εκτός ιστορικής περιόδου συμβατικά + νούμερο που εισάγει ο χρήστης + όσα έχουν χαρακτηριστεί διπλά

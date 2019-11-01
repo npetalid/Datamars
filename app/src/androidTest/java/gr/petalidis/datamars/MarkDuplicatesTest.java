@@ -67,7 +67,7 @@ public class MarkDuplicatesTest {
         Moo.setTestProperties(InstrumentationRegistry.getInstrumentation().getContext());
         DbHandler dbHandler = new DbHandler(Moo.getAppContext());
         dbHandler.dropDatabase(Moo.getAppContext());
-        MarkDuplicatesHelper.saveRsg();
+        tmpFilePath = MarkDuplicatesHelper.saveRsg();
     }
 
     @Test
