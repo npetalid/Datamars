@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2017-2019 Nikolaos Petalidis
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +15,7 @@
 
 package gr.petalidis.datamars.inspections.service;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 
 import java.text.ParseException;
 import java.util.List;
@@ -40,7 +39,7 @@ public class InspectionService {
         try {
             return InspectionRepository.getAllInspections(dbHandler);
         } catch (Exception e) {
-            log.error("findAllInspections(): Unable to get inspection: " + e.getLocalizedMessage());
+            log.error("findAllInspections(): Unable to get inspection: {}", e.getLocalizedMessage());
             throw new PersistenceException(e.getLocalizedMessage());
         }
     }
@@ -49,7 +48,7 @@ public class InspectionService {
         try {
             return InspectionRepository.getInspectionFor(dbHandler,uuidString);
         } catch (ParseException e) {
-            log.error("findInspectionFor(): Unable to get inspection: " + e.getLocalizedMessage());
+            log.error("findInspectionFor(): Unable to get inspection: {}", e.getLocalizedMessage());
             throw new PersistenceException(e.getLocalizedMessage());
         }
     }
@@ -75,7 +74,7 @@ public class InspectionService {
             Inspection inspection =  InspectionRepository.getInspectionFor(dbHandler,uuidString);
             return inspection.toStrings();
         } catch (ParseException e) {
-            log.error("getCsvString(): Unable to get inspection: " + e.getLocalizedMessage());
+            log.error("getCsvString(): Unable to get inspection: {}", e.getLocalizedMessage());
             throw new PersistenceException(e.getLocalizedMessage());
         }
     }

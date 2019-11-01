@@ -17,7 +17,7 @@
 package gr.petalidis.datamars.inspections.service;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -30,6 +30,9 @@ import gr.petalidis.datamars.Log4jHelper;
 public class FileService {
     private static final Logger log = Log4jHelper.getLogger(FileService.class.getName());
 
+    private FileService() {
+    }
+
     public static String export(List<String> strings, String filepath, String name) throws IOException {
         if (strings.isEmpty()) {
             return "";
@@ -41,7 +44,7 @@ public class FileService {
         if (file.exists()) {
             boolean delete = file.delete();
             if (!delete) {
-                log.error("File with same name already present that I could not overwrite:" + file.getAbsolutePath());
+                log.error("File with same name already present that I could not overwrite: {}", file.getAbsolutePath());
                 throw new IOException("File with same name already present that I could not overwrite");
             }
         }
@@ -58,7 +61,7 @@ public class FileService {
             return file.getAbsolutePath();
 
         }
-        log.error("Could not write file " + file.getAbsolutePath());
+        log.error("Could not write file {} ", file.getAbsolutePath());
         throw new IOException("Could not write file " + file.getAbsolutePath());
     }
 
@@ -72,19 +75,19 @@ public class FileService {
             filepaths.forEach(x -> {
                 File source = new File(x);
 
-                String destinationPath = destinationDirectory + "/" + source.getName();
+                String destinationPath = destinationDirectory + File.separator + source.getName();
                 File destination = new File(destinationPath);
 
                 try {
                     FileUtils.copyFile(source, destination);
                 } catch (IOException e) {
-                    log.error("Unable to copy image " + x + " to " + destinationDirectory);
+                    log.error("Unable to copy image {} to {} ", x, destinationDirectory);
                     throw new RuntimeException("Unable to copy image " + x + " to " + destinationDirectory);
                 }
 
             });
         } catch (RuntimeException e) {
-            log.error("copyFilesToDirectory() " + e.getLocalizedMessage());
+            log.error("copyFilesToDirectory() {} ", e.getLocalizedMessage());
             throw new IOException(e.getMessage());
         }
 

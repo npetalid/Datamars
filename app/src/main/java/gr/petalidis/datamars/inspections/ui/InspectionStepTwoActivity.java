@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2017-2019 Nikolaos Petalidis
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -44,7 +43,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -73,6 +72,10 @@ import gr.petalidis.datamars.rsglibrary.RsgReader;
 
 public class InspectionStepTwoActivity extends AppCompatActivity {
     private static final int PERMISSION_GPS_REQUEST_CODE = 2;
+    public static final String INSPECTION_TAG = "inspection";
+    public static final String THUMBNAILS = "thumbnails";
+    public static final String INSPECTION_DATE = "inspectionDate";
+    public static final String RSG_FILENAME = "rsgFilename";
 
     private Inspection inspection;
     private String filename = "";
@@ -101,15 +104,15 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
 
 
         if (savedInstanceState != null) {
-            inspection = (Inspection) savedInstanceState.getSerializable("inspection");
-            inspectionDate = (Date) savedInstanceState.getSerializable("inspectionDate");
-            filename = savedInstanceState.getString("rsgFilename");
-            thumbnails = (ArrayList<ThumbnailDto>) savedInstanceState.getSerializable("thumbnails");
+            inspection = (Inspection) savedInstanceState.getSerializable(INSPECTION_TAG);
+            inspectionDate = (Date) savedInstanceState.getSerializable(INSPECTION_DATE);
+            filename = savedInstanceState.getString(RSG_FILENAME);
+            thumbnails = (ArrayList<ThumbnailDto>) savedInstanceState.getSerializable(THUMBNAILS);
             requestLocationUpdates = savedInstanceState.getBoolean("requestLocationUpdates");
         } else {
-            inspectionDate = (Date) Objects.requireNonNull(getIntent().getExtras()).getSerializable("inspectionDate");
-            filename = getIntent().getExtras().getString("rsgFilename");
-            thumbnails = (ArrayList<ThumbnailDto>) getIntent().getExtras().getSerializable("thumbnails");
+            inspectionDate = (Date) Objects.requireNonNull(getIntent().getExtras()).getSerializable(INSPECTION_DATE);
+            filename = getIntent().getExtras().getString(RSG_FILENAME);
+            thumbnails = (ArrayList<ThumbnailDto>) getIntent().getExtras().getSerializable(THUMBNAILS);
         }
 
         setContentView(R.layout.activity_inspection_step_two);
@@ -160,26 +163,15 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putSerializable("inspection", inspection);
-        outState.putString("rsgFilename", filename);
-        outState.putSerializable("inspectionDate", inspectionDate);
-        outState.putSerializable("thumbnails",thumbnails);
+        outState.putSerializable(INSPECTION_TAG, inspection);
+        outState.putString(RSG_FILENAME, filename);
+        outState.putSerializable(INSPECTION_DATE, inspectionDate);
+        outState.putSerializable(THUMBNAILS,thumbnails);
         outState.putBoolean("requestLocationUpdates",requestLocationUpdates);
         // call superclass to save any view hierarchy
         super.onSaveInstanceState(outState);
     }
 
-    private Set<String> getOwners() {
-        return owners;
-    }
-
-    private void setOwners(Set<String> owners) {
-        this.owners = owners;
-    }
-
-    private void setRsgs(Set<Rsg> rsgs) {
-        this.rsgs = rsgs;
-    }
     private boolean formHasErrors() {
         boolean hasErrors = false;
         TinValidator validator = new TinValidator();
@@ -200,7 +192,7 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
 
         if (!validator.isValid(tinString)) {
             hasErrors = true;
-            tin.setError("Το ΑΦΜ δεν είναι σωστό");
+            tin.setError(this.getApplicationContext().getString(R.string.tinIncorrect));
         }
         if (producer1NameString.length() < 2) {
             hasErrors = true;
@@ -209,17 +201,17 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
 
         if (tinString2.length() > 0 && !validator.isValid(tinString2)) {
             hasErrors = true;
-            tin2.setError("Το ΑΦΜ δεν είναι σωστό");
+            tin2.setError(this.getApplicationContext().getString(R.string.tinIncorrect));
         }
 
         if (tinString3.length() > 0 && !validator.isValid(tinString2)) {
             hasErrors = true;
-            tin3.setError("Το ΑΦΜ δεν είναι σωστό");
+            tin3.setError(this.getApplicationContext().getString(R.string.tinIncorrect));
         }
 
         if (tinString4.length() > 0 && !validator.isValid(tinString2)) {
             hasErrors = true;
-            tin4.setError("Το ΑΦΜ δεν είναι σωστό");
+            tin4.setError(this.getApplicationContext().getString(R.string.tinIncorrect));
         }
 
         return hasErrors;
@@ -244,7 +236,6 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
         if (!formHasErrors() && !rsgs.isEmpty()) {
 
             Spinner producer1TagSpinner = findViewById(R.id.producer1TagValue);
-            String producer1Tag = (String) producer1TagSpinner.getSelectedItem();
             Spinner producer2TagSpinner = findViewById(R.id.producer2TagValue);
             String producer2Tag = (String) producer2TagSpinner.getSelectedItem();
             Spinner producer3TagSpinner = findViewById(R.id.producer3TagValue);
@@ -307,7 +298,7 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
                     x.setAnimalType(animalType);
                 });
             }
-            intent.putExtra("inspection", inspection);
+            intent.putExtra(INSPECTION_TAG, inspection);
 
             startActivity(intent);
         }
@@ -417,9 +408,9 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
 
             coordinates = WGS84Converter.toGGRS87(gpsLocation.getLatitude(), gpsLocation.getLongitude());
 
-            TextView gpsLocation = findViewById(R.id.gpsValue);
+            TextView gpsLocationView = findViewById(R.id.gpsValue);
             float accuracy = location.getAccuracy();
-            gpsLocation.setText(String.format(Locale.forLanguageTag("el"), "%.2f", coordinates[0])
+            gpsLocationView.setText(String.format(Locale.forLanguageTag("el"), "%.2f", coordinates[0])
                     + ", " + String.format(Locale.forLanguageTag("el"), "%.2f", coordinates[1]) + "\n (ακρίβεια 68% εντός:"
                     + String.format(Locale.forLanguageTag("el"), "%.2f", accuracy) + "μ)");
         }
@@ -547,7 +538,7 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
                         .collect(Collectors.toSet());
 
             } catch (IOException | ParseException e) {
-                log.error("Received exception: " + e.getLocalizedMessage());
+                log.error("Received exception: {}", e.getLocalizedMessage());
                 return new HashSet<>();
 
             }
@@ -560,21 +551,21 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
             if (activity==null || activity.isFinishing()) {
                 return;
             }
-            activity.setOwners(rsgs.stream().map(Rsg::getOwner).collect(Collectors.toSet()));
+            activity.owners = rsgs.stream().map(Rsg::getOwner).collect(Collectors.toSet());
             TextView animalCountValue = activity.findViewById(R.id.animalCountValue);
             animalCountValue.setText(rsgs.size()+"");
-            activity.setRsgs(rsgs);
+            activity.rsgs = rsgs;
             Spinner producer1TagSpinner = activity.findViewById(R.id.producer1TagValue);
-            producer1TagSpinner.setAdapter(new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, activity.getOwners().toArray(new String[]{})));
+            producer1TagSpinner.setAdapter(new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, activity.owners.toArray(new String[]{})));
 
             Spinner producer2TagSpinner = activity.findViewById(R.id.producer2TagValue);
-            producer2TagSpinner.setAdapter(new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, activity.getOwners().toArray(new String[]{})));
+            producer2TagSpinner.setAdapter(new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, activity.owners.toArray(new String[]{})));
 
             Spinner producer3TagSpinner = activity.findViewById(R.id.producer3TagValue);
-            producer3TagSpinner.setAdapter(new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, activity.getOwners().toArray(new String[]{})));
+            producer3TagSpinner.setAdapter(new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, activity.owners.toArray(new String[]{})));
 
             Spinner producer4TagSpinner = activity.findViewById(R.id.producer4TagValue);
-            producer4TagSpinner.setAdapter(new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, activity.getOwners().toArray(new String[]{})));
+            producer4TagSpinner.setAdapter(new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, activity.owners.toArray(new String[]{})));
         }
 
     }

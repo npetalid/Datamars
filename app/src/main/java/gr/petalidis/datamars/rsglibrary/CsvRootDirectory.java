@@ -18,7 +18,7 @@ package gr.petalidis.datamars.rsglibrary;
 
 import android.os.Environment;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class CsvRootDirectory {
 
         if (!isExternalStorageReadable() || !isExternalStorageWritable()) {
             Logger log = Log4jHelper.getLogger(CsvRootDirectory.class.getName());
-            log.error("Could not write to external storage: " + this.directory);
+            log.error("Could not write to external storage: {} ", this.directory);
             throw new IllegalStateException("Could not write to external storage");
         }
     }
@@ -63,8 +63,7 @@ public class CsvRootDirectory {
         if (currentUsbName!=null && !currentUsbName.isEmpty()) {
             usbs.add(currentUsbName);
         }
-        ArrayList<String> usbList = new ArrayList<>(usbs);
-        return usbList;
+        return  new ArrayList<>(usbs);
 
     }
 

@@ -21,13 +21,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 
 import java.util.List;
 
@@ -42,6 +41,7 @@ import gr.petalidis.datamars.rsglibrary.RsgSessionFiles;
 
 public class CreateInspectionActivity extends Activity {
 
+    public static final String DATES = "dates";
     private DbHandler dbHandler;
     private Context context;
     private RsgSessionFiles files = new RsgSessionFiles();
@@ -51,7 +51,7 @@ public class CreateInspectionActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            files = (RsgSessionFiles) savedInstanceState.getSerializable("dates");
+            files = (RsgSessionFiles) savedInstanceState.getSerializable(DATES);
             if (files == null) {
                 files = new RsgSessionFiles();
             }
@@ -61,7 +61,7 @@ public class CreateInspectionActivity extends Activity {
 
         Intent intent = getIntent();
         if (intent != null) {
-            files = (RsgSessionFiles) intent.getSerializableExtra("dates");
+            files = (RsgSessionFiles) intent.getSerializableExtra(DATES);
             if (files == null) {
                 files = new RsgSessionFiles();
             }
@@ -80,36 +80,22 @@ public class CreateInspectionActivity extends Activity {
             final CreateInspectionAdapter adapter = new CreateInspectionAdapter(this,
                     android.R.layout.simple_list_item_1, inspectionDateProducerList);
 
-//            LayoutInflater inflater = getLayoutInflater();
-//
-//            ViewGroup header = (ViewGroup) inflater.inflate(R.layout.listinspectionsheader, listview, false);
-//            listview.addHeaderView(header);
-//
-//            ViewGroup footer = (ViewGroup) inflater.inflate(R.layout.listinspectionsfooter, listview, false);
-//            listview.addFooterView(footer);
-
             listview.setAdapter(adapter);
 
-            listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                @Override
-                public void onItemClick(AdapterView<?> parent, final View view,
-                                        int position, long id) {
-                    if (position >= 1 && position <= inspectionDateProducerList.size()) {
-                        final InspectionDateProducer item = (InspectionDateProducer) parent.getItemAtPosition(position);
-                        try {
-                            Inspection inspection = InspectionService.findInspectionFor(dbHandler, item.getId());
-                            Intent intent = new Intent(context, InspectionViewActivity.class);
-                            intent.putExtra("inspection", inspection);
-                            startActivity(intent);
-                        } catch (PersistenceException e) {
-                            log.error( e.getLocalizedMessage());
-                            Toast.makeText(context, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
-                        }
-
+            listview.setOnItemClickListener((parent, view, position, id) -> {
+                if (position >= 1 && position <= inspectionDateProducerList.size()) {
+                    final InspectionDateProducer item = (InspectionDateProducer) parent.getItemAtPosition(position);
+                    try {
+                        Inspection inspection = InspectionService.findInspectionFor(dbHandler, item.getId());
+                        Intent intent1 = new Intent(context, InspectionViewActivity.class);
+                        intent1.putExtra("inspection", inspection);
+                        startActivity(intent1);
+                    } catch (PersistenceException e) {
+                        log.error( e.getLocalizedMessage());
+                        Toast.makeText(context, e.getLocalizedMessage(), Toast.LENGTH_LONG).show();
                     }
-                }
 
+                }
             });
 
         } catch (PersistenceException e) {
@@ -122,13 +108,13 @@ public class CreateInspectionActivity extends Activity {
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
 
-        savedInstanceState.putSerializable("dates", files);
+        savedInstanceState.putSerializable(DATES, files);
     }
 
     @Override
     public void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-            files = (RsgSessionFiles) savedInstanceState.getSerializable("dates");
+            files = (RsgSessionFiles) savedInstanceState.getSerializable(DATES);
             if (files == null) {
                 files = new RsgSessionFiles();
         }

@@ -18,7 +18,6 @@ package gr.petalidis.datamars.inspections.ui;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Environment;
 import android.util.Log;
@@ -30,7 +29,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -43,6 +42,7 @@ import java.util.stream.Collectors;
 import gr.petalidis.datamars.Log4jHelper;
 import gr.petalidis.datamars.R;
 import gr.petalidis.datamars.inspections.domain.Inspection;
+import gr.petalidis.datamars.inspections.domain.ScannedDocument;
 import gr.petalidis.datamars.inspections.dto.InspectionDateProducer;
 import gr.petalidis.datamars.inspections.exceptions.PersistenceException;
 import gr.petalidis.datamars.inspections.repository.DbHandler;
@@ -84,16 +84,14 @@ class CreateInspectionAdapter extends ArrayAdapter<InspectionDateProducer> {
             Inspection inspection = InspectionService.findInspectionFor(dbHandler,item.getId());
             String randomString = inspection.getProducer1Tin()+"-"+UUID.randomUUID().toString();
             String directory = downloads.getAbsolutePath()+File.separator+randomString;
-           // FileService.export(inspection.toStrings(),downloads.getAbsolutePath(),inspection.getProducer1Tin()+"-"+simpleDateFormat.format(inspection.getDate())+".csv");
-            FileService.copyFilesToDirectory(inspection.getScannedDocuments().stream().map(y->y.getImagePath()).collect(Collectors.toList()), directory);
+            FileService.copyFilesToDirectory(inspection.getScannedDocuments().stream().map(ScannedDocument::getImagePath).collect(Collectors.toList()), directory);
             ExcelService.export(inspection,directory,inspection.getProducer1Tin()+"-"+simpleDateFormat.format(inspection.getDate())+".xls");
             AlertDialog.Builder preSaveBuilder = new AlertDialog.Builder(this.context);
 
             String msg = "Τα στοιχεία αποθηκεύθηκαν στη θέση " + downloads.getName()+File.separator+randomString;
             preSaveBuilder.setTitle("Αποθήκευση ελέγχου").setMessage(msg)
-                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                        }
+                    .setPositiveButton(android.R.string.ok, (dialog, which) -> {
+                        //Do nothing... (but why?)
                     });
             preSaveBuilder.show();
         } catch (IOException | PersistenceException e) {

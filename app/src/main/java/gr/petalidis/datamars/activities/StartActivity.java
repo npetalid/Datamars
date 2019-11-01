@@ -33,7 +33,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 
 import gr.petalidis.datamars.Log4jHelper;
 import gr.petalidis.datamars.R;
@@ -69,7 +69,7 @@ public class StartActivity extends Activity implements AppStatusFragment.OnFragm
 
     @Override
     public void onFragmentInteraction(Uri uri) {
-
+        //ignore
     }
 
     public void showDialog(View view)
@@ -125,7 +125,7 @@ public class StartActivity extends Activity implements AppStatusFragment.OnFragm
             RsgRootDirectory rsgRootDirectory = new RsgRootDirectory();
             currentUsbName = rsgRootDirectory.getUsbName();
         } catch (IllegalStateException e) {
-            log.warn( "Unable to read RsgRootDirectory: " + e.getLocalizedMessage());
+            log.warn( "Unable to read RsgRootDirectory: {}", e.getLocalizedMessage());
         }
 
         CsvRootDirectory csvRootDirectory = new CsvRootDirectory();

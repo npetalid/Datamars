@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2017-2019 Nikolaos Petalidis
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,7 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.squareup.timessquare.CalendarPickerView;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -36,6 +35,7 @@ import gr.petalidis.datamars.rsglibrary.RsgSessionFiles;
 
 public class InspectionStepOneActivity extends AppCompatActivity {
 
+    public static final String FILES = "files";
     private RsgSessionFiles files = new RsgSessionFiles();
 
     private static final Logger log = Log4jHelper.getLogger(InspectionStepOneActivity.class.getName());
@@ -55,7 +55,7 @@ public class InspectionStepOneActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent != null) {
-            files = (RsgSessionFiles) intent.getSerializableExtra("files");
+            files = (RsgSessionFiles) intent.getSerializableExtra(FILES);
             if (files == null) {
                 files = new RsgSessionFiles();
             }
@@ -99,22 +99,17 @@ public class InspectionStepOneActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
 
-        savedInstanceState.putSerializable("files", files);
+        savedInstanceState.putSerializable(FILES, files);
     }
 
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         if (savedInstanceState != null) {
-            files = (RsgSessionFiles) savedInstanceState.getSerializable("files");
+            files = (RsgSessionFiles) savedInstanceState.getSerializable(FILES);
             if (files == null) {
                 files = new RsgSessionFiles();
             }

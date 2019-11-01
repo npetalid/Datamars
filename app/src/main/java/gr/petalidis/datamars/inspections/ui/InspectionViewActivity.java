@@ -27,13 +27,12 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NavUtils;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 
 import java.util.Map;
 
 import gr.petalidis.datamars.Log4jHelper;
 import gr.petalidis.datamars.R;
-import gr.petalidis.datamars.SessionViewer;
 import gr.petalidis.datamars.inspections.domain.AnimalType;
 import gr.petalidis.datamars.inspections.domain.Inspectee;
 import gr.petalidis.datamars.inspections.domain.Inspection;
@@ -41,18 +40,19 @@ import gr.petalidis.datamars.inspections.domain.Report;
 
 public class InspectionViewActivity extends AppCompatActivity {
 
-    private final static SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    public static final String INSPECTION = "inspection";
     private Inspection inspection;
     private int index = 0;
-    private static final Logger log = Log4jHelper.getLogger(SessionViewer.class.getName());
+    private static final Logger log = Log4jHelper.getLogger(InspectionViewActivity.class.getName());
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            inspection = (Inspection) savedInstanceState.getSerializable("inspection");
+            inspection = (Inspection) savedInstanceState.getSerializable(INSPECTION);
         } else {
-            inspection = (Inspection) getIntent().getExtras().getSerializable("inspection");
+            inspection = (Inspection) getIntent().getExtras().getSerializable(INSPECTION);
         }
         setContentView(R.layout.activity_inspection_view);
 
@@ -65,7 +65,7 @@ public class InspectionViewActivity extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putSerializable("inspection", inspection);
+        outState.putSerializable(INSPECTION, inspection);
 
         // call superclass to save any view hierarchy
         super.onSaveInstanceState(outState);
@@ -96,13 +96,13 @@ public class InspectionViewActivity extends AppCompatActivity {
 
     public void goToViewActivityStep2(View view) {
         Intent intent = new Intent(this, InspectionViewActivity2.class);
-        intent.putExtra("inspection",inspection);
+        intent.putExtra(INSPECTION,inspection);
         startActivity(intent);
     }
 
     public void viewPhotos(View view) {
         Intent intent = new Intent(this, InspectionViewPhotoActivity.class);
-        intent.putExtra("inspection",inspection);
+        intent.putExtra(INSPECTION,inspection);
         startActivity(intent);
     }
 
@@ -186,8 +186,8 @@ public class InspectionViewActivity extends AppCompatActivity {
                 }
             }
             else {
-                log.error("InspectionViewActivity: Tried to get inspectee with index " + index +
-                        " for inspection " + inspection.getId() + " but was null");
+                log.error("InspectionViewActivity: Tried to get inspectee with index {} for inspection {} but was null", index,
+                         inspection.getId());
 
             }
         } else {

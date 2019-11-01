@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2017-2019 Nikolaos Petalidis
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,7 +38,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
@@ -53,6 +52,10 @@ import gr.petalidis.datamars.R;
 import gr.petalidis.datamars.inspections.dto.ThumbnailDto;
 
 public class InspectionStepPhotoActivity extends AppCompatActivity {
+    public static final String THUMBNAILS = "thumbnails";
+    public static final String PICTURE_FILE_PATH = "pictureFilePath";
+    public static final String INSPECTION_DATE = "inspectionDate";
+    public static final String RSG_FILENAME = "rsgFilename";
     private String pictureFilePath;
     private static final int REQUEST_PICTURE_CAPTURE = 1;
     private ImageView image;
@@ -78,17 +81,17 @@ public class InspectionStepPhotoActivity extends AppCompatActivity {
         captureButton.setOnClickListener(view -> this.sendTakePictureIntent());
 
         if (savedInstanceState != null) {
-            thumbnails = (ArrayList<ThumbnailDto>) savedInstanceState.getSerializable("thumbnails");
-            pictureFilePath = savedInstanceState.getString("pictureFilePath");
+            thumbnails = (ArrayList<ThumbnailDto>) savedInstanceState.getSerializable(THUMBNAILS);
+            pictureFilePath = savedInstanceState.getString(PICTURE_FILE_PATH);
             if (pictureFilePath != null && !pictureFilePath.equals("")) {
                 File file = new File(pictureFilePath);
                 image.setImageURI(Uri.fromFile(file));
             }
-            inspectionDate = (Date) savedInstanceState.getSerializable("inspectionDate");
-            filename = savedInstanceState.getString("rsgFilename");
+            inspectionDate = (Date) savedInstanceState.getSerializable(INSPECTION_DATE);
+            filename = savedInstanceState.getString(RSG_FILENAME);
         } else {
-            inspectionDate = (Date) getIntent().getExtras().getSerializable("inspectionDate");
-            filename = getIntent().getExtras().getString("rsgFilename");
+            inspectionDate = (Date) getIntent().getExtras().getSerializable(INSPECTION_DATE);
+            filename = getIntent().getExtras().getString(RSG_FILENAME);
         }
 
         adapter = new InspectionStepPhotoAdapter(this,
@@ -103,10 +106,10 @@ public class InspectionStepPhotoActivity extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        outState.putSerializable("thumbnails", thumbnails);
-        outState.putSerializable("pictureFilePath", pictureFilePath);
-        outState.putString("rsgFilename", filename);
-        outState.putSerializable("inspectionDate", inspectionDate);
+        outState.putSerializable(THUMBNAILS, thumbnails);
+        outState.putSerializable(PICTURE_FILE_PATH, pictureFilePath);
+        outState.putString(RSG_FILENAME, filename);
+        outState.putSerializable(INSPECTION_DATE, inspectionDate);
         // call superclass to save any view hierarchy
         super.onSaveInstanceState(outState);
     }
@@ -115,17 +118,17 @@ public class InspectionStepPhotoActivity extends AppCompatActivity {
     public void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         if (savedInstanceState != null) {
-            thumbnails = (ArrayList<ThumbnailDto>) savedInstanceState.getSerializable("thumbnails");
-            pictureFilePath = savedInstanceState.getString("pictureFilePath");
+            thumbnails = (ArrayList<ThumbnailDto>) savedInstanceState.getSerializable(THUMBNAILS);
+            pictureFilePath = savedInstanceState.getString(PICTURE_FILE_PATH);
             if (pictureFilePath != null && !pictureFilePath.equals("")) {
                 File file = new File(pictureFilePath);
                 image.setImageURI(Uri.fromFile(file));
             }
-            inspectionDate = (Date) savedInstanceState.getSerializable("inspectionDate");
-            filename = savedInstanceState.getString("rsgFilename");
+            inspectionDate = (Date) savedInstanceState.getSerializable(INSPECTION_DATE);
+            filename = savedInstanceState.getString(RSG_FILENAME);
         } else {
-            inspectionDate = (Date) getIntent().getExtras().getSerializable("inspectionDate");
-            filename = getIntent().getExtras().getString("rsgFilename");
+            inspectionDate = (Date) getIntent().getExtras().getSerializable(INSPECTION_DATE);
+            filename = getIntent().getExtras().getString(RSG_FILENAME);
         }
     }
 
@@ -142,7 +145,7 @@ public class InspectionStepPhotoActivity extends AppCompatActivity {
                 cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(cameraIntent, REQUEST_PICTURE_CAPTURE);
             } catch (IOException ex) {
-                log.error( "Photo file can't be created, please try again:" + ex.getLocalizedMessage());
+                log.error( "Photo file can't be created, please try again: {}", ex.getLocalizedMessage());
 
                 Toast.makeText(this,
                         "Photo file can't be created, please try again",
@@ -155,9 +158,9 @@ public class InspectionStepPhotoActivity extends AppCompatActivity {
         String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
         String pictureFile = "BOVSCANNER_" + timeStamp;
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(pictureFile, ".jpg", storageDir);
-        pictureFilePath = image.getAbsolutePath();
-        return image;
+        File imageFile = File.createTempFile(pictureFile, ".jpg", storageDir);
+        pictureFilePath = imageFile.getAbsolutePath();
+        return imageFile;
     }
 
     @Override
@@ -167,11 +170,8 @@ public class InspectionStepPhotoActivity extends AppCompatActivity {
             File imgFile = new File(pictureFilePath);
             if (imgFile.exists()) {
 
-                Uri uri = Uri.fromFile(imgFile);
                 image.setImageURI(Uri.fromFile(imgFile));
 
-
-                //image.setImageBitmap(imageBitmap);
                 thumbnails.add(new ThumbnailDto(imgFile.getName(), pictureFilePath));
                 adapter.notifyDataSetChanged();
             }
@@ -181,9 +181,9 @@ public class InspectionStepPhotoActivity extends AppCompatActivity {
     public void goToStepTwoActivity(View view) {
         Intent intent = new Intent(this, InspectionStepTwoActivity.class);
 
-        intent.putExtra("rsgFilename", filename);
-        intent.putExtra("inspectionDate", inspectionDate);
-        intent.putExtra("thumbnails", thumbnails);
+        intent.putExtra(RSG_FILENAME, filename);
+        intent.putExtra(INSPECTION_DATE, inspectionDate);
+        intent.putExtra(THUMBNAILS, thumbnails);
 
         startActivity(intent);
     }

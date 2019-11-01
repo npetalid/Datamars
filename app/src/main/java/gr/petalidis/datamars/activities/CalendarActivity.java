@@ -1,17 +1,17 @@
-/*        Copyright 2017 Nikolaos Petalidis
-*
-*        Licensed under the Apache License, Version 2.0 (the "License");
-*        you may not use this file except in compliance with the License.
-*        You may obtain a copy of the License at
-*
-*        http://www.apache.org/licenses/LICENSE-2.0
-*
-*        Unless required by applicable law or agreed to in writing, software
-*        distributed under the License is distributed on an "AS IS" BASIS,
-*        WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-*        See the License for the specific language governing permissions and
-*        limitations under the License.
-*/
+/*
+ * Copyright 2017-2019 Nikolaos Petalidis
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the License for the specific language governing permissions and
+ *  limitations under the License.
+ */
 
 package gr.petalidis.datamars.activities;
 
@@ -24,7 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.squareup.timessquare.CalendarPickerView;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -35,6 +35,7 @@ import gr.petalidis.datamars.R;
 import gr.petalidis.datamars.rsglibrary.RsgSessionFiles;
 
 public class CalendarActivity extends AppCompatActivity {
+    public static final String DATES = "dates";
     private RsgSessionFiles files = new RsgSessionFiles();
     private static final Logger log = Log4jHelper.getLogger(CalendarActivity.class.getName());
     @Override
@@ -44,7 +45,7 @@ public class CalendarActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         if (savedInstanceState != null) {
-            files = (RsgSessionFiles) savedInstanceState.getSerializable("dates");
+            files = (RsgSessionFiles) savedInstanceState.getSerializable(DATES);
             if (files == null) {
                 files = new RsgSessionFiles();
             }
@@ -54,7 +55,7 @@ public class CalendarActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent != null) {
-            files = (RsgSessionFiles) intent.getSerializableExtra("dates");
+            files = (RsgSessionFiles) intent.getSerializableExtra(DATES);
             if (files == null) {
                 files = new RsgSessionFiles();
             }
@@ -87,7 +88,7 @@ public class CalendarActivity extends AppCompatActivity {
                 startActivity(intent1);
                 return true;
             } catch (Exception e) {
-                log.error("Unable to parse date: " +date + ":" + e.getLocalizedMessage());
+                log.error("Unable to parse date: {}: {}", date, e.getLocalizedMessage());
             }
             return false;
         });
@@ -95,21 +96,16 @@ public class CalendarActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
     public void onSaveInstanceState(@NonNull Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
 
-        savedInstanceState.putSerializable("dates", files);
+        savedInstanceState.putSerializable(DATES, files);
     }
 
     @Override
     public void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        files = (RsgSessionFiles) savedInstanceState.getSerializable("dates");
+        files = (RsgSessionFiles) savedInstanceState.getSerializable(DATES);
         if (files == null) {
                 files = new RsgSessionFiles();
         }

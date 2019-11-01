@@ -16,7 +16,7 @@
 
 package gr.petalidis.datamars.inspections.service;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ import gr.petalidis.datamars.inspections.repository.UsbAliasRepository;
 
 public class UsbAliasService {
 
-    private static final Logger log = Log4jHelper.getLogger(InspectionService.class.getName());
+    private static final Logger log = Log4jHelper.getLogger(UsbAliasService.class.getName());
 
     public static List<UsbAlias> findAndUpdateAllUsbs(DbHandler dbHandler, List<String> currentlyFoundUsbs)
     {
