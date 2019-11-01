@@ -552,8 +552,6 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
 
             }
         }
-
-
         protected void onPostExecute(Set<Rsg> rsgs) {
             if (rsgs.isEmpty()) {
                 Notifier.notify(Moo.getAppContext(), "Δεν υπάρχουν σκαναρισμένα ενώτια για τον έλεγχο αυτό!", Notifier.NOTIFICATION_MESSAGE_TYPE.INFO_MESSAGE);
@@ -564,7 +562,7 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
             }
             activity.setOwners(rsgs.stream().map(Rsg::getOwner).collect(Collectors.toSet()));
             TextView animalCountValue = activity.findViewById(R.id.animalCountValue);
-            animalCountValue.setText(rsgs.size() + "");
+            animalCountValue.setText(rsgs.size()+"");
             activity.setRsgs(rsgs);
             Spinner producer1TagSpinner = activity.findViewById(R.id.producer1TagValue);
             producer1TagSpinner.setAdapter(new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, activity.getOwners().toArray(new String[]{})));
@@ -577,9 +575,7 @@ public class InspectionStepTwoActivity extends AppCompatActivity {
 
             Spinner producer4TagSpinner = activity.findViewById(R.id.producer4TagValue);
             producer4TagSpinner.setAdapter(new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item, activity.getOwners().toArray(new String[]{})));
-
         }
 
     }
-
 }

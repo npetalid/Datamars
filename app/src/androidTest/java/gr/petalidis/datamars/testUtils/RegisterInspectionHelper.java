@@ -60,6 +60,8 @@ public class RegisterInspectionHelper {
             e.printStackTrace();
         }
     }
+
+    private final String testFilePath;
     private List<Producer> producers;
     private List<TagEntry> tagEntries;
     private List<ConventionalEntry> conventionalEntries;
@@ -67,7 +69,7 @@ public class RegisterInspectionHelper {
     private List<ResultEntry> resultEntries;
 
 
-    public RegisterInspectionHelper(List<Producer> producers, List<TagEntry> tagEntries, List<ConventionalEntry> conventionalEntries,
+    public RegisterInspectionHelper(String testFilePath, List<Producer> producers, List<TagEntry> tagEntries, List<ConventionalEntry> conventionalEntries,
                                     List<ConventionalEntry> noTagEntries,
                                     List<ResultEntry> resultEntries) {
         this.producers = producers;
@@ -75,6 +77,7 @@ public class RegisterInspectionHelper {
         this.conventionalEntries = conventionalEntries;
         this.noTagEntries = noTagEntries;
         this.resultEntries = resultEntries;
+        this.testFilePath = testFilePath;
     }
 
     public List<Producer> getProducers() {
@@ -104,7 +107,8 @@ public class RegisterInspectionHelper {
                 getTagEntries(),
                 getConventionalEntries(),
                 getNoTagEntries(),
-                getResultEntries()
+                getResultEntries(),
+                getTestFilePath()
         };
     }
 
@@ -431,6 +435,10 @@ public class RegisterInspectionHelper {
             }
         }
         return RsgExporter.export( rsgs, datamarsDir.getAbsolutePath(), TEST_FILE_NAME);
+    }
+
+    public String getTestFilePath() {
+        return testFilePath;
     }
 
     public static Set<Rsg> getRsgsArray() {

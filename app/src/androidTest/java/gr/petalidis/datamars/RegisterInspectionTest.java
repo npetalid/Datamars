@@ -16,6 +16,7 @@
 
 package gr.petalidis.datamars;
 
+import androidx.test.espresso.IdlingRegistry;
 import androidx.test.espresso.web.webdriver.Locator;
 import androidx.test.filters.LargeTest;
 import androidx.test.platform.app.InstrumentationRegistry;
@@ -29,6 +30,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
 import java.io.File;
+import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -36,6 +39,7 @@ import java.util.List;
 
 import gr.petalidis.datamars.activities.StartActivity;
 import gr.petalidis.datamars.inspections.repository.DbHandler;
+import gr.petalidis.datamars.inspections.utilities.EspressoIdlingResource;
 import gr.petalidis.datamars.rsglibrary.CsvRootDirectory;
 import gr.petalidis.datamars.testUtils.RegisterInspectionDataSet;
 import gr.petalidis.datamars.testUtils.RegisterInspectionHelper;
@@ -89,40 +93,30 @@ public class RegisterInspectionTest {
     @Rule
     public ActivityTestRule<StartActivity> activityRule =
             new ActivityTestRule<>(StartActivity.class);
-    private String tmpFilePath = "";
 
     @Parameterized.Parameters
-    public static Collection<Object[]> data() throws Exception {
-
+    public static Collection<Object[]> data() {
         List<Object[]> arrayList = new ArrayList<>();
-        arrayList.add(RegisterInspectionDataSet.readData("Dataset1.csv").toArray());
-        arrayList.add(RegisterInspectionDataSet.readData("Dataset2.csv").toArray());
-        arrayList.add(RegisterInspectionDataSet.readData("Dataset3.csv").toArray());
+        arrayList.add(new String[]{"Dataset1.csv"}); //Basic check of calculations
+        arrayList.add(new String[]{"Dataset2.csv"}); //Check different animals
+        arrayList.add(new String[]{"Dataset3.csv"});  //Check two producers
+        arrayList.add(new String[]{"Dataset4.csv"});  //Check calculation when single tags > 20%
+        arrayList.add(new String[]{"Dataset5.csv"});  //Check calculation when only single tags
+        arrayList.add(new String[]{"Dataset6.csv"});  //Check calculation when single tags = 20%
 
         return arrayList;
     }
 
     @Parameterized.Parameter // first data value (0) is default
-    public /* NOT private */ List<RegisterInspectionHelper.Producer> producers;
+    public /* NOT private */ String dataset;
 
-    @Parameterized.Parameter(1)
-    public /* NOT private */ List<RegisterInspectionHelper.TagEntry> tagEntries;
-
-    @Parameterized.Parameter(2)
-    public /* NOT private */ List<RegisterInspectionHelper.ConventionalEntry> conventionalEntries;
-
-    @Parameterized.Parameter(3)
-    public /* NOT private */ List<RegisterInspectionHelper.ConventionalEntry> noTags;
-
-    @Parameterized.Parameter(4)
-    public /* NOT private */ List<RegisterInspectionHelper.ResultEntry> results;
-
+    private RegisterInspectionHelper registerInspectionHelper;
     @Before
-    public void setUp() throws Exception {
+    public void setUp() throws IOException, ParseException {
         Moo.setTestProperties(InstrumentationRegistry.getInstrumentation().getContext());
         DbHandler dbHandler = new DbHandler(Moo.getAppContext());
         dbHandler.dropDatabase(Moo.getAppContext());
-
+        registerInspectionHelper = RegisterInspectionDataSet.readData(dataset);
     }
 
     @Test
@@ -150,23 +144,23 @@ public class RegisterInspectionTest {
 
         onView(withId(R.id.gotoStep2Screen)).perform(click());
 
-        boolean hasMoreThanOneProducers = producers.size() > 1;
+        IdlingRegistry.getInstance().register(EspressoIdlingResource.getCountingIdlingResource());
 
-        producers.stream().sorted(Comparator.comparing(RegisterInspectionHelper.Producer::getIndex)).forEach(x -> {
+
+        registerInspectionHelper.getProducers().stream().sorted(Comparator.comparing(RegisterInspectionHelper.Producer::getIndex)).forEach(x -> {
             onView(withId(x.getNameId())).perform(typeText(x.getName()));
             onView(withId(x.getTinId())).perform(typeText(x.getTin()));
 
-            //if (hasMoreThanOneProducers) {
             onView(withId(x.getTagId())).perform(click());
             if (!x.getTag().isEmpty()) {
                 onData(hasToString(x.getTag())).perform(click());
             }
-            //}
         });
+        IdlingRegistry.getInstance().unregister(EspressoIdlingResource.getCountingIdlingResource());
 
         onView(withId(R.id.gotoStep3Screen)).perform(click());
 
-        tagEntries.forEach(x -> {
+        registerInspectionHelper.getTagEntries().forEach(x -> {
 
             if (x.isInRegister() == false) {
                 //TODO: Do things when false
@@ -185,10 +179,10 @@ public class RegisterInspectionTest {
         });
 
         onView(withId(R.id.addFindingsButton)).perform(click());
-        producers.stream().sorted(Comparator.comparingInt(RegisterInspectionHelper.Producer::getIndex))
+        registerInspectionHelper.getProducers().stream().sorted(Comparator.comparingInt(RegisterInspectionHelper.Producer::getIndex))
                 .forEach(x -> {
                     onView(withId(R.id.noEarringTin)).check(matches(withText(containsString(x.getTin()))));
-                    conventionalEntries.stream().filter(y -> y.getTin().equalsIgnoreCase(x.getTin()))
+                    registerInspectionHelper.getConventionalEntries().stream().filter(y -> y.getTin().equalsIgnoreCase(x.getTin()))
                             .forEach(y ->
                                     onView(withId(y.getFieldId())).perform(typeText(y.getNumber())));
 
@@ -196,10 +190,10 @@ public class RegisterInspectionTest {
                 });
         onView(withId(R.id.gotoStep5Screen)).perform(click());
 
-        producers.stream().sorted(Comparator.comparingInt(RegisterInspectionHelper.Producer::getIndex))
+        registerInspectionHelper.getProducers().stream().sorted(Comparator.comparingInt(RegisterInspectionHelper.Producer::getIndex))
                 .forEach(x -> {
                     onView(withId(R.id.conventionalTin)).check(matches(withText(containsString(x.getTin()))));
-                    noTags.stream().filter(y -> y.getTin().equalsIgnoreCase(x.getTin())).forEach(y ->
+                    registerInspectionHelper.getNoTagEntries().stream().filter(y -> y.getTin().equalsIgnoreCase(x.getTin())).forEach(y ->
                             onView(withId(y.getFieldId())).perform(typeText(y.getNumber()))
                     );
                     onView(withId(R.id.nextProducer2)).perform(click());
@@ -207,7 +201,7 @@ public class RegisterInspectionTest {
         onView(withId(R.id.saveInspectionButon)).perform(click());
 
 
-        results
+        registerInspectionHelper.getResultEntries()
                 .forEach(x ->
                         onWebView().withElement(findElement(Locator.ID, x.getId()))
                                 .check(webMatches(getText(), containsString(x.getNumber())))
@@ -221,40 +215,40 @@ public class RegisterInspectionTest {
 
         onView(withText("testDevice")).perform(click());
 
-        onData(hasToString(producers.stream().filter(x->x.getIndex()==0).findAny().map(x->x.getName()).orElse(""))).perform(click());
-        producers.stream().sorted(Comparator.comparingInt(RegisterInspectionHelper.Producer::getIndex))
+        onData(hasToString(  registerInspectionHelper.getProducers().stream().filter(x->x.getIndex()==0).findAny().map(RegisterInspectionHelper.Producer::getName).orElse(""))).perform(click());
+        registerInspectionHelper.getProducers().stream().sorted(Comparator.comparingInt(RegisterInspectionHelper.Producer::getIndex))
                 .forEach(x -> {
                     onView(withId(R.id.viewProducerTin)).check(matches(withText(containsString(x.getTin()))));
 
                     onView(withId(R.id.total)).check(matches(withText(containsString(RegisterInspectionHelper.ResultEntryGetter
-                            .getTotalFor(results, x.getTin())))));
+                            .getTotalFor(registerInspectionHelper.getResultEntries(), x.getTin())))));
 
                     onView(withId(R.id.noTag)).check(matches(withText(containsString(RegisterInspectionHelper.ResultEntryGetter
-                            .getNoTagFor(results, x.getTin())))));
+                            .getNoTagFor(registerInspectionHelper.getResultEntries(), x.getTin())))));
 
                     onView(withId(R.id.noTagUnder6)).check(matches(withText(containsString(RegisterInspectionHelper.ResultEntryGetter
-                            .getNoTagUnder6For(results, x.getTin())))));
+                            .getNoTagUnder6For(registerInspectionHelper.getResultEntries(), x.getTin())))));
 
                     onView(withId(R.id.noElectronicTag)).check(matches(withText(containsString(RegisterInspectionHelper.ResultEntryGetter
-                            .getNoElectronicTagFor(results, x.getTin())))));
+                            .getNoElectronicTagFor(registerInspectionHelper.getResultEntries(), x.getTin())))));
 
                     onView(withId(R.id.singleTag)).check(matches(withText(containsString(RegisterInspectionHelper.ResultEntryGetter
-                            .getSingleTagFor(results, x.getTin())))));
+                            .getSingleTagFor(registerInspectionHelper.getResultEntries(), x.getTin())))));
                     onView(withId(R.id.countedButNotInRegistry)).check(matches(withText(containsString(RegisterInspectionHelper.ResultEntryGetter
-                            .getCountedButNotInRegistryFor(results, x.getTin())))));
+                            .getCountedButNotInRegistryFor(registerInspectionHelper.getResultEntries(), x.getTin())))));
 
                     onView(withId(R.id.sheepTotalValue)).check(matches(withText(containsString(RegisterInspectionHelper.ResultEntryGetter
-                            .getSheepFor(results, x.getTin())))));
+                            .getSheepFor(registerInspectionHelper.getResultEntries(), x.getTin())))));
 
                     onView(withId(R.id.goatTotalValue)).check(matches(withText(containsString(RegisterInspectionHelper.ResultEntryGetter
-                            .getGoatFor(results, x.getTin())))));
+                            .getGoatFor(registerInspectionHelper.getResultEntries(), x.getTin())))));
 
                     onView(withId(R.id.ramTotalValue)).check(matches(withText(containsString(RegisterInspectionHelper.ResultEntryGetter
-                            .getSelectableRamHeGoatFor(results, x.getTin())))));
+                            .getSelectableRamHeGoatFor(registerInspectionHelper.getResultEntries(), x.getTin())))));
                     onView(withId(R.id.lambsTotalValue)).check(matches(withText(containsString(RegisterInspectionHelper.ResultEntryGetter
-                            .getSelectableKidLambFor(results, x.getTin())))));
+                            .getSelectableKidLambFor(registerInspectionHelper.getResultEntries(), x.getTin())))));
                     onView(withId(R.id.horseTotalValue)).check(matches(withText(containsString(RegisterInspectionHelper.ResultEntryGetter
-                            .getSelectableHorseFor(results, x.getTin())))));
+                            .getSelectableHorseFor(registerInspectionHelper.getResultEntries(), x.getTin())))));
 
                     onView(withId(R.id.nextProducer3)).perform(click());
                 });
@@ -262,15 +256,19 @@ public class RegisterInspectionTest {
     }
 
     @After
-    public void tearDown() {
-        if (!"".equals(tmpFilePath)) {
-            File file = new File(tmpFilePath);
-            file.delete();
+    public void tearDown() throws Exception {
+        if (!"".equals(registerInspectionHelper.getTestFilePath())) {
+            File file = new File(registerInspectionHelper.getTestFilePath());
+            if (!file.delete()) {
+                throw new Exception("Unable to delete file " + registerInspectionHelper.getTestFilePath());
+            }
         }
         CsvRootDirectory csvRootDirectory = new CsvRootDirectory();
         File datamarsDir = new File(csvRootDirectory.getDirectory() + File.separator + RegisterInspectionHelper.USB_NAME);
         if (datamarsDir.exists()) {
-            datamarsDir.delete();
+            if (!datamarsDir.delete()) {
+                throw new Exception("Unable to delete directory " + datamarsDir.getAbsoluteFile());
+            }
         }
     }
 }

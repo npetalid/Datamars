@@ -145,6 +145,7 @@ public class RegisterInspectionDataSet {
                         tagEntries.add(new RegisterInspectionHelper.TagEntry(rsg.getIdentificationCode(), columns[3], tin, inRegister, columns.length>5?columns[5]:""));
                         tinToRsgOwner.put(tin, rsg.getOwner());
                         rsgSet.add(rsg);
+                        index++;
                     }
                 }
             }
@@ -154,9 +155,9 @@ public class RegisterInspectionDataSet {
             tinToName.entrySet().forEach(x ->
                     producerBuilder.addProducer(x.getValue(), x.getKey(), tinToRsgOwner.get(x.getKey())));
             producerSet.addAll(producerBuilder.build());
-            RegisterInspectionHelper.saveRsg(rsgSet);
+            String testFilePath = RegisterInspectionHelper.saveRsg(rsgSet);
 
-            return new RegisterInspectionHelper(producerSet, tagEntries, conventionalEntries, noTagEntries, resultEntries);
+            return new RegisterInspectionHelper(testFilePath, producerSet, tagEntries, conventionalEntries, noTagEntries, resultEntries);
         }
 
     }
