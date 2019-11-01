@@ -46,8 +46,8 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
     implementation 'commons-io:commons-io:20030203.000550'
-    implementation 'log4j:log4j:1.2.17'
-    implementation 'de.mindpipe.android:android-logging-log4j:1.0.3'
+    implementation 'org.slf4j:slf4j-api:1.7.25'
+    implementation 'com.github.tony19:logback-android:2.0.0'
     implementation "com.github.SUPERCILEX.poi-android:poi:3.17"
     implementation 'androidx.test.espresso:espresso-idling-resource:3.2.0'
     testImplementation 'junit:junit:4.13-beta-3'

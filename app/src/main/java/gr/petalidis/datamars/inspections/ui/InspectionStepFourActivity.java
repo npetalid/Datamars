@@ -16,7 +16,6 @@
 
 package gr.petalidis.datamars.inspections.ui;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -81,7 +80,6 @@ public class InspectionStepFourActivity extends AppCompatActivity {
     private int index = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Context mContext = this;
         super.onCreate(savedInstanceState);
         // recovering the instance state
         if (savedInstanceState != null) {

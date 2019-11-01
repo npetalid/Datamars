@@ -42,8 +42,7 @@ public class Moo extends Application {
         if (weakReference==null) {
             return null;
         }
-        Context context = Objects.requireNonNull(weakReference.get());
-        return context;
+        return Objects.requireNonNull(weakReference.get());
     }
 
     public static String getProperty(String key)

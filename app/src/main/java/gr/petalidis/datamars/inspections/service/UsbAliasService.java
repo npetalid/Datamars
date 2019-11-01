@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2017-2019 Nikolaos Petalidis
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,6 +27,9 @@ import gr.petalidis.datamars.inspections.repository.UsbAliasRepository;
 public class UsbAliasService {
 
     private static final Logger log = Log4jHelper.getLogger(UsbAliasService.class.getName());
+
+    private UsbAliasService() {
+    }
 
     public static List<UsbAlias> findAndUpdateAllUsbs(DbHandler dbHandler, List<String> currentlyFoundUsbs)
     {

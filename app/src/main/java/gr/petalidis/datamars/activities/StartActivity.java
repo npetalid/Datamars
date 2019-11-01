@@ -1,4 +1,3 @@
-
 /*
  * Copyright 2017-2019 Nikolaos Petalidis
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -43,11 +42,12 @@ import gr.petalidis.datamars.inspections.ui.CreateInspectionActivity;
 import gr.petalidis.datamars.rsglibrary.CsvRootDirectory;
 import gr.petalidis.datamars.rsglibrary.RsgRootDirectory;
 
-public class StartActivity extends Activity implements AppStatusFragment.OnFragmentInteractionListener,  ChooseDirectoryFragment.OnFragmentInteractionListener {
+public class StartActivity extends Activity implements AppStatusFragment.OnFragmentInteractionListener, ChooseDirectoryFragment.OnFragmentInteractionListener {
     private static final Logger log = Log4jHelper.getLogger(StartActivity.class.getName());
-    private static final int PERMISSION_READWRITE_REQUEST_CODE =1;
+    private static final int PERMISSION_READWRITE_REQUEST_CODE = 1;
 
     private static final String FRAGMENT_TAG = "gr.petalidis.datamars.status_fragment";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,15 +72,14 @@ public class StartActivity extends Activity implements AppStatusFragment.OnFragm
         //ignore
     }
 
-    public void showDialog(View view)
-    {
+    public void showDialog(View view) {
         FragmentManager fragmentManager = getFragmentManager();
         String currentUsbName = "";
         try {
             RsgRootDirectory rsgRootDirectory = new RsgRootDirectory();
             currentUsbName = rsgRootDirectory.getUsbName();
         } catch (IllegalStateException e) {
-            log.warn( "Unable to read RsgRootDirectory: " + e.getLocalizedMessage());
+            log.warn("Unable to read RsgRootDirectory: {}", e.getLocalizedMessage());
         }
 
         CsvRootDirectory csvRootDirectory = new CsvRootDirectory();
@@ -89,22 +88,21 @@ public class StartActivity extends Activity implements AppStatusFragment.OnFragm
         ChooseDirectoryFragment fragment = new ChooseDirectoryFragment();
 
         Bundle args = new Bundle();
-        args.putSerializable("usbList",csvRootDirectory.getProbableUsbs(currentUsbName));
-        args.putString("nextClassName",CalendarActivity.class.getName());
+        args.putSerializable("usbList", csvRootDirectory.getProbableUsbs(currentUsbName));
+        args.putString("nextClassName", CalendarActivity.class.getName());
 
         fragment.setArguments(args);
-        fragment.show(fragmentManager,"Some tag");
+        fragment.show(fragmentManager, "Some tag");
 
     }
 
-    public void showExternalStorage(View view)
-    {
+    public void showExternalStorage(View view) {
         FragmentManager fragmentManager = getFragmentManager();
 
 
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Fragment fragment = fragmentManager.findFragmentByTag(FRAGMENT_TAG);
-        if (fragment!=null) {
+        if (fragment != null) {
             fragmentTransaction.remove(fragment);
         }
         fragmentTransaction.commit();
@@ -117,15 +115,14 @@ public class StartActivity extends Activity implements AppStatusFragment.OnFragm
         fragmentTransaction.commit();
     }
 
-    public void goToInspections(View view)
-    {
+    public void goToInspections(View view) {
         FragmentManager fragmentManager = getFragmentManager();
         String currentUsbName = "";
         try {
             RsgRootDirectory rsgRootDirectory = new RsgRootDirectory();
             currentUsbName = rsgRootDirectory.getUsbName();
         } catch (IllegalStateException e) {
-            log.warn( "Unable to read RsgRootDirectory: {}", e.getLocalizedMessage());
+            log.warn("Unable to read RsgRootDirectory: {}", e.getLocalizedMessage());
         }
 
         CsvRootDirectory csvRootDirectory = new CsvRootDirectory();
@@ -134,12 +131,13 @@ public class StartActivity extends Activity implements AppStatusFragment.OnFragm
         ChooseDirectoryFragment fragment = new ChooseDirectoryFragment();
 
         Bundle args = new Bundle();
-        args.putSerializable("usbList",csvRootDirectory.getProbableUsbs(currentUsbName));
-        args.putString("nextClassName",CreateInspectionActivity.class.getName());
+        args.putSerializable("usbList", csvRootDirectory.getProbableUsbs(currentUsbName));
+        args.putString("nextClassName", CreateInspectionActivity.class.getName());
 
         fragment.setArguments(args);
-        fragment.show(fragmentManager,"Some tag");
+        fragment.show(fragmentManager, "Some tag");
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode,
                                  Intent resultData) {
@@ -149,17 +147,14 @@ public class StartActivity extends Activity implements AppStatusFragment.OnFragm
         // response to some other intent, and the code below shouldn't run at all.
         TextView textView = findViewById(R.id.status_text_view);
 
-        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK && resultData != null) {
             // The document selected by the user won't be returned in the intent.
             // Instead, a URI to that document will be contained in the return intent
             // provided to this method as a parameter.
             // Pull that URI using resultData.getData().
-            if (resultData != null) {
-                Uri uri = resultData.getData();
-                if (uri!=null && uri.getPath()!=null) {
-                    textView.append(uri.getPath() + "\n");
-                }
-
+            Uri uri = resultData.getData();
+            if (uri != null && uri.getPath() != null) {
+                textView.append(uri.getPath() + "\n");
             }
         }
     }
@@ -172,15 +167,14 @@ public class StartActivity extends Activity implements AppStatusFragment.OnFragm
                 Environment.MEDIA_MOUNTED_READ_ONLY.equals(state));
     }
 
-    private void showFailure(String msg)
-    {
+    private void showFailure(String msg) {
         TextView textView = findViewById(R.id.status_text_view);
         textView.setText(msg);
     }
 
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull  int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case PERMISSION_READWRITE_REQUEST_CODE:
                 if (!(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {

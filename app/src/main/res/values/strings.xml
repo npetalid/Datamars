@@ -105,4 +105,5 @@
     <string name="producer">Παραγωγός</string>
     <string name="inRegister">Στο μητρώο;</string>
     <string name="comments">Σχόλια</string>
+    <string name="tinIncorrect">Το ΑΦΜ δεν είναι σωστό</string>
 </resources>
